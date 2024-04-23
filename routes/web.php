@@ -17,6 +17,16 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
+Route::get('phpinfo', function(){
+    return phpinfo();
+});
+
+Route::get('test', function(){
+    // dd('ok');
+    $data = \App\Models\Soal::get()->first();
+    return view('pages.ujian.index',['data'=>$data]);
+});
+
 Route::get('/', function () {
     return view('pages.home');
 });
@@ -43,6 +53,7 @@ Route::middleware('auth')->group(function(){
     Route::get('soal/open-akses/{id}', function(){
         return view('pages.teacher.soal.open-akses');
     });
+    Route::post('tmpfile', [SoalController::class, 'tmpFile'])->name('soal.tmpfile');
     Route::post('soal/open-akses', [SoalController::class, 'openAksesStore'])->name('soal.open-akses.store');
     Route::resource('soal', SoalController::class);
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Soal;
 use App\Models\Proyek;
+use App\Models\TmpFile;
 use App\Models\TipeSoal;
 use App\Models\SoalDetail;
 use Illuminate\Http\Request;
@@ -74,6 +75,26 @@ class SoalController extends Controller
         return view('pages.teacher.soal.create_or_update')->with($data);
     }
 
+    public function tmpFile(Request $request)
+    {
+        try {
+            $file = \App\Helpers\_tmpFile::uploadFile($request->tmp);
+            $data = TmpFile::create([
+                'name' => $file
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'success',
+                'data' => $data
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th
+            ], 400);
+        }
+    }
+
     public function createOrUpdateSoal(Request $request)
     {
         $soal = Soal::find($request->soal_id);
@@ -86,20 +107,13 @@ class SoalController extends Controller
             $i = $key + 1;
             $indexTeks = 0;
             $indexDokumen = 0;
+            $iindex = 0;
             $stimulusTipe = $request->input($i.'_stimulus_tipe');
+            $stimulus = $request->input($i.'_stimulus');
             foreach ($stimulusTipe as $t => $tipe) {
-                $res = '';
-                if ($tipe == 'dokumen') {
-                    $res = \App\Helpers\_File::uploadFile($request->file($i.'_stimulus')[$indexDokumen]);
-                    $indexDokumen++;
-                }
-                if ($tipe == 'teks') {
-                    $res = $request->input($i.'_stimulus')[$indexTeks];
-                    $indexTeks++;
-                }
                 array_push($stimulusArray, [
-                    'tipe' => $stimulusTipe[$t],
-                    'value' => $res
+                    'tipe' => $tipe,
+                    'value' => $stimulus[$t]
                 ]);
             }
             SoalDetail::create([
@@ -111,6 +125,9 @@ class SoalController extends Controller
                 'kunci_jawaban' => $request->input($i.'_kunci_jawaban.0'),
                 'skor' => $request->skor[$key],
             ]);
+
+            // Move file from dir tmp -> uploads
+            \App\Helpers\_tmpFile::moveFile($stimulusArray);
         }
         return view('pages.teacher.soal.open-akses', compact('soal'));
     }

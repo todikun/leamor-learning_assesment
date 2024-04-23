@@ -15,4 +15,9 @@ class Soal extends Model
     {
         return $this->belongsTo('App\Models\Proyek', 'proyek_id', 'id');
     }
+
+    public function SoalDetail()
+    {
+        return $this->hasMany('App\Models\SoalDetail', 'soal_id', 'id'); 
+    }
 }

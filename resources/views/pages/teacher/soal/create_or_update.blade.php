@@ -255,6 +255,8 @@
                                             </div>
                                             <div class="col-md opsi-jawaban" >
                     
+                                                {{-- need imporve here
+                                                    opsi jawaban --}}
                                             </div>
 
                                         </div>
@@ -292,7 +294,43 @@
             globalIndex = parseInt($(e).attr('data-index'));
             console.log(globalIndex);
         }
-        
+
+        function tmpUpload(e)
+        {
+            var url = "{{route('soal.tmpfile')}}";
+            var formData = new FormData();
+            var file = e.files[0];
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+            var allowedExtensions = ["mp3", "jpg", "jpeg", "png", "gif", "mp4"];
+
+            if (allowedExtensions.indexOf(fileExtension) === -1) {
+                e.value = null;
+                return alert('Format file tidak didukung!')
+            }
+
+            formData.append('_token', "{{csrf_token()}}");
+            formData.append('tmp', file);
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                processData: false, // Menggunakan false agar FormData tidak diubah menjadi string
+                contentType: false, // Tidak menetapkan tipe konten karena FormData akan membentuknya sendiri
+                type: 'JSON',
+                data: formData,
+                success: function(res){
+                    var inputFile = $(e).closest('.stimulus-container').find('.stimulus-tipe .file-stimulus');
+                    inputFile.val(res.data.name);
+                    console.log(res.data.name);
+                    console.log(res);
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            });
+        }
+
+    //  soal    
         btnSoalAdd.on('click',function(){
             var navLink = tabs.find('.nav-link').last().attr('data-index'); 
             globalIndex = parseInt(navLink) + 1;
@@ -327,7 +365,7 @@
         
                                         <div class="row d-flex stimulus-container mb-2">
                                             <div class="col-md-4">
-                                                <select class="form-control form-select stimulus-select mb-2" onchange="changeStimulus(this)" required>
+                                                <select name="${globalIndex}_stimulus_tipe[]" class="form-control form-select stimulus-select mb-2" onchange="changeStimulus(this)" required>
                                                     <option value="">-- PILIH --</option>
                                                     <option value="teks">Teks</option>
                                                     <option value="dokumen">Dokumen</option>
@@ -434,7 +472,7 @@
             var inputHtml = `
                 <div class="row d-flex stimulus-container mb-2">
                     <div class="col-md-4">
-                        <select class="form-control form-select stimulus-select mb-2" onchange="changeStimulus(this)" required>
+                        <select class="form-control form-select stimulus-select mb-2" name="${globalIndex}_stimulus_tipe[]" onchange="changeStimulus(this)" required>
                             <option value="">-- PILIH --</option>
                             <option value="teks">Teks</option>
                             <option value="dokumen">Dokumen</option>
@@ -464,20 +502,15 @@
                 stimulusDiv.children().remove();
             }
 
-            var textarea = $('<textarea>', {
-                'name': `${index}_stimulus[]`,
-                'class': 'form-control mb-2',
-                'cols': '3',
-                'rows': '3',
-                'required': true
-            });
-
-            var fileInput = $('<input>', {
-                'name': `${index}_stimulus[]`,
-                'type': 'file',
-                'class': 'form-control mb-2',
-                'required': true
-            });
+            var textarea = `
+                <textarea name="${index}_stimulus[]" class=form-control mb-2" cols="3" rows="3" required></textarea>
+            `;
+            var fileInput = `
+                <input type="file" class="form-control mb-1" onchange="tmpUpload(this)" required />
+            `;
+            var nameFile = `
+                <input name="${index}_stimulus[]" type="hidden" class="form-control file-stimulus mb-1" />
+            `;
 
             switch ($(e).val()) {
                 case 'teks':
@@ -485,6 +518,8 @@
                     break;
                 case 'dokumen':
                     stimulusDiv.append(fileInput);
+                    stimulusDiv.append(nameFile);
+                    stimulusDiv.append('<span class="text-danger" style="font-size: 12px; font-style: italic">Ukuran maks 10MB</span>');
                     break;
                 default:
                     break;
@@ -508,6 +543,7 @@
                     appendAreaOpsi.children().remove();   
                 }
             } else {
+                opsi == '' ? changeOpsi(tipeSoal.val()) : null;
                 appendAreaOpsi.append(opsi);
                 var value  = appendAreaOpsi.children().length;
                 appendAreaOpsi.find('.opsi-remove .kunci-jawaban-value').last().val(value)
@@ -527,7 +563,7 @@
         {
             var index = getIndexCurrentNavlinkActive();
             var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban');
-            switch ($(e).val()) {
+            switch ($(e).val() ?? e) {
                 case '1':
                     // pilihan ganda
                     opsi = 

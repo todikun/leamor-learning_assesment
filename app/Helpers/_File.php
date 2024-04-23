@@ -5,6 +5,7 @@ namespace App\Helpers;
 class _File {
 
     private static $path = 'uploads/';
+    private static $tmp = 'tmp/';
 
     public static function uploadFile($file)
     {
@@ -13,6 +14,7 @@ class _File {
             $file->move(public_path(self::$path), $fileName);
             return $fileName;
         } catch (\Throwable $th) {
+            dd($th);
             return null;
         }
     }
