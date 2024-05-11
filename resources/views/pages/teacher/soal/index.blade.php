@@ -33,13 +33,13 @@
                                 <td>{{$item->waktu_ujian}} menit</td>
                                 <td>{{$item->waktu_feedback}} menit</td>
                                 <td>
-                                    <a href="{{ route('soal.show', $item->id) }}"
+                                    <a href="{{ route('soal.preview', $item->id) }}"
                                         class="btn btn-sm btn-secondary">
-                                        <i class="fa fa-edit"></i> Soal
+                                        <i class="fa fa-eye"></i> Preview
                                     </a>
-                                    <a href="{{ route('soal.edit', $item->id) }}"
-                                        class="btn btn-sm btn-warning btn-edit">
-                                        <i class="fa fa-edit"></i>
+                                    <a href="{{ route('soal.show', $item->id) }}"
+                                        class="btn btn-sm btn-warning">
+                                        <i class="fa fa-edit"></i> Soal
                                     </a>
                                     <form
                                         action="{{ route('soal.destroy', $item->id) }}"

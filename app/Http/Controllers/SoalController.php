@@ -102,19 +102,24 @@ class SoalController extends Controller
         if ($soalDetail->exists()) {
             $soalDetail->delete();
         }
+        $stimulusDokumen = array();
         foreach ($request->pertanyaan as $key => $pertanyaan) {
             $stimulusArray = array();
             $i = $key + 1;
-            $indexTeks = 0;
-            $indexDokumen = 0;
-            $iindex = 0;
+            $index = 0;
             $stimulusTipe = $request->input($i.'_stimulus_tipe');
             $stimulus = $request->input($i.'_stimulus');
-            foreach ($stimulusTipe as $t => $tipe) {
+
+            // dd($stimulusTipe, $stimulus);
+            foreach ($stimulusTipe as $tipe) {
                 array_push($stimulusArray, [
                     'tipe' => $tipe,
-                    'value' => $stimulus[$t]
+                    'value' => $stimulus[$index]
                 ]);
+                if ($tipe == 'dokumen') {
+                    array_push($stimulusDokumen, $stimulus[$index]);
+                }
+                $index++;
             }
             SoalDetail::create([
                 'soal_id' => $soal->id,
@@ -125,10 +130,10 @@ class SoalController extends Controller
                 'kunci_jawaban' => $request->input($i.'_kunci_jawaban.0'),
                 'skor' => $request->skor[$key],
             ]);
-
-            // Move file from dir tmp -> uploads
-            \App\Helpers\_tmpFile::moveFile($stimulusArray);
         }
+        
+        // Move file from dir tmp -> uploads
+        \App\Helpers\_tmpFile::moveFile($stimulusDokumen);
         return view('pages.teacher.soal.open-akses', compact('soal'));
     }
 
@@ -142,6 +147,29 @@ class SoalController extends Controller
             'token_expired' => $request->is_mandiri == false ? Carbon::now() : null,
         ]);
         return redirect()->route('soal.index', ['proyek'=>$soal->proyek_id])->with('success', 'Data berhasil disimpan');
+    }
+
+    public function preview($id)
+    {
+        $data['soal'] = Soal::find($id);
+        if ($data['soal']->SoalDetail->count() > 0) {
+            return view('pages.ujian.preview')->with($data);
+        }
+        return 'soal kosong';
+    }
+
+    public function score(Request $request, $id)
+    {
+        $soal = Soal::find($id);
+        $benar = 0;
+        $skor = 0;
+        foreach ($soal->SoalDetail as $index => $item) {
+            if ($item->kunci_jawaban == $request->input('no_'.$index + 1)) {
+                $benar += 1;
+                $skor += $item->skor;
+            }
+        }
+        dd($benar, $skor);
     }
 
     /**

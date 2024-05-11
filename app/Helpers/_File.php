@@ -5,7 +5,6 @@ namespace App\Helpers;
 class _File {
 
     private static $path = 'uploads/';
-    private static $tmp = 'tmp/';
 
     public static function uploadFile($file)
     {

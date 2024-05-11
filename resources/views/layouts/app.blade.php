@@ -62,7 +62,21 @@
                 </div>
             </main>
             <!-- Main content -->
-
+            <div class="modal fade" id="modal-reminder" tabindex="-1" aria-labelledby="panoramaModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered ">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" ></h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button class="form-control btn btn-primary btn-lg" data-bs-dismiss="modal" aria-label="Close">Mulai Ujian</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
             <!-- Modal content start -->
             <div class="modal fade" id="modal-form" tabindex="-1" aria-labelledby="panoramaModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered ">
@@ -100,6 +114,10 @@
     <script>
         $(document).ready(function() {
             $('#modal-form').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            $('#modal-reminder').modal({
                 backdrop: 'static',
                 keyboard: false
             });

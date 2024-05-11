@@ -24,13 +24,10 @@ class _tmpFile {
     public static function moveFile($value)
     {
         $path = public_path(self::$path);
-        $array = array_map(function($item) {
-            return $item['value'];
-        }, $value);
-        $file = TmpFile::get();
+        $file = TmpFile::orderBy('id', 'asc')->get();
         foreach ($file as $item) {
             $tmp = $path.$item->name;
-            if (in_array($item->name, $array) && file_exists($tmp)) {
+            if (in_array($item->name, $value) && file_exists($tmp)) {
                 // move to dir uploads
                 rename($tmp, public_path('uploads/') . $item->name);
             }
