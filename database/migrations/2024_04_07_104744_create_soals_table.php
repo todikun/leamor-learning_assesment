@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSoalsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -20,11 +20,10 @@ class CreateSoalsTable extends Migration
             $table->text('pernyataan');
             $table->text('cover');
             $table->integer('waktu_ujian');
-            $table->integer('waktu_feedback');
+            $table->integer('batch');
             $table->timestamp('waktu_akses_ujian')->nullable();
             $table->integer('is_mandiri')->nullable();
             $table->text('token')->nullable();
-            $table->timestamp('token_expired')->nullable();
             $table->timestamps();
         });
     }
@@ -38,4 +37,4 @@ class CreateSoalsTable extends Migration
     {
         Schema::dropIfExists('soals');
     }
-}
+};

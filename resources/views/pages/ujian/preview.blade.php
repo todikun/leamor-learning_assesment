@@ -44,7 +44,6 @@
             <div class="tab-content" id="v-pills-tabContent">
                 @foreach ($soal->SoalDetail as $key => $item)
                     <div class="tab-pane fade show {{$loop->iteration == 1 ? 'active':''}}" id="v-pills-soal_{{$loop->iteration}}" role="tabpanel" aria-labelledby="v-pills-soal_{{$loop->iteration}}-tab">
-                        {{$loop->iteration}}
                         <div class="row d-flex">
                             <div class="col-md-6">
             

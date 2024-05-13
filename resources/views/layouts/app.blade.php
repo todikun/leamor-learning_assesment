@@ -123,6 +123,12 @@
             });
         });
 
+        var navbar = $('.hamburger');
+        var sessionUjian = "{{$ujian ?? false}}";
+        if (sessionUjian == true) {
+            navbar.addClass('d-none')
+        }
+
         // toast options
         toastr.options = {
             "closeButton": false,

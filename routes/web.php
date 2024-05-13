@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SoalController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UjianController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\DashboardController;
 
@@ -41,28 +42,47 @@ Route::middleware('auth')->group(function(){
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    Route::group(['middleware'=>'teacherRole', 'prefix'=>'teacher/'], function(){
+    Route::group(['middleware'=>'teacherRole', 'prefix'=>'teacher'], function(){
         // proyek
-        Route::get('proyek/my', [ProyekController::class, 'myProyek'])->name('proyek.my');
-        Route::get('proyek/{id}/copy', [ProyekController::class, 'copyProyek'])->name('proyek.copy');
-        Route::get('proyek/{id}/undo', [ProyekController::class, 'undo'])->name('proyek.undo');
-        Route::get('proyek/{id}/redo', [ProyekController::class, 'redo'])->name('proyek.redo');
-        Route::get('proyek/deleted', [ProyekController::class, 'myProyekDelete'])->name('proyek.deleted');
+        Route::controller(ProyekController::class)
+            ->prefix('proyek')
+            ->as('proyek.')
+            ->group(function(){
+                Route::get('my', 'myProyek')->name('my');
+                Route::get('{id}/copy', 'copyProyek')->name('copy');
+                Route::get('{id}/undo', 'undo')->name('undo');
+                Route::get('{id}/redo', 'redo')->name('redo');
+                Route::get('deleted', 'myProyekDelete')->name('deleted');
+            });
         Route::resource('proyek', ProyekController::class);
 
         // soal
-        Route::post('soal/submit/', [SoalController::class, 'createOrUpdateSoal'])->name('soal.create_update');
-        Route::get('soal/open-akses/{id}', function(){
-            return view('pages.teacher.soal.open-akses');
-        });
-        Route::post('tmpfile', [SoalController::class, 'tmpFile'])->name('soal.tmpfile');
-        Route::post('soal/open-akses', [SoalController::class, 'openAksesStore'])->name('soal.open-akses.store');
-        Route::get('soal/{id}/preview', [SoalController::class, 'preview'])->name('soal.preview');
-        Route::post('soal/{id}/score', [SoalController::class, 'score'])->name('soal.score');
+        Route::controller(SoalController::class)
+            ->prefix('soal')
+            ->as('soal.')
+            ->group(function(){
+                Route::post('submit', 'createOrUpdateSoal')->name('create_update');
+                Route::get('open-akses/{id}', function(){
+                    return view('pages.teacher.soal.open-akses');
+                })->name('open-akses');
+                Route::post('tmpfile', 'tmpFile')->name('tmpfile');
+                Route::post('open-akses', 'openAksesStore')->name('open-akses.store');
+                Route::get('{id}/preview', 'preview')->name('preview');
+                Route::post('{id}/score', 'score')->name('score');
+            });
         Route::resource('soal', SoalController::class);
     });
 
-    Route::group(['middleware'=>'studentRole', 'prefix'=>'student/'], function(){
+    Route::group(['middleware'=>'studentRole', 'prefix'=>'student'], function(){
 
+        // ujian
+        Route::controller(UjianController::class)
+            ->prefix('ujian')
+            ->as('ujian.')
+            ->group(function(){
+                Route::post('akses', 'cekAkses')->name('akses');
+                Route::post('form', 'ujianForm')->name('form');
+                Route::post('{id}/nilai_feedback', 'storeNilaiFeedback')->name('nilai_feedback');
+            });
     });
 });

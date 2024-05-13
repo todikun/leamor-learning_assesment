@@ -87,7 +87,6 @@ class ProyekController extends Controller
                     'pernyataan'=>$item->pernyataan,
                     'nama'=>$item->nama,
                     'waktu_ujian'=>$item->waktu_ujian,
-                    'waktu_feedback'=>$item->waktu_feedback,
                     'cover'=>$item->cover,
                 ]);
             }

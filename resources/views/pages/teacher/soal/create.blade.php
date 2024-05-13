@@ -60,9 +60,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5 class="card-title my-3">Waktu Feedback <span class="text-danger">*</span></h5>
+                                    <h5 class="card-title my-3">Batch <span class="text-danger">*</span></h5>
                                     <div class="input-group mb-3">
-                                        <input type="number" class="form-control" name="waktu_feedback" placeholder="Misalkan 30 menit" />
+                                        <input type="number" class="form-control" name="batch" placeholder="Batch" />
                                         <span class="input-group-text">menit</span>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
 
         btnSiswaRemove.on('click', function(){
             var pernyataan = appendArea.find('.pernyataan');
-            if (pernyataan.length > 0) {
+            if (pernyataan.length > 1) {
                 pernyataan.last().remove();
             }
         });

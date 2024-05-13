@@ -23,11 +23,11 @@
                     <h3 class="mb-2">Soal</h3>
                     <div class="col-md-6 mb-3">
                         <a href="javascript:;" id="btnSoalAdd" class=" me-3 bg-success text-white rounded-circle position-absolute">
-                            <i class="align-middle p-1" data-feather="plus"></i> 
+                            <i class="fa fa-plus p-2"></i> 
                         </a>
                         <span class="mx-3"></span>
                         <a href="javascript:;" id="btnSoalRemove" class=" bg-danger text-white rounded-circle position-absolute">
-                            <i class="align-middle p-1" data-feather="trash"></i> 
+                            <i class="fa fa-times p-2"></i> 
                         </a>
                     </div>
 
@@ -66,11 +66,11 @@
                                                     <div class="col-md">
                                                         <span class="mb-3 me-1">Stimulus <span class="text-danger">*</span></span>
                                                         <a href="javascript:;" onclick="stimulusAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
-                                                            <i class="align-middle p-1" data-feather="plus"></i> 
+                                                            <i class="fa fa-plus p-2"></i> 
                                                         </a>
                                                         <span class="mx-3"></span>
                                                         <a href="javascript:;" onclick="stimulusRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
-                                                            <i class="align-middle p-1" data-feather="trash"></i> 
+                                                            <i class="fa fa-times p-2"></i> 
                                                         </a>
                                                     </div>
                                                 </div>
@@ -135,11 +135,11 @@
                                                     <div class="col-md">
                                                         <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
                                                         <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
-                                                            <i class="align-middle p-1" data-feather="plus"></i> 
+                                                            <i class="fa fa-plus p-2"></i> 
                                                         </a>
                                                         <span class="mx-3"></span>
                                                         <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
-                                                            <i class="align-middle p-1" data-feather="trash"></i> 
+                                                            <i class="fa fa-times p-2"></i> 
                                                         </a>
                                                     </div>
                                                 </div>
@@ -179,11 +179,11 @@
                                                 <div class="col-md">
                                                     <span class="mb-3 me-1">Stimulus <span class="text-danger">*</span></span>
                                                     <a href="javascript:;" onclick="stimulusAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
-                                                        <i class="align-middle p-1" data-feather="plus"></i> 
+                                                        <i class="fa fa-plus p-2"></i> 
                                                     </a>
                                                     <span class="mx-3"></span>
                                                     <a href="javascript:;" onclick="stimulusRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
-                                                        <i class="align-middle p-1" data-feather="trash"></i> 
+                                                        <i class="fa fa-times p-2"></i> 
                                                     </a>
                                                 </div>
                                             </div>
@@ -245,11 +245,11 @@
                                                 <div class="col-md">
                                                     <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
                                                     <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
-                                                        <i class="align-middle p-1" data-feather="plus"></i> 
+                                                        <i class="fa fa-plus p-2"></i> 
                                                     </a>
                                                     <span class="mx-3"></span>
                                                     <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
-                                                        <i class="align-middle p-1" data-feather="trash"></i> 
+                                                        <i class="fa fa-times p-2"></i> 
                                                     </a>
                                                 </div>
                                             </div>
@@ -351,11 +351,11 @@
                                         <div class="col-md">
                                             <span class="mb-3 me-1">Stimulus <span class="text-danger">*</span></span>
                                             <a href="javascript:;" onclick="stimulusAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
-                                                <i class="align-middle p-1" data-feather="plus"></i> 
+                                                <i class="fa fa-plus p-2"></i> 
                                             </a>
                                             <span class="mx-3"></span>
                                             <a href="javascript:;" onclick="stimulusRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
-                                                <i class="align-middle p-1" data-feather="trash"></i> 
+                                                <i class="fa fa-times p-2"></i> 
                                             </a>
                                         </div>
                                     </div>
@@ -417,11 +417,11 @@
                                         <div class="col-md">
                                             <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
                                             <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
-                                                <i class="align-middle p-1" data-feather="plus"></i> 
+                                                <i class="fa fa-plus p-2"></i> 
                                             </a>
                                             <span class="mx-3"></span>
                                             <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
-                                                <i class="align-middle p-1" data-feather="trash"></i> 
+                                                <i class="fa fa-times p-2"></i> 
                                             </a>
                                         </div>
                                     </div>

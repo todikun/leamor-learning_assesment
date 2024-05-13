@@ -17,21 +17,37 @@
 
                 <table id="myTable" class="table">
                     <thead>
-                        <tr>
+                        <tr class="text-center">
                             <th>#</th>
                             <th>Nama</th>
-                            <th>Waktu Ujian</th>
-                            <th>Waktu Feedback</th>
+                            <th>Akses Ujian</th>
+                            <th>Durasi Ujian</th>
+                            <th>Akses Mandiri</th>
+                            <th>Kode Akses</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($data as $item)
-                            <tr>
+                            <tr class="text-center">
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$item->nama}}</td>
+                                <td>{{date('d F Y H:i', strtotime($item->waktu_akses_ujian))}}</td>
                                 <td>{{$item->waktu_ujian}} menit</td>
-                                <td>{{$item->waktu_feedback}} menit</td>
+                                <td>
+                                    <h1 class="text-{{$item->is_mandiri == true ? 'success' : 'danger'}}">
+                                        <i class="fa fa-{{$item->is_mandiri == true ? 'checked' : 'times'}}"></i>
+                                    </h1>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center">
+                                        <h5 class="token-show fw-bold d-none">{{$item->token}}</h5>
+                                        <h3 class="token-hide fw-bold">*********</h3>
+                                        <span style="cursor: pointer;" class="text-dark ms-2 btn-token">
+                                            <i class="icon fa fa-eye-slash"></i>
+                                        </span>
+                                    </div>
+                                </td>
                                 <td>
                                     <a href="{{ route('soal.preview', $item->id) }}"
                                         class="btn btn-sm btn-secondary">
@@ -52,6 +68,10 @@
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
+                                    <a href="{{ route('soal.edit', $item->id) }}"
+                                        class="btn btn-sm btn-secondary">
+                                        <i class="fa fa-gear"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @empty
@@ -111,6 +131,23 @@
                 console.log(err);
             },
         });
+    });
+
+    $('.btn-token').on('click', function(){
+        let icon = $(this).find('.icon');
+        let tokenShow = $('.token-show');
+        let tokenHide = $('.token-hide');
+        if (icon.hasClass('fa-eye-slash')) {
+            icon.removeClass('fa-eye-slash');
+            icon.addClass('fa-eye');
+            tokenShow.removeClass('d-none');
+            tokenHide.addClass('d-none');
+            return;
+        }
+        icon.addClass('fa-eye-slash');
+        icon.removeClass('fa-eye');
+        tokenShow.addClass('d-none');
+        tokenHide.removeClass('d-none');
     });
 
 </script>

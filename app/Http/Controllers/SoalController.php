@@ -46,7 +46,7 @@ class SoalController extends Controller
         $request->validate([
             'nama'=>'required',
             'waktu_ujian'=>'required',
-            'waktu_feedback'=>'required',
+            'batch'=>'required',
         ]);
 
         $cover = \App\Helpers\_File::uploadFile($request->file('cover'));
@@ -55,7 +55,7 @@ class SoalController extends Controller
             'pernyataan'=>$request->pernyataan,
             'nama'=>$request->nama,
             'waktu_ujian'=>$request->waktu_ujian,
-            'waktu_feedback'=>$request->waktu_feedback,
+            'batch'=>$request->batch,
             'cover'=>$cover,
         ]);
         return redirect()->route('soal.show', $soal->id);
@@ -144,7 +144,6 @@ class SoalController extends Controller
             'is_mandiri' => $request->is_mandiri,
             'waktu_akses_ujian' => $request->is_mandiri == false ? $request->tanggal_ujian.' '.$request->jam_ujian.':00' : null,
             'token' => $request->is_mandiri == false ? $request->token : null,
-            'token_expired' => $request->is_mandiri == false ? Carbon::now() : null,
         ]);
         return redirect()->route('soal.index', ['proyek'=>$soal->proyek_id])->with('success', 'Data berhasil disimpan');
     }
@@ -169,7 +168,7 @@ class SoalController extends Controller
                 $skor += $item->skor;
             }
         }
-        dd($benar, $skor);
+        dd('benar '.$benar, 'skore ' . $skor);
     }
 
     /**
@@ -180,7 +179,8 @@ class SoalController extends Controller
      */
     public function edit($id)
     {
-        //
+        $soal = Soal::find($id);
+        return view('pages.teacher.soal.edit', compact('soal'));
     }
 
     /**
@@ -192,7 +192,26 @@ class SoalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama'=>'required',
+            'waktu_ujian'=>'required',
+            'batch'=>'required',
+        ]);
+
+        $soal = Soal::find($id);
+        $cover = $request->cover ? \App\Helpers\_File::uploadFile($request->file('cover')) : $soal->cover;
+        $soal->update([
+            'proyek_id'=>$request->proyek_id,
+            'pernyataan'=>$request->pernyataan,
+            'nama'=>$request->nama,
+            'waktu_ujian'=>$request->waktu_ujian,
+            'batch'=>$request->batch,
+            'cover'=>$cover,
+            'is_mandiri' => $request->is_mandiri,
+            'waktu_akses_ujian' => $request->is_mandiri == false ? $request->tanggal_ujian.' '.$request->jam_ujian.':00' : null,
+        ]);
+
+        return redirect()->route('soal.index', ['proyek'=>$soal->proyek_id])->with('success', 'Data berhasil disimpan');
     }
 
     /**
@@ -203,6 +222,9 @@ class SoalController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $soal = Soal::find($id);
+        $proyekId = $soal->proyek_id;
+        $soal->delete();
+        return redirect()->route('soal.index', ['proyek'=>$proyekId])->with('success', 'Data berhasil dihapus');
     }
 }

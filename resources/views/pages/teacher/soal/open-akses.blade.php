@@ -74,12 +74,14 @@
 
         function generateRandomString() {
             let result = '';
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let soalId = "{{$soal->id}}";
+            let soalTahun = "{{date('Y', strtotime($soal->created_at))}}"
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
             const charactersLength = characters.length;
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 5; i++) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
             }
-            return result;
+            return soalId + result + soalTahun;
         }
         
         $('.time-picker').timepicker({

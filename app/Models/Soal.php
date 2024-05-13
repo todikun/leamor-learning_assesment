@@ -10,6 +10,7 @@ class Soal extends Model
     use HasFactory;
     protected $guarded = [];
     protected $casts = ['pernyataan'=>'array'];
+    protected $appends = ['is_mandiri_html'];
 
     public function Proyek()
     {
@@ -20,4 +21,5 @@ class Soal extends Model
     {
         return $this->hasMany('App\Models\SoalDetail', 'soal_id', 'id'); 
     }
+
 }
