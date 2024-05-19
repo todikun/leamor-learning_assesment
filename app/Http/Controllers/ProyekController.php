@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Soal;
 use App\Models\Proyek;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class ProyekController extends Controller
@@ -15,7 +16,8 @@ class ProyekController extends Controller
      */
     public function index()
     {
-        $data = Proyek::where('is_share', true)->where('is_deleted', false)->get();
+        // $data = Proyek::where('is_share', true)->where('is_deleted', false)->get();
+        $data = Soal::where('is_share', true)->where('is_deleted', false)->get();
         return view('pages.teacher.proyek.index', compact('data'));
     }
 
@@ -52,7 +54,7 @@ class ProyekController extends Controller
 
     public function myProyek()
     {   
-        $data = Proyek::where('created_by', auth()->user()->id)
+        $data = Soal::where('created_by', auth()->user()->id)
                         ->where('is_deleted', false)
                         ->get();
         return view('pages.teacher.proyek.my-proyek', compact('data'));
@@ -61,7 +63,7 @@ class ProyekController extends Controller
 
     public function myProyekDelete()
     {   
-        $data = Proyek::where('created_by', auth()->user()->id)
+        $data = Soal::where('created_by', auth()->user()->id)
                         ->where('is_deleted', true)
                         ->get();
         return view('pages.teacher.proyek.my-proyek-deleted', compact('data'));
@@ -69,28 +71,26 @@ class ProyekController extends Controller
 
     public function copyProyek($id)
     {
-        $proyek = Proyek::findOrFail($id);
-        if ($proyek->created_by == auth()->user()->id) {
+        $soal = Soal::findOrFail($id);
+        if ($soal->created_by == auth()->user()->id) {
             return redirect()->route('proyek.index')->with('error', 'Proyek sudah ada');
         } 
-        $data = Proyek::create([
-            'nama' => $proyek->nama . '_copy',
-            'is_share' => $proyek->is_share,
+
+        $data = Soal::create([
+            'pernyataan'=>$soal->pernyataan,
+            'nama'=>$soal->nama.'_copy',
+            'waktu_ujian'=>$soal->waktu_ujian,
+            'cover'=>$soal->cover,
+            'batch' => $soal->batch.'_copy',
+            'is_share' => $soal->is_share,
+            'waktu_akses_ujian' => $soal->waktu_akses_ujian,
+            'is_mandiri' => $soal->is_mandiri,
             'created_by' => auth()->user()->id,
         ]);
-
-        $soal = Soal::where('proyek_id', $proyek->id)->get();
-        if ($soal) {
-            foreach ($soal as $item) {
-                Soal::create([
-                    'proyek_id'=>$data->id,
-                    'pernyataan'=>$item->pernyataan,
-                    'nama'=>$item->nama,
-                    'waktu_ujian'=>$item->waktu_ujian,
-                    'cover'=>$item->cover,
-                ]);
-            }
-        }
+        $data->update([
+            'token' => $data->id . Str::random(5) . date('Y', strtotime($data->created_at)),
+        ]);
+            
         return redirect()->route('proyek.index')->with('success', 'Data berhasil disimpan');
     }
     /**
@@ -149,7 +149,7 @@ class ProyekController extends Controller
 
     public function undo($id)
     {
-        $data = Proyek::find($id);
+        $data = Soal::find($id);
         $data->update([
             'is_deleted' => true
         ]);
@@ -158,10 +158,16 @@ class ProyekController extends Controller
 
     public function redo($id)
     {
-        $data = Proyek::find($id);
+        $data = Soal::find($id);
         $data->update([
             'is_deleted' => false
         ]);
         return redirect()->route('proyek.deleted')->with('success', 'Data berhasil disimpan');
+    }
+
+    public function siswa()
+    {
+        $data = Soal::where('is_mandiri', true)->get();  
+        return view('pages.student.ayo_tes', compact('data'));
     }
 }

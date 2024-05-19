@@ -11,7 +11,6 @@
 
     <div class="row mb-3">
         <div class="col-md-4 alert alert-success ">
-            <h4>Proyek <strong>{{$soal->Proyek->nama}}</h4>
             <h5>Topik <strong>{{$soal->nama}}</h5>
         </div>
     </div>
@@ -100,6 +99,18 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    {{-- feedback --}}
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="card-body">
+                                                    <h5 class="card-title mb-2">Feedback <span class="text-danger">*</span></h5>
+                                                    <textarea name="feedback[]" class="form-control" cols="3" rows="3" required>{{$item->feedback}}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                 
                                 </div>
                         
@@ -125,7 +136,7 @@
 
                                             <div class="form-group mb-2">
                                                 <h5 class="card-title mb-2">Skor</h5>
-                                                <input type="number" class="form-control mb-2" value="{{$item->skor}}" placeholder="Skor" name="skor[]" />
+                                                <input type="number" class="form-control mb-2" value="{{$item->skor}}" placeholder="Skor" name="skor[]" required/>
                                             </div>
                 
                                             <hr>
@@ -209,6 +220,16 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                {{-- feedback --}}
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-2">Feedback <span class="text-danger">*</span></h5>
+                                            <textarea name="feedback[]" class="form-control" cols="3" rows="3" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
             
                             </div>
                     
@@ -235,7 +256,7 @@
 
                                         <div class="form-group mb-2">
                                             <h5 class="card-title mb-2">Skor</h5>
-                                            <input type="number" class="form-control mb-2" placeholder="Skor" name="skor[]" />
+                                            <input type="number" class="form-control mb-2" placeholder="Skor" name="skor[]" required />
                                         </div>
             
                                         <hr>
@@ -381,7 +402,16 @@
                                 </div>
                             </div>
                         </div>
-    
+
+                        {{-- feedback --}}
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-2">Feedback <span class="text-danger">*</span></h5>
+                                    <textarea name="feedback[]" class="form-control" cols="3" rows="3" required></textarea>
+                                </div>
+                            </div>
+                        </div>
                     </div>
             
                     {{-- opsi --}}
@@ -407,7 +437,7 @@
 
                                 <div class="form-group mb-2">
                                     <h5 class="card-title mb-2">Skor</h5>
-                                    <input type="number" class="form-control mb-2" placeholder="Skor" name="skor[]" />
+                                    <input type="number" class="form-control mb-2" placeholder="Skor" name="skor[]" required/>
                                 </div>
 
                                 <hr>

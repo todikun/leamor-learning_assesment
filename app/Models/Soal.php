@@ -22,4 +22,10 @@ class Soal extends Model
         return $this->hasMany('App\Models\SoalDetail', 'soal_id', 'id'); 
     }
 
+    public function UjianSiswa()
+    {
+        return $this->hasMany('App\Models\UjianSiswa', 'soal_id', 'id'); 
+    }
+    
+
 }

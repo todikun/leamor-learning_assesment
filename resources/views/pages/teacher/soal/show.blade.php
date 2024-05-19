@@ -11,7 +11,6 @@
 
     <div class="row mb-3">
         <div class="col-md-4 alert alert-success ">
-            <h4>Proyek <strong>{{$soal->Proyek->nama}}</h4>
             <h5>Topik <strong>{{$soal->nama}}</h5>
         </div>
     </div>

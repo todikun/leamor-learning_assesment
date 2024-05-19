@@ -19,8 +19,8 @@
 					</a>
 				</li>
 
-				<li class="sidebar-item {{Route::is('/') ? 'active' : ''}}">
-					<a class="sidebar-link" href="{{url('/')}}">
+				<li class="sidebar-item {{Route::is('rapor.teacher.*') ? 'active' : ''}}">
+					<a class="sidebar-link" href="{{route('rapor.teacher.index')}}">
 						<i class="align-middle " data-feather="layers"></i> <span class="align-middle">Rapor</span>
 					</a>
 				</li>
@@ -34,8 +34,8 @@
 
 			@if (auth()->user()->role == 'student')
 
-				<li class="sidebar-item {{Route::is('/') ? 'active' : ''}}">
-					<a class="sidebar-link" href="{{url('/')}}">
+				<li class="sidebar-item {{Route::is('ayo_tes') ? 'active' : ''}}">
+					<a class="sidebar-link" href="{{route('ayo_tes')}}">
 						<i class="align-middle " data-feather="layers"></i> <span class="align-middle">Ayo Tes</span>
 					</a>
 				</li>

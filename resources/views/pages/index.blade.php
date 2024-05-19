@@ -9,7 +9,7 @@
           <div class="pb-3 mb-3">
 
             @if (auth()->user()->role == 'teacher')
-                <a class="btn btn-success rounded-circle btn-add" href="{{route('proyek.create')}}">
+                <a class="btn btn-success rounded-circle" href="{{route('soal.create')}}">
                     <i class="align-middle" data-feather="plus"></i> 
                 </a>
                 <h5 class="mt-2">Create Proyek</h5>

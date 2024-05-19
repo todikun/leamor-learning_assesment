@@ -4,13 +4,12 @@
 
 @section('content')
 
-<form id="formSoal" action="{{route('soal.score', $soal->id)}}" method="post" enctype="multipart/form-data">
+<form id="formSoal" action="{{route('soal.nilai', $soal->id)}}" method="post" enctype="multipart/form-data">
     @csrf
 
     <div class="row mb-3 justify-content-center">
         <div class="col-md-4 alert alert-success ">
             <h2 class="text-center my-3 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h2>
-            <h5>Proyek <strong>{{$soal->Proyek->nama}}</h5>
             <h5>Topik <strong>{{$soal->nama}}</h5>
         </div>
     </div>

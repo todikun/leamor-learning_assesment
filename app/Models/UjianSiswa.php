@@ -18,4 +18,9 @@ class UjianSiswa extends Model
     {
         return $this->belongsTo('App\Models\Soal', 'soal_id', 'id');
     }
+
+    public function Siswa()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    }
 }

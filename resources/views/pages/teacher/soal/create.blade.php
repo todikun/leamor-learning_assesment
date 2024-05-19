@@ -6,13 +6,12 @@
 
 <form action="{{route('soal.store')}}" method="post" enctype="multipart/form-data">
     @csrf
-    <input type="hidden" name="proyek_id" value="{{$proyek->id}}" />
 
-    <div class="row mb-3">
+    {{-- <div class="row mb-3">
         <div class="col-md-4 alert alert-success ">
             <h4>Proyek <strong>{{$proyek->nama}}</h4>
         </div>
-    </div>
+    </div> --}}
     <div class="row d-flex">
         <div class="col-md-6">
             <div class="d-inline">
@@ -52,19 +51,27 @@
                                 </div>
                             </div>
                             <div class="row d-flex">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <h5 class="card-title my-3">Durasi Ujian <span class="text-danger">*</span></h5>
                                     <div class="input-group mb-3">
                                         <input type="number" class="form-control" name="waktu_ujian" placeholder="Misalkan 30 menit" />
                                         <span class="input-group-text">menit</span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <h5 class="card-title my-3">Batch <span class="text-danger">*</span></h5>
                                     <div class="input-group mb-3">
                                         <input type="number" class="form-control" name="batch" placeholder="Batch" />
                                         <span class="input-group-text">menit</span>
                                     </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="card-title my-3">Dapat berbagi <span class="text-danger">*</span></h5>
+                                    <select name="is_share" class="form-control form-select mb-3" required>
+                                        <option value="">PILIH</option>
+                                        <option value="1">Ya</option>
+                                        <option value="0">Tidak</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

@@ -4,17 +4,7 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3"></h1>
-    <div>
-
-        <a href="{{ route('proyek.my') }}" class="btn btn-secondary">
-            <i class="align-middle" data-feather="folder"></i> Folder View
-        </a>
-
-        <a href="{{ route('soal.create') }}" class="btn btn-primary ">
-            <i class="align-middle" data-feather="plus"></i> Create Soal
-        </a>
-    </div>
+    <h1 class="h3">Daftar Siswa Ujian: <strong>{{$data->nama ?? '-'}}</strong> </h1>
 </div>
 
 <div class="row">
@@ -27,48 +17,41 @@
                         <tr class="text-center">
                             <th>#</th>
                             <th>Nama</th>
-                            <th>Akses Ujian</th>
-                            <th>Durasi Ujian</th>
-                            <th>Akses Mandiri</th>
-                            <th>Kode Akses</th>
-                            <th>Action</th>
+                            <th>Identitas</th>
+                            <th>Nilai </th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($data as $item)
+                        @forelse ($data->UjianSiswa ?? collect() as $item)
                             <tr class="text-center">
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{$item->nama}}</td>
-                                <td>@if ($item->waktu_akses_ujian == null)
-                                    <span class="badge bg-secondary">setiap saat</span>
-                                @else
-                                {{date('d F Y H:i', strtotime($item->waktu_akses_ujian))}}
-                                @endif
-
+                                <td>{{$item->Siswa->nama}}</td>
+                                <td>
+                                    @foreach ($item->pernyataan as $pernyataan)
+                                        {{$pernyataan}}, &nbsp;
+                                    @endforeach
                                 </td>
+                                <td>{{$item->nilai}}</td>
+                                <td>{{$item->is_selesai == true ? 'selesai' : 'Grading process'}}</td>
+                                {{-- <td>{{date('d F Y H:i', strtotime($item->waktu_akses_ujian))}}</td>
                                 <td>{{$item->waktu_ujian}} menit</td>
                                 <td>
                                     <h1 class="text-{{$item->is_mandiri == true ? 'success' : 'danger'}}">
-                                        <i class="fa fa-{{$item->is_mandiri == true ? 'check' : 'times'}}"></i>
+                                        <i class="fa fa-{{$item->is_mandiri == true ? 'checked' : 'times'}}"></i>
                                     </h1>
                                 </td>
                                 <td>
-                                    <div class="d-flex justify-content-center token-container">
-                                        @if ($item->is_mandiri == true)
-                                        <h1 class="text-danger">
-                                            <i class="fa fa-times"></i>
-                                        </h1>
-                                        @else
+                                    <div class="d-flex justify-content-center">
                                         <h5 class="token-show fw-bold d-none">{{$item->token}}</h5>
                                         <h3 class="token-hide fw-bold">*********</h3>
                                         <span style="cursor: pointer;" class="text-dark ms-2 btn-token">
                                             <i class="icon fa fa-eye-slash"></i>
                                         </span>
-                                        @endif
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="{{ route('soal.users', $item->id) }}"
+                                    <a href="{{ route('soal.preview', $item->id) }}"
                                         class="btn btn-sm btn-success">
                                         <i class="fa fa-users"></i> 
                                     </a>
@@ -95,7 +78,7 @@
                                         class="btn btn-sm btn-secondary">
                                         <i class="fa fa-gear"></i>
                                     </a>
-                                </td>
+                                </td> --}}
                             </tr>
                         @empty
                             <tr>
@@ -158,8 +141,8 @@
 
     $('.btn-token').on('click', function(){
         let icon = $(this).find('.icon');
-        let tokenShow = $(this).closest('.token-container').find('.token-show');
-        let tokenHide = $(this).closest('.token-container').find('.token-hide');
+        let tokenShow = $('.token-show');
+        let tokenHide = $('.token-hide');
         if (icon.hasClass('fa-eye-slash')) {
             icon.removeClass('fa-eye-slash');
             icon.addClass('fa-eye');

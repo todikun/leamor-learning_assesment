@@ -4,32 +4,21 @@
 
 @section('content')
 
-<form id="formSoal" action="{{route('ujian.nilai', $soal->id)}}" method="post" enctype="multipart/form-data">
+<form id="formSoal" method="post" enctype="multipart/form-data">
     @csrf
 
-    <input type="hidden" name="ujian_siswa_id" value="{{$siswa->id}}" />
     <div class="row mb-3 justify-content-center">
         <div class="col-md-4 alert alert-success ">
-            <h2 class="text-center my-3 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h2>
-            <h5>Topik <strong>{{$soal->nama}}</h5>
+            {{-- <h2 class="text-center my-3 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h2> --}}
+            <h5>Topik: <strong>{{$data->Soal->nama}}</h5>
+            <h5>Siswa: <strong>{{$data->Siswa->nama}}</h5>
         </div>
     </div>
     <div class="row d-flex">
         <div class="col-md-2">
 
-                {{-- <h3 class="mb-2">Soal</h3>
-                <div class="col-md-6 mb-3">
-                    <a href="javascript:;" id="btnSoalAdd" class=" me-3 bg-success text-white rounded-circle position-absolute">
-                        <i class="align-middle p-1" data-feather="plus"></i> 
-                    </a>
-                    <span class="mx-3"></span>
-                    <a href="javascript:;" id="btnSoalRemove" class=" bg-danger text-white rounded-circle position-absolute">
-                        <i class="align-middle p-1" data-feather="trash"></i> 
-                    </a>
-                </div> --}}
-
                 <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
-                    @foreach ($soal->SoalDetail as $item)
+                    @foreach ($data->Soal->SoalDetail as $item)
                         <button style="width: 1.5rem; background-color: rgb(223, 232, 240)" class="nav-link cek-nav m-1 d-flex justify-content-center align-items-center {{$loop->iteration == 1 ? 'active':''}}" id="v-pills-soal_{{$loop->iteration}}-tab" data-index="{{$loop->iteration}}" data-bs-toggle="pill" data-bs-target="#v-pills-soal_{{$loop->iteration}}" type="button" role="tab" aria-controls="v-pills-soal_{{$loop->iteration}}" aria-selected="true">
                             <span class="text-center">{{$loop->iteration}}</span>
                         </button>
@@ -42,7 +31,7 @@
         <div class="col-md-10">
             
             <div class="tab-content" id="v-pills-tabContent">
-                @foreach ($soal->SoalDetail as $key => $item)
+                @foreach ($data->Soal->SoalDetail as $key => $item)
                     <div class="tab-pane fade show {{$loop->iteration == 1 ? 'active':''}}" id="v-pills-soal_{{$loop->iteration}}" role="tabpanel" aria-labelledby="v-pills-soal_{{$loop->iteration}}-tab">
                         <div class="row d-flex">
                             <div class="col-md-6">
@@ -61,13 +50,6 @@
                                                 <div class="appendAreaStimulus_{{$key+1}}">
                                                     
                                                     <div class="row d-flex stimulus-container mb-2">
-                                                        {{-- <div class="col-md-4">
-                                                            <select class="form-control form-select stimulus-select mb-2" onchange="changeStimulus(this)" required>
-                                                                <option value="">-- PILIH --</option>
-                                                                <option {{$stimulus['tipe'] == 'teks' ? 'selected':''}} value="teks">Teks</option>
-                                                                <option {{$stimulus['tipe'] == 'dokumen' ? 'selected':''}} value="dokumen">Dokumen</option>
-                                                            </select>
-                                                        </div> --}}
                                                         <div class="col-md stimulus-tipe">
                                                             @php
                                                                 $audio = ['mp3'];
@@ -150,7 +132,7 @@
                                                             <textarea class="form-control mb-2 summernote" cols="3" rows="3" required>{{$jawaban}}</textarea>
                                                         </div>
                                                         <div class="col-md ms-3">
-                                                            <input type="radio" value="{{$j+1}}" name="no_{{$key+1}}" required />
+                                                            <input type="radio" value="{{$j+1}}" name="no_{{$key+1}}" {{$data->jawaban[$key] == $j+1 ? 'checked':''}} disabled />
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -171,9 +153,9 @@
         </div>
         
     </div>
-    <button type="submit" class="form-control btn btn-success btn-lg position-sticky my-3 mx-1" style="float: right;">
-        SUBMIT
-    </button>
+    <a href="{{url()->previous()}}" class="form-control btn btn-success btn-lg position-sticky my-3 mx-1" style="float: right;">
+        <i class="align-middle" data-feather="arrow-left"></i> Kembali
+    </a>
     
 
 </form>
@@ -227,42 +209,7 @@
                 } 
             });
 
-            modalReminder.find('.modal-title').html('Reminder');
-            modalReminder.find('.modal-body').html('<p>Perhatikan Soal dengan seksama, dan jawab dengan teliti!</p>');
-            modalReminder.modal('show');
-            
-            var detik = 0;
-            var menit = "{{$soal->waktu_ujian}}" ?? 20;
-            // var menit = 1;
-            function hitung() {
-                setTimeout(hitung, 1000);
-                $('#waktuMundur').html(menit + ' menit ' + detik + ' detik ');
-     
-                if (menit === 5 && detik === 0) {
-                    $('#waktuMundur').addClass('text-danger');
-                    $('#waktuMundur').addClass('zoom-in-out');
-                }
-     
-                detik--;
-                if (detik < 0) {
-                    detik = 59;
-                    menit--;
-                    if (menit < 0) {
-                        menit = 0;
-                        detik = 0;
-                        setInterval(function () {
-                            $('#waktuMundur').html('Waktu habis!');
-                            $('#formSoal').submit();
-                        }, 1000);
-                    }
-                }
-            }
-
-            modalReminder.on('hidden.bs.modal', function(){
-                hitung();
-            });
         });
-
 
         var btnPlay = document.querySelectorAll('.btn-play');
         var btnPause = document.querySelectorAll('.btn-pause');
@@ -347,7 +294,7 @@
 
         $('.btn-show').on('click',function(){
             var jenisDokumen = $(this).attr('data-jenis');
-            var dokumen = "{{env('APP_URL')}}/"+'uploads/' + $(this).attr('data-value');
+            var dokumen = 'uploads/' + $(this).attr('data-value');
             var html = ''
             if (jenisDokumen == 'Video') {
                 html = `

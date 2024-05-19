@@ -19,9 +19,8 @@ class SoalController extends Controller
      */
     public function index()
     {
-        $proyek = Proyek::find(request('proyek'));
-        $data = Soal::where('proyek_id', $proyek->id)->get();
-        return view('pages.teacher.soal.index', compact('data', 'proyek'));
+        $data = Soal::where('created_by', auth()->user()->id)->get();
+        return view('pages.teacher.soal.index', compact('data'));
     }
 
     /**
@@ -51,12 +50,13 @@ class SoalController extends Controller
 
         $cover = \App\Helpers\_File::uploadFile($request->file('cover'));
         $soal = Soal::create([
-            'proyek_id'=>$request->proyek_id,
             'pernyataan'=>$request->pernyataan,
             'nama'=>$request->nama,
             'waktu_ujian'=>$request->waktu_ujian,
             'batch'=>$request->batch,
             'cover'=>$cover,
+            'is_share'=>$request->is_share,
+            'created_by' => auth()->user()->id,
         ]);
         return redirect()->route('soal.show', $soal->id);
     }
@@ -129,6 +129,7 @@ class SoalController extends Controller
                 'opsi_jawaban' => $request->input($i.'_opsi_jawaban'),
                 'kunci_jawaban' => $request->input($i.'_kunci_jawaban.0'),
                 'skor' => $request->skor[$key],
+                'feedback' => $request->feedback[$key],
             ]);
         }
         
@@ -157,7 +158,7 @@ class SoalController extends Controller
         return 'soal kosong';
     }
 
-    public function score(Request $request, $id)
+    public function nilai(Request $request, $id)
     {
         $soal = Soal::find($id);
         $benar = 0;
@@ -169,6 +170,13 @@ class SoalController extends Controller
             }
         }
         dd('benar '.$benar, 'skore ' . $skor);
+    }
+
+    public function listUsers($id)
+    {
+        $data = Soal::with(['UjianSiswa'])->has('UjianSiswa')->find($id);
+        // dd($data);
+        return view('pages.teacher.soal.users', compact('data'));
     }
 
     /**
@@ -201,7 +209,6 @@ class SoalController extends Controller
         $soal = Soal::find($id);
         $cover = $request->cover ? \App\Helpers\_File::uploadFile($request->file('cover')) : $soal->cover;
         $soal->update([
-            'proyek_id'=>$request->proyek_id,
             'pernyataan'=>$request->pernyataan,
             'nama'=>$request->nama,
             'waktu_ujian'=>$request->waktu_ujian,
@@ -211,7 +218,7 @@ class SoalController extends Controller
             'waktu_akses_ujian' => $request->is_mandiri == false ? $request->tanggal_ujian.' '.$request->jam_ujian.':00' : null,
         ]);
 
-        return redirect()->route('soal.index', ['proyek'=>$soal->proyek_id])->with('success', 'Data berhasil disimpan');
+        return redirect()->route('soal.index')->with('success', 'Data berhasil disimpan');
     }
 
     /**

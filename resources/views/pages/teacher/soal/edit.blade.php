@@ -8,13 +8,11 @@
     @csrf
     @method('put')
     
-    <input type="hidden" name="proyek_id" value="{{$soal->proyek_id}}" />
-    
-    <div class="row mb-3">
+    {{-- <div class="row mb-3">
         <div class="col-md-4 alert alert-success ">
             <h4>Proyek <strong>{{$soal->Proyek->nama}}</h4>
         </div>
-    </div>
+    </div> --}}
     <div class="row d-flex">
         <div class="col-md-6">
             <div class="d-inline">
@@ -65,8 +63,7 @@
                                 <div class="col-md-6">
                                     <h5 class="card-title my-3">Batch <span class="text-danger">*</span></h5>
                                     <div class="input-group mb-3">
-                                        <input type="number" class="form-control" value="{{$soal->batch}}" name="batch" placeholder="Batch" />
-                                        <span class="input-group-text">menit</span>
+                                        <input type="text" class="form-control" value="{{$soal->batch}}" name="batch" placeholder="Batch" />
                                     </div>
                                 </div>
                             </div>
@@ -117,14 +114,19 @@
                         <div class="token-div {{$soal->is_mandiri == true ? 'd-none' : ''}}">
                             <div class="input-group mb-3">
                                 @php
-                                    $explode = explode(' ', $soal->waktu_akses_ujian);
-                                    $waktu = explode(':', $explode[1]);
-                                    array_pop($waktu);
+                                    if ($soal->is_mandiri == false) {
+                                        $explode = explode(' ', $soal->waktu_akses_ujian);
+                                        $waktu = explode(':', $explode[1]);
+                                        array_pop($waktu);
+    
+                                        $jam_ujian = implode(':',$waktu);
+                                        $tanggal_ujian = $explode[0];
+                                    }
                                 @endphp
-                                <input type="text" class="form-control time-picker" readonly value="{{implode(':',$waktu)}}" name="jam_ujian" placeholder="HH:MM" required />
+                                <input type="text" class="form-control time-picker" readonly value="{{$jam_ujian ?? null}}" name="jam_ujian" placeholder="HH:MM" required />
                             </div>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control date-picker" readonly value="{{$explode[0]}}" name="tanggal_ujian" placeholder="yyyy-mm-dd" required />
+                                <input type="text" class="form-control date-picker" readonly value="{{$tanggal_ujian ?? null}}" name="tanggal_ujian" placeholder="yyyy-mm-dd" required />
                             </div>
 
                             {{-- <h5 class="card-title my-3">Kode <span class="text-danger">*</span></h5>

@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('ujian_siswas', function (Blueprint $table) {
             $table->id();
             $table->integer('soal_id');
+            $table->integer('user_id');
             $table->text('pernyataan');
-            $table->text('jawaban')->nullable();
+            $table->longText('jawaban')->nullable();
             $table->boolean('is_selesai')->default(false);
             $table->integer('nilai')->nullable();
             $table->timestamps();

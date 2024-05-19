@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SoalController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RaporController;
 use App\Http\Controllers\UjianController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\DashboardController;
@@ -68,12 +69,25 @@ Route::middleware('auth')->group(function(){
                 Route::post('tmpfile', 'tmpFile')->name('tmpfile');
                 Route::post('open-akses', 'openAksesStore')->name('open-akses.store');
                 Route::get('{id}/preview', 'preview')->name('preview');
-                Route::post('{id}/score', 'score')->name('score');
+                Route::post('{id}/nilai', 'nilai')->name('nilai');
+                Route::get('{id}/users', 'listUsers')->name('users');
             });
         Route::resource('soal', SoalController::class);
+
+        // rapor
+        Route::controller(RaporController::class)
+            ->prefix('rapor')
+            ->as('rapor.teacher.')
+            ->group(function(){
+                Route::get('/', 'index')->name('index');
+                Route::get('{id}/detail', 'detail')->name('detail');
+                Route::get('{id}/ujian', 'ujian')->name('ujian');
+            });
     });
 
     Route::group(['middleware'=>'studentRole', 'prefix'=>'student'], function(){
+
+        Route::get('ayo_tes', [ProyekController::class, 'siswa'])->name('ayo_tes');
 
         // ujian
         Route::controller(UjianController::class)
@@ -83,6 +97,8 @@ Route::middleware('auth')->group(function(){
                 Route::post('akses', 'cekAkses')->name('akses');
                 Route::post('form', 'ujianForm')->name('form');
                 Route::post('{id}/nilai_feedback', 'storeNilaiFeedback')->name('nilai_feedback');
+                Route::post('{id}/nilai', 'storeNilai')->name('nilai');
+                Route::get('{id}/mandiri', 'ujianMandiri')->name('mandiri');
             });
     });
 });

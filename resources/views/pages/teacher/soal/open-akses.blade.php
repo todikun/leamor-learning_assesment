@@ -8,8 +8,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h2 class="text-center my-2">{{$soal->Proyek->nama}}</h2>
-                <h5 class="text-center mt-2 my-5">{{$soal->nama}}</h5>
+                <h5 class="text-center mt-2 my-5"><strong>{{$soal->nama}}</h5>
                 
                 <form action="{{route('soal.open-akses.store')}}" method="post">
                     @csrf

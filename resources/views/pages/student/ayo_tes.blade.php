@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
-@section('title', 'Proyek')
+@section('title', 'Ayo Tes')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h3">Proyek Saya</h1>
     <div>
-        <a href="{{ route('soal.index') }}" class="btn btn-secondary">
+        {{-- <a href="{{ route('soal.index') }}" class="btn btn-secondary">
             <i class="align-middle" data-feather="list"></i> List View
         </a>
 
-        <a href="{{ route('soal.create') }}" class="btn btn-primary">
+        <a href="{{ route('soal.create') }}" class="btn btn-primary btn-add">
             <i class="align-middle" data-feather="plus"></i> Create Proyek
-        </a>
+        </a> --}}
     </div>
 </div>
 
@@ -25,8 +25,8 @@
                 <a href="#" style="cursor: default">
                     <img src="{{asset('dist/img/folder.png')}}" alt="err" width="50px" height="50px" />
                 </a>
-                <a href="{{route('soal.edit', $item->id)}}" title="Edit proyek" class=" bg-warning text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
-                    <i class="align-middle p-1" data-feather="edit-2"></i> 
+                <a href="{{route('ujian.mandiri', $item->id)}}" title="Mulai" class=" bg-success text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
+                    <i class="align-middle p-1" data-feather="play"></i> 
                 </a>
             </div>            
             <h5 class="fw-bold">{{$item->nama}}</h5>
