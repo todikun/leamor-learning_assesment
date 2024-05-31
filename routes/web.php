@@ -52,6 +52,13 @@ Route::get('test', function(){
     return view('pages.ujian.preview',compact('soal'));
 });
 
+Route::get('/migrate-fresh-seed', function () {
+    Artisan::call('migrate:fresh', [
+        '--seed' => true,
+    ]);
+    return "Database migrated and seeded!";
+});
+
 Route::get('/', function () {
     return view('pages.home');
 });
