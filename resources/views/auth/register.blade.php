@@ -16,7 +16,7 @@
 
     <link rel="canonical" href="https://demo-basic.adminkit.io/pages-sign-in.html" />
 
-    <title>Log In | Leamor</title>
+    <title>Register | Leamor</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link href="{{ asset('dist/css/app.css') }}" rel="stylesheet">
@@ -35,46 +35,42 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="card-title my-2">
-                                    <a href="{{url('/')}}" style="text-decoration: none;">
-                                        <h3 class="text-center">Leamor</h3>
-                                    </a>
-                                    <h5 class="text-center">Login As <b>{{$param}}</b></span>
+                                    <h3 class="text-center">Leamor</h3>
+                                    <h5 class="text-center">Register</span>
                                 </div>
                                 @include('components.alert')
 
                                 <div class="m-sm-4">
-
-                                    <div class="text-center">
-                                        <a href="{{ url('/') }}">
-                                            <img src="{{ asset('dist/img/'.$param.'.png') }}" alt="img"
-                                                class="img-fluid rounded bg-primary" width="132" height="132" />
-                                        </a>
-                                    </div>
-
-                                    <form action="{{ route('login.action') }}" method="POST">
+                                    
+                                    <form action="{{route('register.store')}}" method="post">
                                         @csrf
 
-                                        <div class="mb-3">
-                                            <label class="form-label">Username</label>
-                                            <input class="form-control form-control-lg" type="text" name="username"
-                                                placeholder="Masukkan Username" required />
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Password</label>
-                                            <input class="form-control form-control-lg" type="password" name="password"
-                                                placeholder="Masukkan password" required />
-                                        </div>
+                                        <input type="hidden" name="role" value="{{request('q')}}">
+                                        <h5 class="card-title my-3">Nama  <span class="text-danger">*</span></h5>
+                                        <input type="text" name="nama" class="form-control mb-3" required />
 
-                                        <input type="submit" value="Login"
-                                            class="form-control btn btn-lg btn-primary">
+
+                                        <h5 class="card-title my-3">Username  <span class="text-danger">*</span></h5>
+                                        <input type="text" name="username" class="form-control mb-3" required />
+                                        
+                                        @if (request('q') == 'teacher')
+                                            <h5 class="card-title my-3">Email  <span class="text-danger">*</span></h5>
+                                            <input type="email" name="email" class="form-control mb-3" required />
+
+                                            <h5 class="card-title my-3">Sekolah  <span class="text-danger">*</span></h5>
+                                            <input type="text" name="sekolah" class="form-control mb-3" required/>
+                                        @endif
+                                        
+
+                                        <h5 class="card-title my-3">Password  <span class="text-danger">*</span></h5>
+                                        <input type="password" name="password" class="form-control mb-3" required />
+
+                                        <h5 class="card-title my-3">Konfirmasi Password  <span class="text-danger">*</span></h5>
+                                        <input type="password" name="konfirmasi_password" class="form-control mb-3" required />
+
+                                        <button type="submit" class="form-control btn btn-primary">Simpan</button>
                                     </form>
 
-                                    <div class="text-center my-3">
-                                        <a href="{{route('register', ['q' => $param])}}">
-                                            Register Akun
-                                        </a>
-                                    </div>
-                                    
                                 </div>
                             </div>
                             <p class="text-center text-muted">

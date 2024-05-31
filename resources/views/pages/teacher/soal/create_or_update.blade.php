@@ -74,8 +74,8 @@
                                                     </div>
                                                 </div>
                                                 
-                                                @forelse ($item->stimulus as $stimulus)
-                                                    <div class="appendAreaStimulus_{{$key+1}}">
+                                                <div class="appendAreaStimulus_{{$key+1}}">
+                                                    @forelse ($item->stimulus as $stimulus)
                                                         <div class="row d-flex stimulus-container mb-2">
                                                             <div class="col-md-4">
                                                                 <select name="{{$key+1}}_stimulus_tipe[]" class="form-control form-select stimulus-select mb-2" onchange="changeStimulus(this)" required>
@@ -86,15 +86,33 @@
                                                             </div>
                                                             <div class="col-md stimulus-tipe">
                                                                 @if ($stimulus['tipe'] == 'teks')
-                                                                    <textarea name="{{$key+1}}_stimulus[]" class="form-control mb-2" cols="3" rows="3" required="required">{{$stimulus['value']}}</textarea>
+                                                                    <textarea name="{{$key+1}}_stimulus[]" class="form-control mb-2 text-stimulus" cols="3" rows="3" required="required">{{$stimulus['value']}}</textarea>
                                                                 @else
-                                                                    <input name="{{$key+1}}_stimulus[]" type="file" class="form-control mb-2" required="required">
+                                                                    {{-- <input name="{{$key+1}}_stimulus[]" type="file" class="form-control mb-2" required="required"> --}}
+                                                                    <div class="row d-flex">
+                                                                        <div class="col">
+                                                                            <input type="file" class="form-control mb-2" onchange="tmpUpload(this)" />
+                                                                            <input name="{{$key+1}}_stimulus[]" value="{{$stimulus['value']}}" type="hidden" class="form-control gambar file-stimulus mb-1 text-stimulus" />
+                                                                        </div>
+                                                                        <div class="col-auto">
+                                                                            <button type="button" class="btn btn-icon btn-show" onclick="previewStimulus(this)" data-url="/uploads/{{$stimulus['value']}}" data-value="{{$stimulus['value']}}" aria-label="Button">
+                                                                                <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                                                    <path
+                                                                                        d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                                                                </svg>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
                                                                 @endif
                                                             </div>
                                                         </div>
-
-                                                    </div>
-                                                @endforeach
+                                                    @endforeach
+                                                </div>
                             
                                             </div>
                                         </div>
@@ -105,8 +123,8 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="card-body">
-                                                    <h5 class="card-title mb-2">Feedback <span class="text-danger">*</span></h5>
-                                                    <textarea name="feedback[]" class="form-control" cols="3" rows="3" required>{{$item->feedback}}</textarea>
+                                                    <h5 class="card-title mb-2">Feedback </h5>
+                                                    <textarea name="feedback[]" class="form-control feedback-summernote" cols="3" rows="3">{!!$item->feedback!!}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -225,8 +243,8 @@
                                 <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title mb-2">Feedback <span class="text-danger">*</span></h5>
-                                            <textarea name="feedback[]" class="form-control" cols="3" rows="3" required></textarea>
+                                            <h5 class="card-title mb-2">Feedback </h5>
+                                            <textarea name="feedback[]" class="form-control feedback-summernote" cols="3" rows="3"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -341,6 +359,9 @@
                 data: formData,
                 success: function(res){
                     var inputFile = $(e).closest('.stimulus-container').find('.stimulus-tipe .file-stimulus');
+                    var btnShow = $(e).closest('.stimulus-container').find('.stimulus-tipe .btn-show');
+                    btnShow.attr('data-url', '/tmp/' + res.data.name);
+                    btnShow.attr('data-value', res.data.name);
                     inputFile.val(res.data.name);
                     console.log(res.data.name);
                     console.log(res);
@@ -355,6 +376,28 @@
         btnSoalAdd.on('click',function(){
             var navLink = tabs.find('.nav-link').last().attr('data-index'); 
             globalIndex = parseInt(navLink) + 1;
+
+            var stimulusHtml = `
+                <div class="row d-flex stimulus-container mb-2">
+                    <div class="col-md-4">
+                        <select name="${globalIndex}_stimulus_tipe[]" class="form-control form-select stimulus-select mb-2" onchange="changeStimulus(this)" required>
+                            <option value="">-- PILIH --</option>
+                            <option value="teks">Teks</option>
+                            <option value="dokumen">Dokumen</option>
+                        </select>
+                    </div>
+                    <div class="col-md stimulus-tipe">
+
+                    </div>
+                </div>
+            `;
+
+            // copy stimulus
+            var isCopy = confirm('Copy stimulus?');
+            if (isCopy) {
+                stimulusHtml = $(`.appendAreaStimulus_${getIndexCurrentNavlinkActive()}`).html();
+            } 
+
             var btnTabHtml = `
                 <button class="nav-link" onclick="setNilaiIndex(this)" id="v-pills-soal_${globalIndex}-tab" data-index="${globalIndex}" data-bs-toggle="pill" data-bs-target="#v-pills-soal_${globalIndex}" type="button" role="tab" aria-controls="v-pills-soal_${globalIndex}" aria-selected="false">${globalIndex}</button>
             `;
@@ -383,19 +426,8 @@
                                     
         
                                     <div class="appendAreaStimulus_${globalIndex}">
-        
-                                        <div class="row d-flex stimulus-container mb-2">
-                                            <div class="col-md-4">
-                                                <select name="${globalIndex}_stimulus_tipe[]" class="form-control form-select stimulus-select mb-2" onchange="changeStimulus(this)" required>
-                                                    <option value="">-- PILIH --</option>
-                                                    <option value="teks">Teks</option>
-                                                    <option value="dokumen">Dokumen</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md stimulus-tipe">
-            
-                                            </div>
-                                        </div>
+                                    
+                                        ${stimulusHtml}
 
                                     </div>
                 
@@ -407,8 +439,8 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title mb-2">Feedback <span class="text-danger">*</span></h5>
-                                    <textarea name="feedback[]" class="form-control" cols="3" rows="3" required></textarea>
+                                    <h5 class="card-title mb-2">Feedback </h5>
+                                    <textarea name="feedback[]" class="form-control feedback-summernote" cols="3" rows="3"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -471,7 +503,30 @@
 
             tabs.append(btnTabHtml);
             tabContents.append(contentTabHtml);
+
+            // ganti index nama file
+            if (isCopy) {
+                var stimulusIndex = $(`.appendAreaStimulus_${globalIndex}`);
+                stimulusIndex.find('.stimulus-tipe .text-stimulus').attr('name', globalIndex + '_stimulus[]');
+                stimulusIndex.find('.stimulus-select').attr('name', globalIndex + '_stimulus_tipe[]');
+                stimulusIndex.find('.stimulus-select').addClass('is-copy');
+                stimulusIndex.find('.stimulus-tipe .file-stimulus').attr('name', globalIndex + '_stimulus[]');
+                
+                // copy nilai element textarea sebelumnya
+                stimulusIndex.find('.stimulus-tipe textarea').each(function(index){
+                    var value = $(`.appendAreaStimulus_${navLink} .stimulus-tipe textarea`).eq(index).val();
+                    $(this).text(value);
+                });
+
+                // remove required element file
+                stimulusIndex.find('.stimulus-tipe input[type="file"]').each(function(index){
+                    $(this).removeAttr('required');
+                });
+            }
+
+            // re-init summernote
             summernote();
+            feedbackSummernote();
         });
 
         btnSoalRemove.on('click',function(){
@@ -533,14 +588,35 @@
             }
 
             var textarea = `
-                <textarea name="${index}_stimulus[]" class=form-control mb-2" cols="3" rows="3" required></textarea>
+                <textarea name="${index}_stimulus[]" class="form-control mb-2 text-stimulus" cols="3" rows="3" required></textarea>
             `;
+
             var fileInput = `
-                <input type="file" class="form-control mb-1" onchange="tmpUpload(this)" required />
+                <div class="row d-flex">
+                    <div class="col">
+                        <input type="file" class="form-control mb-1" onchange="tmpUpload(this)" required />
+                        <input name="${index}_stimulus[]" type="hidden" class="form-control gambar file-stimulus mb-1" />
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-icon btn-show" onclick="previewStimulus(this)" aria-label="Button">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                            <path
+                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                        </svg>
+                        </a>
+                    </div>
+                </div>
             `;
-            var nameFile = `
-                <input name="${index}_stimulus[]" type="hidden" class="form-control file-stimulus mb-1" />
-            `;
+
+            // cek value dan tambahkan attr selected pada value yg dipilih
+            console.log('is-copy ', $(e).hasClass('is-copy'));
+            $(e).find('option').removeAttr('selected');
+            $(e).find('option:selected').attr('selected', 'true');
 
             switch ($(e).val()) {
                 case 'teks':
@@ -548,7 +624,6 @@
                     break;
                 case 'dokumen':
                     stimulusDiv.append(fileInput);
-                    stimulusDiv.append(nameFile);
                     stimulusDiv.append('<span class="text-danger" style="font-size: 12px; font-style: italic">Ukuran maks 10MB</span>');
                     break;
                 default:
@@ -646,8 +721,20 @@
             });
         }
 
+        function feedbackSummernote()
+        {
+            $('.feedback-summernote').summernote({
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['insert', ['picture']],
+                ]
+            });
+        }
+
         $(function() {
             summernote();
+            feedbackSummernote();
         });
     </script>
     

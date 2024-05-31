@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('opsi_jawaban');
             $table->text('kunci_jawaban');
             $table->integer('skor');
-            $table->text('feedback');
+            $table->text('feedback')->nullable();
             $table->timestamps();
         });
     }

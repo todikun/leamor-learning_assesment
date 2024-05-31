@@ -17,19 +17,55 @@ class RaporController extends Controller
                             ->get();
             return view('pages.teacher.rapor.index', compact('data'));
         }
+
+        if ($role == 'student') {
+            $data = Soal::with(['UjianSiswa' => function($q){
+                $q->where('user_id', auth()->user()->id);
+            }])->has('UjianSiswa')->get();
+            return view('pages.student.rapor.index', compact('data'));
+        }
     }
 
     public function detail($id)
     {
-        $data = Soal::with(['UjianSiswa' => function($q){
-            $q->orderBy('nilai', 'desc');
-        }])->has('UjianSiswa')->find($id);
-        return view('pages.teacher.rapor.detail', compact('data'));
+        $role = auth()->user()->role;
+        if ($role == 'teacher') {
+            $data = Soal::with(['UjianSiswa' => function($q){
+                $q->orderBy('total_nilai', 'desc');
+            }])->find($id);
+            // dd($data,$id);
+            return view('pages.teacher.rapor.detail', compact('data'));
+        }
+        
+        if ($role == 'student') {
+            $data = UjianSiswa::where('soal_id', $id)->where('user_id',auth()->user()->id)->get();
+            return view('pages.student.rapor.detail', compact('data'));
+        }
+    }
+
+    public function rank($soalId, $idUjian)
+    {
+        $data = UjianSiswa::orderBy('nilai', 'desc')->where('soal_id', $soalId)->get();
+        // dd($data->where('id',$idUjian)->first()->Soal->SoalDetail);
+        $rank = 1;
+        foreach ($data as $item) {
+            if ($item->id == $idUjian) {
+                break;
+            }
+            $rank++;
+        }
+        return view('pages.student.rapor.rank', [
+            'data' =>$data->where('id',$idUjian)->first(),
+            'rank' =>$rank,
+        ]);
     }
 
     public function ujian($id)
     {
-        $data = UjianSiswa::with(['Soal', 'Siswa'])->has('Soal')->find($id);
+        $data = Soal::with(['UjianSiswa' => function($q){
+            $q->orderBy('total_nilai', 'desc');
+        }])->find($id);
+        dd($data);
         return view('pages.teacher.rapor.file_ujian', compact('data'));
     }
 }

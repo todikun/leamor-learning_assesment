@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3">Rapor Ujian: <strong>{{$data->nama ?? '-'}}</strong> </h1>
+    <h1 class="h3">Rapor Ujian: <strong>{{$data->first()->Soal->nama ?? '-'}}</strong> </h1>
 </div>
 
 <div class="row">
@@ -15,22 +15,18 @@
                 <table id="myTable" class="table">
                     <thead>
                         <tr class="text-center">
-                            <th>Rank</th>
-                            <th>Nama Siswa</th>
-                            <th>Nilai</th>
-                            <th>Waktu Pelaksanaan</th>
-                            <th>File Ujian</th>
+                            <th>No</th>
+                            <th>Tanggal Ujian</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($data->UjianSiswa ?? collect() as $item)
+                        @forelse ($data as $item)
                             <tr class="text-center">
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{$item->Siswa->nama}}</td>
-                                <td>{{array_sum($item->nilai)}}</td>
                                 <td>{{date('d F Y H:i', strtotime($item->created_at))}}</td>
                                 <td>
-                                    <a href="{{route('rapor.teacher.rank', [$data->id, $item->id])}}" class="btn btn-secondary">
+                                    <a href="{{route('rapor.student.rank', [$item->soal_id, $item->id])}}" class="btn btn-secondary">
                                         <i class="align-middle" data-feather="file"></i> Lihat
                                     </a>
                                 </td>

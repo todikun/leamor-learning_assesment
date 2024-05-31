@@ -149,6 +149,80 @@
         }
     </script>
 
+    <script>
+        var myModal = $('#modal-form');
+
+        function previewStimulus(e)
+        {
+            var url = e.dataset.url;
+            var value = e.dataset.value;
+            
+            var baseUrl = "{{env('APP_URL')}}";
+            var dokumen = baseUrl + url;
+
+            var html = ''
+            var jenisDokumen = value.split('.');
+
+            var video = ['mp4'];
+            if (video.includes(jenisDokumen[1])) {
+                html = `
+                <video controls width="100%" height="auto">
+                    <source src="${dokumen}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                `;
+            }
+
+            var gambar = ['jpg', 'jpeg', 'png']
+            if (gambar.includes(jenisDokumen[1])) {
+                html = `
+                <img src=${dokumen} class="rounded" width="450px height="auto />
+                `;
+            }
+
+            var audio = ['mp3'];
+            if (audio.includes(jenisDokumen[1])) {
+                html = `
+                    <audio controls>
+                        <source src="${dokumen}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                `;
+            }
+
+            myModal.find('.modal-title').html(jenisDokumen[0]);
+            myModal.find('.modal-body').html(html);
+            myModal.modal('show');
+        }
+        
+        myModal.on('show.bs.modal', function(){
+            stopMediaPlayer()
+        });
+
+        myModal.on('hidden.bs.modal', function(){
+            stopMediaPlayer();
+        });
+
+
+        function stopMediaPlayer() {
+            var video = $("video");
+            var audio = $("audio");
+            if (video.length) {
+                video.each(function() {
+                    this.pause();
+                    this.currentTime = 0;
+                });
+            }
+
+            if (audio.length) {
+                audio.each(function() {
+                    this.pause();
+                    this.currentTime = 0; 
+                });
+            }
+        }
+    </script>
+
     @stack('script')
 
 </body>

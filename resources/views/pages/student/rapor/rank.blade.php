@@ -4,7 +4,8 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3">Rapor Ujian: <strong>{{$data->nama ?? '-'}}</strong> </h1>
+    <h1 class="h3">Rapor Ujian: <strong>{{$data->Soal->nama ?? '-'}}</strong> </h1>
+    <h2 class="h3"> Peringkat: <strong>{{$rank}}</strong>, Total Skor: <strong>{{$data->total_nilai}}</strong></h2>
 </div>
 
 <div class="row">
@@ -15,25 +16,21 @@
                 <table id="myTable" class="table">
                     <thead>
                         <tr class="text-center">
-                            <th>Rank</th>
-                            <th>Nama Siswa</th>
-                            <th>Nilai</th>
-                            <th>Waktu Pelaksanaan</th>
-                            <th>File Ujian</th>
+                            <th>No</th>
+                            <th>Soal</th>
+                            <th>Feedback</th>
+                            <th>Jawaban</th>
+                            <th>Skor</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($data->UjianSiswa ?? collect() as $item)
+                        @forelse ($data->Soal->SoalDetail as $key => $item)
                             <tr class="text-center">
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{$item->Siswa->nama}}</td>
-                                <td>{{array_sum($item->nilai)}}</td>
-                                <td>{{date('d F Y H:i', strtotime($item->created_at))}}</td>
-                                <td>
-                                    <a href="{{route('rapor.teacher.rank', [$data->id, $item->id])}}" class="btn btn-secondary">
-                                        <i class="align-middle" data-feather="file"></i> Lihat
-                                    </a>
-                                </td>
+                                <td>{!!$item->pertanyaan!!}</td>
+                                <td>{{$item->feedback}}</td>
+                                <td>{!!$item->opsi_jawaban[$data->jawaban[$key] - 1]!!}</td>
+                                <td>{{$data->nilai[$key]}}</td>
                             </tr>
                         @empty
                             <tr>

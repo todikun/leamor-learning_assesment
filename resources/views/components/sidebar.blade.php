@@ -36,13 +36,13 @@
 
 				<li class="sidebar-item {{Route::is('ayo_tes') ? 'active' : ''}}">
 					<a class="sidebar-link" href="{{route('ayo_tes')}}">
-						<i class="align-middle " data-feather="layers"></i> <span class="align-middle">Ayo Tes</span>
+						<i class="align-middle " data-feather="file-text"></i> <span class="align-middle">Ayo Tes</span>
 					</a>
 				</li>
 
-				<li class="sidebar-item {{Route::is('proyek.deleted') ? 'active' : ''}}">
-					<a class="sidebar-link" href="{{route('proyek.deleted')}}">
-						<i class="align-middle " data-feather="trash"></i> <span class="align-middle">Rapor</span>
+				<li class="sidebar-item {{Route::is('rapor.student.index') ? 'active' : ''}}">
+					<a class="sidebar-link" href="{{route('rapor.student.index')}}">
+						<i class="align-middle " data-feather="layers"></i> <span class="align-middle">Rapor</span>
 					</a>
 				</li>
 			@endif

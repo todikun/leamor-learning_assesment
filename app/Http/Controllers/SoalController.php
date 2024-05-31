@@ -129,7 +129,7 @@ class SoalController extends Controller
                 'opsi_jawaban' => $request->input($i.'_opsi_jawaban'),
                 'kunci_jawaban' => $request->input($i.'_kunci_jawaban.0'),
                 'skor' => $request->skor[$key],
-                'feedback' => $request->feedback[$key],
+                'feedback' => $request->feedback[$key] ?? null,
             ]);
         }
         

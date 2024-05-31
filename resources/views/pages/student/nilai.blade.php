@@ -12,7 +12,7 @@
                         
                         <div class="col-md-12 mb-5">
                             <span>Hasil Tes</span>
-                            <h2 class="">{{$data->nilai}}</h2>
+                            <h2 class="">{{array_sum($data->nilai)}}</h2>
                         </div>
 
                         <div class="col-md-12">

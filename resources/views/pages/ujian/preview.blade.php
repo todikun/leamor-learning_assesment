@@ -7,49 +7,36 @@
 <form id="formSoal" action="{{route('soal.nilai', $soal->id)}}" method="post" enctype="multipart/form-data">
     @csrf
 
-    <div class="row mb-3 justify-content-center">
-        <div class="col-md-4 alert alert-success ">
+    <div class="row mb-3 justify-content-center pb-3">
+        <div class="col-md-4 alert alert-success ms-auto">
             <h2 class="text-center my-3 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h2>
             <h5>Topik <strong>{{$soal->nama}}</h5>
         </div>
     </div>
     <div class="row d-flex">
         <div class="col-md-2">
-
-                {{-- <h3 class="mb-2">Soal</h3>
-                <div class="col-md-6 mb-3">
-                    <a href="javascript:;" id="btnSoalAdd" class=" me-3 bg-success text-white rounded-circle position-absolute">
-                        <i class="align-middle p-1" data-feather="plus"></i> 
-                    </a>
-                    <span class="mx-3"></span>
-                    <a href="javascript:;" id="btnSoalRemove" class=" bg-danger text-white rounded-circle position-absolute">
-                        <i class="align-middle p-1" data-feather="trash"></i> 
-                    </a>
-                </div> --}}
-
-                <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
-                    @foreach ($soal->SoalDetail as $item)
-                        <button style="width: 1.5rem; background-color: rgb(223, 232, 240)" class="nav-link cek-nav m-1 d-flex justify-content-center align-items-center {{$loop->iteration == 1 ? 'active':''}}" id="v-pills-soal_{{$loop->iteration}}-tab" data-index="{{$loop->iteration}}" data-bs-toggle="pill" data-bs-target="#v-pills-soal_{{$loop->iteration}}" type="button" role="tab" aria-controls="v-pills-soal_{{$loop->iteration}}" aria-selected="true">
-                            <span class="text-center">{{$loop->iteration}}</span>
-                        </button>
-                    @endforeach
-                </div>
-        
+            <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
+                @foreach ($soal->SoalDetail as $item)
+                    <button style="width: 1.5rem; background-color: rgb(223, 232, 240)" class="nav-link cek-nav m-1 d-flex justify-content-center align-items-center {{$loop->iteration == 1 ? 'active':''}}" id="v-pills-soal_{{$loop->iteration}}-tab" data-index="{{$loop->iteration}}" data-bs-toggle="pill" data-bs-target="#v-pills-soal_{{$loop->iteration}}" type="button" role="tab" aria-controls="v-pills-soal_{{$loop->iteration}}" aria-selected="true">
+                        <span class="text-center">{{$loop->iteration}}</span>
+                    </button>
+                @endforeach
+            </div>
         </div>
-
         
         <div class="col-md-10">
             
             <div class="tab-content" id="v-pills-tabContent">
                 @foreach ($soal->SoalDetail as $key => $item)
                     <div class="tab-pane fade show {{$loop->iteration == 1 ? 'active':''}}" id="v-pills-soal_{{$loop->iteration}}" role="tabpanel" aria-labelledby="v-pills-soal_{{$loop->iteration}}-tab">
-                        <div class="row d-flex">
-                            <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row d-flex align-items-stretch">
+
+                                    <div class="col-md-5">
             
-                                {{-- stimulus --}}
-                                <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-body">
+                                        {{-- stimulus --}}
+                                        <div class="col-md-12">
                                             <div class="row d-flex mb-3">
                                                 <div class="col-md">
                                                     <span class="mb-3 me-1">Stimulus</span>
@@ -79,34 +66,20 @@
                                                             @else
                                                             <li>
                                                                 @if (in_array($extension[1], $audio))
-                                                                    <div class="row-cols-auto d-flex justify-content-center">
-                                                                        <button type="button" data-id="audio{{$key+1}}"
-                                                                            class="btn btn-primary btn-rewind btn-xs mb-0 ms-1"><i
-                                                                                class="fa fa-backward"></i></button>
-                                                                        <button type="button"
-                                                                            data-action="{{asset('uploads/'.$stimulus['value'])}}"
-                                                                            data-id="audio{{$key+1}}"
-                                                                            class="btn btn-primary btn-play btn-xs mb-0 ms-1"><i
-                                                                                class="fa fa-play"></i></button>
-                                                                        <button type="button"
-                                                                            data-action="{{asset('uploads/'.$stimulus['value'])}}"
-                                                                            data-id="audio{{$key+1}}"
-                                                                            class="btn btn-primary btn-pause btn-xs mb-0 ms-1"><i
-                                                                                class="fa fa-stop"></i></button>
-                                                                        <button type="button" data-id="audio{{$key+1}}"
-                                                                            class="btn btn-primary btn-forward btn-xs mb-0 ms-1"><i
-                                                                                class="fa fa-forward"></i></button>
-                                                                        <span data-id="audio{{$key+1}}"
-                                                                            class="play-status" style="font-size: 6.5pt;"></span>
+                                                                    <div class="d-flex justify-content-center align-items-center">
+                                                                        <audio controls class="audio-player">
+                                                                            <source src="{{asset('uploads/'.$stimulus['value'])}}" type="audio/mpeg">
+                                                                            Your browser does not support the audio element.
+                                                                        </audio>
                                                                     </div>
                                                                 @endif
                                                                 @if (in_array($extension[1], $video))
-                                                                    <div class="justify-content-center">
+                                                                    <div class="d-flex justify-content-center align-items-center">
                                                                         <button type="button" class="btn btn-secondary btn-xs my-1 btn-show" data-value="{{$stimulus['value']}}" data-jenis="Video">Show</button>
                                                                     </div>
                                                                 @endif
                                                                 @if (in_array($extension[1], $image))
-                                                                    <div class="justify-content-center">
+                                                                    <div class="d-flex justify-content-center align-items-center">
                                                                         <button type="button" class="btn btn-secondary btn-xs my-1 btn-show" data-value="{{$stimulus['value']}}" data-jenis="Image">Show</button>
                                                                     </div>
                                                                 @endif
@@ -117,18 +90,16 @@
             
                                                 </div>
                                             @endforeach
-                        
+                                
                                         </div>
                                     </div>
-                                </div>
-            
-                            </div>
-                    
-                            {{-- opsi --}}
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-            
+
+                                    <div class="col-md-1 d-flex justify-content-center align-items-center">
+                                        <div class="vr" style="border-left: 2px solid black;"></div>
+                                    </div>
+
+                                    {{-- opsi --}}
+                                    <div class="col-md-6">
                                         <div class="form-group mb-2">
                                             <h5 class="card-title mb-2">Pertanyaan </h5>
                                             <textarea class="summernote">{{$item->pertanyaan}}</textarea>
@@ -156,7 +127,6 @@
                                             </div>
         
                                         </div>
-            
                                     </div>
                                 </div>
                             </div>
@@ -260,97 +230,19 @@
             modalReminder.on('hidden.bs.modal', function(){
                 hitung();
             });
-        });
 
+            stopAudioPlayer();
 
-        var btnPlay = document.querySelectorAll('.btn-play');
-        var btnPause = document.querySelectorAll('.btn-pause');
-        var btnForward = document.querySelectorAll('.btn-forward');
-        var btnRewind = document.querySelectorAll('.btn-rewind');
-        var btnNavigasi = document.querySelectorAll('.btn-navigasi');
-        var noUrut = document.getElementById('no-urut');
-        var playStatus = document.querySelectorAll('.play-status');
-        var activeAudios = {};
-
-        btnPlay.forEach(function(button){
-            button.addEventListener('click', function(e){
-                e.preventDefault();
-                let url = this.dataset.action;
-                let id = this.dataset.id;
-                // Menghentikan audio yang sedang diputar sebelumnya
-                for (let audioId in activeAudios) {
-                    activeAudios[audioId].pause();
-                    activeAudios[audioId].currentTime = 0;
-                }
-
-                activeAudios[id] = new Audio(url);
-                activeAudios[id].play();
-
-                playStatus.forEach(function(status){
-                    // show status
-                    if (status.dataset.id == id) {
-                        console.log('status play');
-                        status.innerHTML = 'play';
-                    } else {
-                        status.innerHTML = '';
-                    }
-                });
-                console.log("play ",activeAudios);
-
-            });
-        });
-        
-        btnPause.forEach(function(button){
-            button.addEventListener('click', function(e){
-                e.preventDefault();
-                let url = this.dataset.action;
-                let id = this.dataset.id;
-                
-                if (activeAudios[id]) {
-                    activeAudios[id].pause();
-                    activeAudios[id].currentTime = 0;
-                    console.log('stop ',activeAudios);
-                    delete activeAudios[id];
-                }
-
-                // delete status
-                playStatus.forEach(function(status){
-                    if (status.dataset.id == id) {
-                        status.innerHTML = '';
-                    }
-                });
-            });
-        });
-        
-        btnForward.forEach(function(button){
-            button.addEventListener('click', function(e){
-                e.preventDefault();
-                let id = this.dataset.id;
-                if (activeAudios[id]) {
-                    activeAudios[id].currentTime += 5;
-                    console.log('forward 5s ', activeAudios);
-                }
-            });
-        });
-        
-        btnRewind.forEach(function(button){
-            button.addEventListener('click', function(e){
-                e.preventDefault();
-                let id = this.dataset.id;
-                if (activeAudios[id]) {
-                    activeAudios[id].currentTime -= 5;
-                    console.log('rewind 5s ', activeAudios);
-                }
-            });            
         });
 
         $('.btn-show').on('click',function(){
             var jenisDokumen = $(this).attr('data-jenis');
-            var dokumen = 'uploads/' + $(this).attr('data-value');
+            var baseUrl = "{{env('APP_URL')}}";
+            var dokumen = baseUrl + '/uploads/' + $(this).attr('data-value');
             var html = ''
             if (jenisDokumen == 'Video') {
                 html = `
-                <video controls width="100%" id="videoStimulus" height="auto">
+                <video controls width="100%" height="auto">
                     <source src="${dokumen}" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
@@ -366,10 +258,18 @@
             myModal.modal('show');
         });
 
-        myModal.on('hidden.bs.modal', function(){
-            var video = document.getElementById("videoStimulus");
-            video.pause(); // Hentikan video
-        });
+        function stopAudioPlayer() {
+            var audioPlayers = document.querySelectorAll('.audio-player');
+            audioPlayers.forEach(function(player) {
+                player.addEventListener('play', function() {
+                    audioPlayers.forEach(function(otherPlayer) {
+                        if (otherPlayer !== player) {
+                            otherPlayer.pause();
+                        }
+                    });
+                });
+            });
+        }
 
         $('.summernote').summernote({
                 tabsize: 2,

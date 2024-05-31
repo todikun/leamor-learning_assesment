@@ -20,7 +20,8 @@ return new class extends Migration
             $table->text('pernyataan');
             $table->longText('jawaban')->nullable();
             $table->boolean('is_selesai')->default(false);
-            $table->integer('nilai')->nullable();
+            $table->text('nilai')->nullable();
+            $table->integer('total_nilai')->nullable();
             $table->timestamps();
         });
     }

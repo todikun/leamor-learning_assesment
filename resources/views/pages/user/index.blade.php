@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Soal')
+@section('title', 'Manajemen Siswa')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3">Daftar Siswa Ujian: <strong>{{$data->nama ?? '-'}}</strong> </h1>
+    <h1 class="h3">Manajemen Siswa</h1>
+    <a href="{{ route('user.create') }}" class="btn btn-primary btn-add">
+        <i class="align-middle" data-feather="plus"></i> Tambah Siswa
+    </a>
 </div>
 
 <div class="row">
@@ -17,54 +20,22 @@
                         <tr class="text-center">
                             <th>#</th>
                             <th>Nama</th>
-                            <th>Identitas</th>
-                            <th>Nilai </th>
-                            <th>Status</th>
+                            <th>Username</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($data->UjianSiswa ?? collect() as $item)
+                        @forelse ($data as $item)
                             <tr class="text-center">
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{$item->Siswa->nama}}</td>
+                                <td>{{$item->nama}}</td>
+                                <td>{{$item->username}}</td>
                                 <td>
-                                    @foreach ($item->pernyataan as $pernyataan)
-                                        {{$pernyataan}}, &nbsp;
-                                    @endforeach
-                                </td>
-                                <td>{{$item->total_nilai}}</td>
-                                <td>{{$item->is_selesai == true ? 'selesai' : 'Grading process'}}</td>
-                                {{-- <td>{{date('d F Y H:i', strtotime($item->waktu_akses_ujian))}}</td>
-                                <td>{{$item->waktu_ujian}} menit</td>
-                                <td>
-                                    <h1 class="text-{{$item->is_mandiri == true ? 'success' : 'danger'}}">
-                                        <i class="fa fa-{{$item->is_mandiri == true ? 'checked' : 'times'}}"></i>
-                                    </h1>
-                                </td>
-                                <td>
-                                    <div class="d-flex justify-content-center">
-                                        <h5 class="token-show fw-bold d-none">{{$item->token}}</h5>
-                                        <h3 class="token-hide fw-bold">*********</h3>
-                                        <span style="cursor: pointer;" class="text-dark ms-2 btn-token">
-                                            <i class="icon fa fa-eye-slash"></i>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="{{ route('soal.preview', $item->id) }}"
-                                        class="btn btn-sm btn-success">
-                                        <i class="fa fa-users"></i> 
-                                    </a>
-                                    <a href="{{ route('soal.preview', $item->id) }}"
-                                        class="btn btn-sm btn-secondary">
-                                        <i class="fa fa-eye"></i> Preview
-                                    </a>
-                                    <a href="{{ route('soal.show', $item->id) }}"
-                                        class="btn btn-sm btn-warning">
-                                        <i class="fa fa-edit"></i> Soal
+                                    <a href="{{route('user.edit', $item->id)}}" class="btn btn-warning btn-sm btn-edit">
+                                        <i class="fa fa-edit"></i>
                                     </a>
                                     <form
-                                        action="{{ route('soal.destroy', $item->id) }}"
+                                        action="{{ route('user.destroy', $item->id) }}"
                                         method="post" class="d-inline">
                                         @csrf
                                         @method('delete')
@@ -74,11 +45,7 @@
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
-                                    <a href="{{ route('soal.edit', $item->id) }}"
-                                        class="btn btn-sm btn-secondary">
-                                        <i class="fa fa-gear"></i>
-                                    </a>
-                                </td> --}}
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -109,7 +76,7 @@
             dataType: 'HTML',
             method: 'GET',
             success: function (result) {
-                $('#modal-form').find('#modal-label').html('Tambah Pasien');
+                $('#modal-form').find('#modal-label').html('Tambah');
                 $('#modal-form').find('.modal-dialog').addClass(modalSize);
                 $('#modal-form').find('.modal-body').html(result);
                 $('#modal-form').modal('show');
@@ -129,7 +96,7 @@
             dataType: 'HTML',
             method: 'GET',
             success: function (result) {
-                $('#modal-form').find('#modal-label').html('Edit Gejala');
+                $('#modal-form').find('#modal-label').html('Edit');
                 $('#modal-form').find('.modal-body').html(result);
                 $('#modal-form').modal('show');
             },

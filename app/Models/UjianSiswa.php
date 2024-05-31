@@ -12,6 +12,7 @@ class UjianSiswa extends Model
     protected $casts = [
         'pernyataan'=>'array',
         'jawaban'=>'array',
+        'nilai'=>'array',
     ];
 
     public function Soal()

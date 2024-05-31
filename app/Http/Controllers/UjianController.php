@@ -54,13 +54,17 @@ class UjianController extends Controller
     {
         $soal = Soal::find($id);
         $benar = 0;
-        $skor = 0;
+        $skor = [];
+        $totalSkor = 0;
         $jawabanUser = []; 
         foreach ($soal->SoalDetail as $index => $item) {
             $jawabanUser[] = $request->input('no_'.$index + 1);
             if ($item->kunci_jawaban == $request->input('no_'.$index + 1)) {
                 $benar += 1;
-                $skor += $item->skor;
+                $skor[] = $item->skor;
+                $totalSkor += $item->skor;
+            } else {
+                $skor[] = 0;
             }
         }
 
@@ -68,6 +72,7 @@ class UjianController extends Controller
         $ujianSiswa->update([
             'jawaban' => $jawabanUser,
             'nilai' => $skor,
+            'total_nilai' => $totalSkor,
         ]);
         
         return view('pages.student.nilai', ['data' => $ujianSiswa, 'ujian' => true]);
