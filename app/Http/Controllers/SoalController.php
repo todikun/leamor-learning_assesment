@@ -97,6 +97,7 @@ class SoalController extends Controller
 
     public function createOrUpdateSoal(Request $request)
     {
+        // dd($request->all());
         $soal = Soal::find($request->soal_id);
         $soalDetail = SoalDetail::where('soal_id', $soal->id);
         if ($soalDetail->exists()) {

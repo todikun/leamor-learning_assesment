@@ -115,14 +115,38 @@
                                             </div>
                                             <div class="col-md opsi-jawaban" >
                                                 @foreach ($item->opsi_jawaban as $j => $jawaban)
-                                                    <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                        <div class="col-md-10">
-                                                            <textarea class="form-control mb-2 summernote" cols="3" rows="3" required>{{$jawaban}}</textarea>
-                                                        </div>
-                                                        <div class="col-md ms-3">
-                                                            <input type="radio" value="{{$j+1}}" name="no_{{$key+1}}" required />
-                                                        </div>
-                                                    </div>
+                                                    @switch($item->tipe_soal_id)
+                                                        @case('1')
+                                                        {{-- pilihan ganda --}}
+                                                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
+                                                                <div class="col-md-10">
+                                                                    <textarea class="form-control mb-2 summernote" cols="3" rows="3" required>{{$jawaban}}</textarea>
+                                                                </div>
+                                                                <div class="col-md ms-3">
+                                                                    <input type="radio" value="{{$j+1}}" name="no_{{$key+1}}" required />
+                                                                </div>
+                                                            </div>
+                                                            @break
+                                                        @case('2')
+                                                        {{-- mencocokan --}}
+                                                            @break
+                                                        @case('3')
+                                                        {{-- salah benar --}}
+                                                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
+                                                                <div class="col-md ms-3">
+                                                                    <input type="radio" name="no_{{$key+1}}" value="{{$jawaban}}" /> {{$jawaban}}
+                                                                </div>
+                                                            </div>
+                                                            @break
+                                                        @case('4')
+                                                        {{-- isian singkat --}}
+                                                            @break
+                                                        @case('5')
+                                                        {{-- essay --}}
+                                                            @break
+                                                        @default
+                                                            
+                                                    @endswitch
                                                 @endforeach
                                             </div>
         

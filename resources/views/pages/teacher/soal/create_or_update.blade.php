@@ -163,13 +163,13 @@
                                                 <div class="row d-flex mb-3">
                                                     <div class="col-md">
                                                         <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
-                                                        <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
+                                                        {{-- <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                             <i class="fa fa-plus p-2"></i> 
                                                         </a>
                                                         <span class="mx-3"></span>
                                                         <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
                                                             <i class="fa fa-times p-2"></i> 
-                                                        </a>
+                                                        </a> --}}
                                                     </div>
                                                 </div>
                                                 <div class="col-md opsi-jawaban" >
@@ -283,19 +283,17 @@
                                             <div class="row d-flex mb-3">
                                                 <div class="col-md">
                                                     <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
-                                                    <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
+                                                    {{-- <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                         <i class="fa fa-plus p-2"></i> 
                                                     </a>
                                                     <span class="mx-3"></span>
                                                     <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
                                                         <i class="fa fa-times p-2"></i> 
-                                                    </a>
+                                                    </a> --}}
                                                 </div>
                                             </div>
                                             <div class="col-md opsi-jawaban" >
-                    
-                                                {{-- need imporve here
-                                                    opsi jawaban --}}
+
                                             </div>
 
                                         </div>
@@ -312,7 +310,7 @@
         </div>
         
     </div>
-    <button type="submit" class="btn btn-success position-sticky my-7 mx-5" style="float: right;">
+    <button type="submit" class="btn btn-lg btn-success position-sticky my-7 mx-5" style="float: right;">
         SAVE
     </button>
     
@@ -478,13 +476,6 @@
                                     <div class="row d-flex mb-3">
                                         <div class="col-md">
                                             <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
-                                            <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
-                                                <i class="fa fa-plus p-2"></i> 
-                                            </a>
-                                            <span class="mx-3"></span>
-                                            <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
-                                                <i class="fa fa-times p-2"></i> 
-                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md opsi-jawaban" >
@@ -632,56 +623,63 @@
         }
 
     //  opsi 
-        var btnOpsiAdd = $('.btnOpsiAdd'); 
-        var btnOpsiRemove = $('.btnOpsiRemove'); 
-        var opsi = '';
+        // var btnOpsiAdd = $('.btnOpsiAdd'); 
+        // var btnOpsiRemove = $('.btnOpsiRemove'); 
+        // var opsi = '';
         
-        function opsiAdd(e) {
-            var index = getIndexCurrentNavlinkActive();
-            var tipeSoal = $(`.tipe-soal_${index}`);
-            var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban');
+        // function opsiAdd(e) {
+        //     var index = getIndexCurrentNavlinkActive();
+        //     var tipeSoal = $(`.tipe-soal_${index}`);
+        //     var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban');
             
-            if (tipeSoal.val() == '') {
-                alert('Pilih Tipe Soal terlebih dahulu!');
-                tipeSoal.focus();
-                if (appendAreaOpsi.children().length > 0) {
-                    appendAreaOpsi.children().remove();   
-                }
-            } else {
-                opsi == '' ? changeOpsi(tipeSoal.val()) : null;
-                appendAreaOpsi.append(opsi);
-                var value  = appendAreaOpsi.children().length;
-                appendAreaOpsi.find('.opsi-remove .kunci-jawaban-value').last().val(value)
-                summernote();
-            }
-        }
+        //     if (tipeSoal.val() == '') {
+        //         alert('Pilih Tipe Soal terlebih dahulu!');
+        //         tipeSoal.focus();
+        //         if (appendAreaOpsi.children().length > 0) {
+        //             appendAreaOpsi.children().remove();   
+        //         }
+        //     } else if (tipeSoal.val() == '3') {
+        //         return;
+        //     } else {
+        //         opsi == '' ? changeOpsi(tipeSoal.val()) : null;
+        //         appendAreaOpsi.append(opsi);
+        //         var value  = appendAreaOpsi.children().length;
+        //         appendAreaOpsi.find('.opsi-remove .kunci-jawaban-value').last().val(value)
+        //         summernote();
+        //     }
+        // }
 
-        function opsiRemove(e) {
-            var index = getIndexCurrentNavlinkActive();
-            var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban .opsi-remove');
-            if (appendAreaOpsi.length > 0) {
-                appendAreaOpsi.last().remove();
-            }
-        }
+        // function opsiRemove(e) {
+        //     var index = getIndexCurrentNavlinkActive();
+        //     var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban .opsi-remove');
+        //     var tipeSoal = $(`.tipe-soal_${index}`);
+           
+        //     if (tipeSoal.val() != '3' && appendAreaOpsi.length > 0) {
+        //         appendAreaOpsi.last().remove();
+        //     }
+        // }
 
         function changeOpsi(e)
         {
             var index = getIndexCurrentNavlinkActive();
             var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban');
+            var opsi = '';
+
             switch ($(e).val() ?? e) {
                 case '1':
                     // pilihan ganda
-                    opsi = 
-                    `
-                    <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                        <div class="col-md-10">
-                            <textarea class="form-control mb-2 summernote" name="${index}_opsi_jawaban[]" cols="3" rows="3" required></textarea>
-                        </div>
-                        <div class="col-md ms-3">
-                            <input type="radio" name="${index}_kunci_jawaban[]" class="kunci-jawaban-value" required />
-                        </div>
-                    </div>
-                    `;
+                    var pilihan = ['a','b','c','d'];
+                    pilihan.forEach(value => {
+                        opsi += `
+                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
+                                <div class="col-md-10">
+                                    <textarea class="form-control mb-2 summernote" name="${index}_opsi_jawaban[]" cols="3" rows="3" required></textarea>
+                                </div>
+                                <div class="col-md ms-3">
+                                    <input type="radio" value="${value}" name="${index}_kunci_jawaban[]" class="kunci-jawaban-value" required />
+                                </div>
+                            </div>`;
+                    });
                     break;
                 case '2':
                     // mencocokan
@@ -689,7 +687,23 @@
                     break;
                 case '3':
                     // salah benar
-                    alert('coming soon!');
+                    var index = getIndexCurrentNavlinkActive();
+                    var tipeSoal = $(`.tipe-soal_${index}`);
+                    var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban');
+            
+                    opsi = 
+                    `
+                    <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
+                        <div class="col-md ms-3">
+                            <input type="hidden" value="benar" name="${index}_opsi_jawaban[]" />
+                            <input type="radio" name="${index}_kunci_jawaban[]" class="kunci-jawaban-value" value="benar" /> benar
+                        </div>
+                        <div class="col-md ms-3">
+                            <input type="hidden" value="salah" name="${index}_opsi_jawaban[]" />
+                            <input type="radio" name="${index}_kunci_jawaban[]" class="kunci-jawaban-value" value="salah" /> salah
+                        </div>
+                    </div>
+                    `;
                     break;
                 case '4':
                     // isian singkat
@@ -702,6 +716,7 @@
                 default:
                     break;
             }
+            appendAreaOpsi.html(opsi);
         }
     
     // summernote 
