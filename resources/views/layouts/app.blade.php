@@ -221,6 +221,15 @@
                 });
             }
         }
+
+        function modalForm(data, title, size = 'modal-lg')
+        {
+            $('#modal-form').find('.modal-title').html(title);
+            $('#modal-form').find('.modal-dialog').addClass(size);
+            $('#modal-form').find('.modal-body').html(data);
+            $('#modal-form').modal('show');
+        }
+
     </script>
 
     @stack('script')

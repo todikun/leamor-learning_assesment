@@ -102,7 +102,9 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-2">
                                             <h5 class="card-title mb-2">Pertanyaan </h5>
-                                            <textarea class="summernote">{{$item->pertanyaan}}</textarea>
+                                            <div>
+                                                {!!$item->pertanyaan!!}
+                                            </div>
                                         </div>
         
                                         <hr>
@@ -113,30 +115,57 @@
                                                     <span class="mb-3 me-1">Opsi </span>
                                                 </div>
                                             </div>
-                                            <div class="col-md opsi-jawaban" >
-                                                @foreach ($item->opsi_jawaban as $j => $jawaban)
+                                            <div class="col-md opsi-jawaban">
+                                                @php
+                                                    $pilihan_ganda = ['a','b','c','d'];
+                                                    $tipe_soal = $item->tipe_soal_id
+                                                @endphp
+                                                @foreach ($item->tipe_soal_id != '2' ? $item->opsi_jawaban : $item->opsi_jawaban[0] as $j => $jawaban)
                                                     @switch($item->tipe_soal_id)
                                                         @case('1')
                                                         {{-- pilihan ganda --}}
-                                                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                <div class="col-md-10">
-                                                                    <textarea class="form-control mb-2 summernote" cols="3" rows="3" required>{{$jawaban}}</textarea>
+                                                            <div class="mb-3 d-flex">
+                                                                <div class="col-md-1">
+                                                                    <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}" required />
                                                                 </div>
-                                                                <div class="col-md ms-3">
-                                                                    <input type="radio" value="{{$j+1}}" name="no_{{$key+1}}" required />
+                                                                <div class="col-md-11">
+                                                                    <div>
+                                                                        {!!$jawaban!!}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             @break
                                                         @case('2')
                                                         {{-- mencocokan --}}
+                                                        <div class="mb-3 d-flex align-items-center justify-content-center">
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3 d-flex">
+                                                                    <div class="col-md-1 ms-3">
+                                                                        <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}_kiri" class="kunci-jawaban-value" required />
+                                                                    </div>
+                                                                    <div class="col-md-11">
+                                                                        {!!$item->opsi_jawaban[0][$j]!!}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="mb-3 d-flex">
+                                                                    <div class="col-md-1 ms-3">
+                                                                        <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}_kanan" class="kunci-jawaban-value" required />
+                                                                    </div>
+                                                                    <div class="col-md-11">
+                                                                        {!!$item->opsi_jawaban[1][$j]!!}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                             @break
                                                         @case('3')
                                                         {{-- salah benar --}}
-                                                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                <div class="col-md ms-3">
-                                                                    <input type="radio" name="no_{{$key+1}}" value="{{$jawaban}}" /> {{$jawaban}}
-                                                                </div>
-                                                            </div>
+                                                        @php
+                                                            // dd($item->opsi_jawaban);
+                                                        @endphp
+                                                            <input type="radio" name="no_{{$key+1}}" class="ms-3" value="{{$jawaban}}" /> {{$jawaban}}
                                                             @break
                                                         @case('4')
                                                         {{-- isian singkat --}}
@@ -293,20 +322,6 @@
                     });
                 });
             });
-        }
-
-        $('.summernote').summernote({
-                tabsize: 2,
-                height: 120,
-                toolbar: [
-                    // ['style', ['style']],
-                    ['font', ['bold', 'underline', 'italic']],
-                    // ['color', ['color']],
-                    // ['para', ['ul', 'ol', 'paragraph']],
-                    // ['table', ['table']],
-                    ['insert', ['picture']],
-                    // ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
+        }   
     </script>
 @endpush

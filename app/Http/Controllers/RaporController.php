@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Soal;
 use App\Models\UjianSiswa;
 use Illuminate\Http\Request;
+use App\Models\UjianSiswaFeedback;
 
 class RaporController extends Controller
 {
@@ -68,4 +69,21 @@ class RaporController extends Controller
         dd($data);
         return view('pages.teacher.rapor.file_ujian', compact('data'));
     }
+
+    public function feedbackForm($id)
+    {
+        $data = UjianSiswa::find($id);
+        return view('pages.teacher.rapor.feedback', compact('data'));
+    }
+
+    public function feedbackStore(Request $request, $id)
+    {
+        UjianSiswaFeedback::create([
+            'ujian_siswa_id' => $id,
+            'soal_detail_id' => $request->soal_detail_id,
+            'feedback' => $request->feedback,
+        ]);
+        return back()->with('success', 'Feedback berhasil ditambahkan');
+    }
+
 }

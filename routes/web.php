@@ -102,7 +102,7 @@ Route::middleware('auth')->group(function(){
                 Route::post('tmpfile', 'tmpFile')->name('tmpfile');
                 Route::post('open-akses', 'openAksesStore')->name('open-akses.store');
                 Route::get('{id}/preview', 'preview')->name('preview');
-                Route::post('{id}/nilai', 'nilai')->name('nilai');
+                Route::post('{id}/nilai', 'previewNilai')->name('nilai');
                 Route::get('{id}/users', 'listUsers')->name('users');
             });
         Route::resource('soal', SoalController::class);
@@ -116,6 +116,10 @@ Route::middleware('auth')->group(function(){
                 Route::get('{id}/detail', 'detail')->name('detail');
                 Route::get('{id}/ujian', 'ujian')->name('ujian');
                 Route::get('{soalId}/{idUjian}/rank', 'rank')->name('rank');
+
+                Route::get('{id}/feedback', 'feedbackForm')->name('feedback');
+                Route::post('{id}/feedback', 'feedbackStore')->name('feedback_store');
+
             });
     });
 

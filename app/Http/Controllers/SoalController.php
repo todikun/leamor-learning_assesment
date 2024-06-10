@@ -8,6 +8,7 @@ use App\Models\Proyek;
 use App\Models\TmpFile;
 use App\Models\TipeSoal;
 use App\Models\SoalDetail;
+use App\Models\UjianSiswa;
 use Illuminate\Http\Request;
 
 class SoalController extends Controller
@@ -122,15 +123,24 @@ class SoalController extends Controller
                 }
                 $index++;
             }
+            $opsi_jawaban = $request->input($i.'_opsi_jawaban');
+            $kunci_jawaban = [$request->input($i.'_kunci_jawaban')];
+
+            // soal tipe mencocokan
+            if ($request->tipe_soal_id[$key] == '2') {
+                $opsi_jawaban = [$request->input($i.'_kiri_opsi_jawaban'), $request->input($i.'_kanan_opsi_jawaban')];
+                $kunci_jawaban = [$request->input($i.'_kiri_kunci_jawaban.0'), $request->input($i.'_kanan_kunci_jawaban.0')];
+            }
+
+            // dd($request->all(), $opsi_jawaban, $kunci_jawaban);
             SoalDetail::create([
                 'soal_id' => $soal->id,
                 'tipe_soal_id' => $request->tipe_soal_id[$key],
                 'pertanyaan' => $pertanyaan,
                 'stimulus' => $stimulusArray,
-                'opsi_jawaban' => $request->input($i.'_opsi_jawaban'),
-                'kunci_jawaban' => $request->input($i.'_kunci_jawaban.0'),
+                'opsi_jawaban' => $opsi_jawaban,
+                'kunci_jawaban' => $kunci_jawaban,
                 'skor' => $request->skor[$key],
-                'feedback' => $request->feedback[$key] ?? null,
             ]);
         }
         
@@ -159,18 +169,39 @@ class SoalController extends Controller
         return 'soal kosong';
     }
 
-    public function nilai(Request $request, $id)
+    public function previewNilai(Request $request, $id)
     {
         $soal = Soal::find($id);
         $benar = 0;
-        $skor = 0;
+        $skor = [];
+        $totalSkor = 0;
+        $jawabanUser = []; 
         foreach ($soal->SoalDetail as $index => $item) {
-            if ($item->kunci_jawaban == $request->input('no_'.$index + 1)) {
+            $jawabanUser[] = $request->input('no_'.$index + 1);
+
+            // soal mencocokan
+            $opsi_kiri = $request->input('no_'.($index + 1).'_kiri');
+            $opsi_kanan = $request->input('no_'.($index + 1).'_kanan');
+
+            if ($item->kunci_jawaban[0] == $request->input('no_'.$index + 1)) {
                 $benar += 1;
-                $skor += $item->skor;
+                $skor[] = $item->skor;
+                $totalSkor += $item->skor;
+            } else if($item->tipe_soal_id == '2' && in_array($opsi_kiri, $item->kunci_jawaban) && in_array($opsi_kanan, $item->kunci_jawaban)) {
+                // soal mencocokan
+                $benar += 1;
+                $skor[] = $item->skor;
+                $totalSkor += $item->skor;
+            } else {
+                $skor[] = 0;
             }
         }
-        dd('benar '.$benar, 'skore ' . $skor);
+
+        $data = [
+            'soal' => $soal->nama,
+            'nilai' => $skor,
+        ];
+        return view('pages.ujian.nilai', ['data' => $data, 'ujian' => true]);
     }
 
     public function listUsers($id)

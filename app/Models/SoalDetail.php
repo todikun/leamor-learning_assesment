@@ -12,6 +12,7 @@ class SoalDetail extends Model
     protected $casts = [
         'stimulus'=>'array',
         'opsi_jawaban'=>'array',
+        'kunci_jawaban'=>'array',
     ];
 
     public function Soal()
