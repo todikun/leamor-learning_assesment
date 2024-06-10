@@ -161,15 +161,15 @@
                 
                                             <div class="appendAreaOpsi_{{$key+1}}">
                                                 <div class="row d-flex mb-3">
-                                                    <div class="col-md">
+                                                    <div class="col-md isian-singkat {{$item->tipe_soal_id  != '4' ? 'd-none':''}}">
                                                         <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
-                                                        {{-- <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
+                                                        <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                             <i class="fa fa-plus p-2"></i> 
                                                         </a>
                                                         <span class="mx-3"></span>
                                                         <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
                                                             <i class="fa fa-times p-2"></i> 
-                                                        </a> --}}
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 
@@ -235,6 +235,11 @@
                                                                 @break
                                                             @case('4')
                                                             {{-- isian singkat --}}
+                                                            @foreach ($item->kunci_jawaban as $item)
+                                                                <div class="opsi-remove mb-3 col-md-12">
+                                                                    <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban[]" cols="3" rows="3" required>{{$item}}</textarea>
+                                                                </div>
+                                                                @endforeach
                                                                 @break
                                                             @case('5')
                                                             {{-- essay --}}
@@ -341,15 +346,15 @@
             
                                         <div class="appendAreaOpsi_1">
                                             <div class="row d-flex mb-3">
-                                                <div class="col-md">
+                                                <div class="col-md isian-singkat d-none">
                                                     <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
-                                                    {{-- <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
+                                                    <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                         <i class="fa fa-plus p-2"></i> 
                                                     </a>
                                                     <span class="mx-3"></span>
                                                     <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
                                                         <i class="fa fa-times p-2"></i> 
-                                                    </a> --}}
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div class="col-md opsi-jawaban" >
@@ -674,46 +679,49 @@
         }
 
     //  opsi 
-        // var btnOpsiAdd = $('.btnOpsiAdd'); 
-        // var btnOpsiRemove = $('.btnOpsiRemove'); 
-        // var opsi = '';
+        var btnOpsiAdd = $('.btnOpsiAdd'); 
+        var btnOpsiRemove = $('.btnOpsiRemove'); 
         
-        // function opsiAdd(e) {
-        //     var index = getIndexCurrentNavlinkActive();
-        //     var tipeSoal = $(`.tipe-soal_${index}`);
-        //     var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban');
+        function opsiAdd(e) {
+            var index = getIndexCurrentNavlinkActive();
+            var tipeSoal = $(`.tipe-soal_${index}`);
+            var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban');
+            var opsi = `
+            <div class="opsi-remove mb-3 col-md-12">
+                <textarea class="form-control mb-2" name="${index}_opsi_jawaban[]" cols="3" rows="3" required></textarea>
+            </div>`;
             
-        //     if (tipeSoal.val() == '') {
-        //         alert('Pilih Tipe Soal terlebih dahulu!');
-        //         tipeSoal.focus();
-        //         if (appendAreaOpsi.children().length > 0) {
-        //             appendAreaOpsi.children().remove();   
-        //         }
-        //     } else if (tipeSoal.val() == '3') {
-        //         return;
-        //     } else {
-        //         opsi == '' ? changeOpsi(tipeSoal.val()) : null;
-        //         appendAreaOpsi.append(opsi);
-        //         var value  = appendAreaOpsi.children().length;
-        //         appendAreaOpsi.find('.opsi-remove .kunci-jawaban-value').last().val(value)
-        //         summernote();
-        //     }
-        // }
+            if (tipeSoal.val() == '') {
+                alert('Pilih Tipe Soal terlebih dahulu!');
+                tipeSoal.focus();
+                if (appendAreaOpsi.children().length > 0) {
+                    appendAreaOpsi.children().remove();   
+                }
+            } else if (tipeSoal.val() == '3') {
+                return;
+            } else {
+                opsi == '' ? changeOpsi(tipeSoal.val()) : null;
+                appendAreaOpsi.append(opsi);
+                var value  = appendAreaOpsi.children().length;
+                appendAreaOpsi.find('.opsi-remove .kunci-jawaban-value').last().val(value)
+                summernote();
+            }
+        }
 
-        // function opsiRemove(e) {
-        //     var index = getIndexCurrentNavlinkActive();
-        //     var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban .opsi-remove');
-        //     var tipeSoal = $(`.tipe-soal_${index}`);
+        function opsiRemove(e) {
+            var index = getIndexCurrentNavlinkActive();
+            var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban .opsi-remove');
+            var tipeSoal = $(`.tipe-soal_${index}`);
            
-        //     if (tipeSoal.val() != '3' && appendAreaOpsi.length > 0) {
-        //         appendAreaOpsi.last().remove();
-        //     }
-        // }
+            if (tipeSoal.val() != '3' && appendAreaOpsi.length > 0) {
+                appendAreaOpsi.last().remove();
+            }
+        }
 
         function changeOpsi(e)
         {
             var index = getIndexCurrentNavlinkActive();
-            var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban');
+            var appendAreaOpsi = $(`.appendAreaOpsi_${index}`);
             var opsi = '';
 
             switch ($(e).val() ?? e) {
@@ -779,7 +787,7 @@
                     break;
                 case '4':
                     // isian singkat
-                    alert('coming soon!');
+                    appendAreaOpsi.find('.isian-singkat').removeClass('d-none');
                     break;
                 case '5':
                     // essay
@@ -791,7 +799,7 @@
                 default:
                     break;
             }
-            appendAreaOpsi.html(opsi);
+            appendAreaOpsi.find('.opsi-jawaban').html(opsi);
             summernote();
         }
     

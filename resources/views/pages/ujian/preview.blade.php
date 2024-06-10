@@ -169,6 +169,7 @@
                                                             @break
                                                         @case('4')
                                                         {{-- isian singkat --}}
+                                                            <textarea class="form-control mb-2" name="no_{{$key+1}}[]" cols="3" rows="3" required></textarea>
                                                             @break
                                                         @case('5')
                                                         {{-- essay --}}

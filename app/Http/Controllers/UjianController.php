@@ -57,36 +57,49 @@ class UjianController extends Controller
         $skor = [];
         $totalSkor = 0;
         $jawabanUser = []; 
-        foreach ($soal->SoalDetail as $index => $item) {
-            $jawabanUser[] = $request->input('no_'.$index + 1);
-
-            if ($item->kunci_jawaban[0] == $request->input('no_'.$index + 1)) {
-                $benar += 1;
-                $skor[] = $item->skor;
-                $totalSkor += $item->skor;
-            } else if($item->tipe_soal_id == '2') {
-                // soal mencocokan
-                $opsi_kiri = $request->input('no_'.($index + 1).'_kiri');
-                $opsi_kanan = $request->input('no_'.($index + 1).'_kanan');
-                $jawabanUser[$index] = [$opsi_kiri, $opsi_kanan];
-                if (in_array($opsi_kiri, $item->kunci_jawaban) && in_array($opsi_kanan, $item->kunci_jawaban)) {
+        try {
+            foreach ($soal->SoalDetail as $index => $item) {
+                $jawabanUser[] = $request->input('no_'.$index + 1);
+    
+                if ($item->kunci_jawaban[0] == $request->input('no_'.$index + 1)) {
                     $benar += 1;
                     $skor[] = $item->skor;
                     $totalSkor += $item->skor;
+                } else if($item->tipe_soal_id == '2') {
+                    // soal mencocokan
+                    $opsi_kiri = $request->input('no_'.($index + 1).'_kiri');
+                    $opsi_kanan = $request->input('no_'.($index + 1).'_kanan');
+                    $jawabanUser[$index] = [$opsi_kiri, $opsi_kanan];
+                    if (in_array($opsi_kiri, $item->kunci_jawaban) && in_array($opsi_kanan, $item->kunci_jawaban)) {
+                        $benar += 1;
+                        $skor[] = $item->skor;
+                        $totalSkor += $item->skor;
+                    } else {
+                        $skor[] = 0;
+                    }
+                } else if($item->tipe_soal_id == '4') {
+                    // soal isian singkat
+                    if ($item->kunci_jawaban == $request->input('no_'.$index + 1)) {
+                        $benar += 1;
+                        $skor[] = $item->skor;
+                        $totalSkor += $item->skor;
+                    } else {
+                        $skor[] = 0;
+                    }
                 } else {
                     $skor[] = 0;
                 }
-            } else {
-                $skor[] = 0;
             }
+    
+            $ujianSiswa = UjianSiswa::find($request->ujian_siswa_id);
+            $ujianSiswa->update([
+                'jawaban' => $jawabanUser,
+                'nilai' => $skor,
+                'total_nilai' => $totalSkor,
+            ]);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
-
-        $ujianSiswa = UjianSiswa::find($request->ujian_siswa_id);
-        $ujianSiswa->update([
-            'jawaban' => $jawabanUser,
-            'nilai' => $skor,
-            'total_nilai' => $totalSkor,
-        ]);
 
         return view('pages.ujian.nilai', ['data' => $ujianSiswa, 'ujian' => true]);
     }

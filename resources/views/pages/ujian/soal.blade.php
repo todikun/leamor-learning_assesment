@@ -170,6 +170,7 @@
                                                         @break
                                                     @case('4')
                                                     {{-- isian singkat --}}
+                                                        <textarea class="form-control mb-2" name="no_{{$key+1}}[]" cols="3" rows="3" required></textarea>
                                                         @break
                                                     @case('5')
                                                     {{-- essay --}}
@@ -195,7 +196,7 @@
         </div>
         
     </div>
-    <button type="submit" class="form-control btn btn-success btn-lg position-sticky my-3 mx-1" style="float: right;">
+    <button type="submit" onclick="return confirm('Apa kamu yakin untuk mengakhiri ujian ini?')" class="form-control btn btn-success btn-lg position-sticky my-3 mx-1" style="float: right;">
         SUBMIT
     </button>
     

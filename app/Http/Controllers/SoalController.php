@@ -99,58 +99,61 @@ class SoalController extends Controller
     public function createOrUpdateSoal(Request $request)
     {
         // dd($request->all());
-        $soal = Soal::find($request->soal_id);
-        $soalDetail = SoalDetail::where('soal_id', $soal->id);
-        if ($soalDetail->exists()) {
-            $soalDetail->delete();
-        }
-        $stimulusDokumen = array();
-        foreach ($request->pertanyaan as $key => $pertanyaan) {
-            $stimulusArray = array();
-            $i = $key + 1;
-            $index = 0;
-            $stimulusTipe = $request->input($i.'_stimulus_tipe');
-            $stimulus = $request->input($i.'_stimulus');
+        try {
+            $soal = Soal::find($request->soal_id);
+            $soalDetail = SoalDetail::where('soal_id', $soal->id);
+            if ($soalDetail->exists()) {
+                $soalDetail->delete();
+            }
+            $stimulusDokumen = array();
+            foreach ($request->pertanyaan as $key => $pertanyaan) {
+                $stimulusArray = array();
+                $i = $key + 1;
+                $index = 0;
+                $stimulusTipe = $request->input($i.'_stimulus_tipe');
+                $stimulus = $request->input($i.'_stimulus');
 
-            // dd($stimulusTipe, $stimulus);
-            foreach ($stimulusTipe as $tipe) {
-                array_push($stimulusArray, [
-                    'tipe' => $tipe,
-                    'value' => $stimulus[$index]
-                ]);
-                if ($tipe == 'dokumen') {
-                    array_push($stimulusDokumen, $stimulus[$index]);
+                // dd($stimulusTipe, $stimulus);
+                foreach ($stimulusTipe as $tipe) {
+                    array_push($stimulusArray, [
+                        'tipe' => $tipe,
+                        'value' => $stimulus[$index]
+                    ]);
+                    if ($tipe == 'dokumen') {
+                        array_push($stimulusDokumen, $stimulus[$index]);
+                    }
+                    $index++;
                 }
-                $index++;
-            }
-            $opsi_jawaban = $request->input($i.'_opsi_jawaban');
-            $kunci_jawaban = [$request->input($i.'_kunci_jawaban')];
+                $opsi_jawaban = $request->input($i.'_opsi_jawaban');
+                $kunci_jawaban = [$request->input($i.'_kunci_jawaban')];
 
-            // soal tipe mencocokan
-            if ($request->tipe_soal_id[$key] == '2') {
-                $opsi_jawaban = [$request->input($i.'_kiri_opsi_jawaban'), $request->input($i.'_kanan_opsi_jawaban')];
-                $kunci_jawaban = [$request->input($i.'_kiri_kunci_jawaban.0'), $request->input($i.'_kanan_kunci_jawaban.0')];
-            }
+                // soal tipe mencocokan
+                if ($request->tipe_soal_id[$key] == '2') {
+                    $opsi_jawaban = [$request->input($i.'_kiri_opsi_jawaban'), $request->input($i.'_kanan_opsi_jawaban')];
+                    $kunci_jawaban = [$request->input($i.'_kiri_kunci_jawaban.0'), $request->input($i.'_kanan_kunci_jawaban.0')];
+                }
 
-            //soal tipe essay
-            if ($request->tipe_soal_id[$key] == '5') {
-                $kunci_jawaban = $request->input($i.'_opsi_jawaban');
-            }
+                //soal tipe essay || isian singkat
+                if ($request->tipe_soal_id[$key] == '5' || $request->tipe_soal_id[$key] == '4') {
+                    $kunci_jawaban = $request->input($i.'_opsi_jawaban');
+                }
 
-            // dd($request->all(), $opsi_jawaban, $kunci_jawaban);
-            SoalDetail::create([
-                'soal_id' => $soal->id,
-                'tipe_soal_id' => $request->tipe_soal_id[$key],
-                'pertanyaan' => $pertanyaan,
-                'stimulus' => $stimulusArray,
-                'opsi_jawaban' => $opsi_jawaban,
-                'kunci_jawaban' => $kunci_jawaban,
-                'skor' => $request->skor[$key],
-            ]);
+                SoalDetail::create([
+                    'soal_id' => $soal->id,
+                    'tipe_soal_id' => $request->tipe_soal_id[$key],
+                    'pertanyaan' => $pertanyaan,
+                    'stimulus' => $stimulusArray,
+                    'opsi_jawaban' => $opsi_jawaban,
+                    'kunci_jawaban' => $kunci_jawaban,
+                    'skor' => $request->skor[$key],
+                ]);
+            }
+            
+            // Move file from dir tmp -> uploads
+            \App\Helpers\_tmpFile::moveFile($stimulusDokumen);
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
-        
-        // Move file from dir tmp -> uploads
-        \App\Helpers\_tmpFile::moveFile($stimulusDokumen);
         return view('pages.teacher.soal.open-akses', compact('soal'));
     }
 
@@ -181,25 +184,45 @@ class SoalController extends Controller
         $skor = [];
         $totalSkor = 0;
         $jawabanUser = []; 
-        foreach ($soal->SoalDetail as $index => $item) {
-            $jawabanUser[] = $request->input('no_'.$index + 1);
-
-            // soal mencocokan
-            $opsi_kiri = $request->input('no_'.($index + 1).'_kiri');
-            $opsi_kanan = $request->input('no_'.($index + 1).'_kanan');
-
-            if ($item->kunci_jawaban[0] == $request->input('no_'.$index + 1)) {
-                $benar += 1;
-                $skor[] = $item->skor;
-                $totalSkor += $item->skor;
-            } else if($item->tipe_soal_id == '2' && in_array($opsi_kiri, $item->kunci_jawaban) && in_array($opsi_kanan, $item->kunci_jawaban)) {
+        try {
+            foreach ($soal->SoalDetail as $index => $item) {
+                $jawabanUser[] = $request->input('no_'.$index + 1);
+    
                 // soal mencocokan
-                $benar += 1;
-                $skor[] = $item->skor;
-                $totalSkor += $item->skor;
-            } else {
-                $skor[] = 0;
+                $opsi_kiri = $request->input('no_'.($index + 1).'_kiri');
+                $opsi_kanan = $request->input('no_'.($index + 1).'_kanan');
+    
+                if ($item->kunci_jawaban[0] == $request->input('no_'.$index + 1)) {
+                    $benar += 1;
+                    $skor[] = $item->skor;
+                    $totalSkor += $item->skor;
+                } else if($item->tipe_soal_id == '2') {
+                    // soal mencocokan
+                    $opsi_kiri = $request->input('no_'.($index + 1).'_kiri');
+                    $opsi_kanan = $request->input('no_'.($index + 1).'_kanan');
+                    $jawabanUser[$index] = [$opsi_kiri, $opsi_kanan];
+                    if (in_array($opsi_kiri, $item->kunci_jawaban) && in_array($opsi_kanan, $item->kunci_jawaban)) {
+                        $benar += 1;
+                        $skor[] = $item->skor;
+                        $totalSkor += $item->skor;
+                    } else {
+                        $skor[] = 0;
+                    }
+                } else if($item->tipe_soal_id == '4') {
+                    // soal isian singkat
+                    if ($item->kunci_jawaban == $request->input('no_'.$index + 1)) {
+                        $benar += 1;
+                        $skor[] = $item->skor;
+                        $totalSkor += $item->skor;
+                    } else {
+                        $skor[] = 0;
+                    }
+                } else {
+                    $skor[] = 0;
+                }
             }
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
 
         $data = [
