@@ -221,14 +221,15 @@ class SoalController extends Controller
                     $skor[] = 0;
                 }
             }
+            
+            $data = [
+                'soal' => $soal->nama,
+                'nilai' => $skor,
+            ];
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
 
-        $data = [
-            'soal' => $soal->nama,
-            'nilai' => $skor,
-        ];
         return view('pages.ujian.nilai', ['data' => $data, 'ujian' => true]);
     }
 

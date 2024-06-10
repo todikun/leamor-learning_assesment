@@ -104,5 +104,19 @@ class RaporController extends Controller
         return back()->with('success', 'Koreksi Nilai berhasil disimpan');
     }
     
+    public function submit($id)
+    {
+        $siswa = UjianSiswa::find($id);
+        $siswa->update([
+            'is_selesai' => true,
+        ]);
+        return back()->with('success', 'Rapor berhasil disubmit');
+    }
+
+    public function exportPdf($id)
+    {
+        $data = UjianSiswa::where('soal_id', $id)->orderBy('total_nilai', 'desc')->get();
+        dd($data);
+    }
 
 }

@@ -6,6 +6,9 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h3">Rapor Ujian: <strong>{{$data->Soal->nama ?? '-'}}</strong> </h1>
     <h2 class="h3"> Peringkat: <strong>{{$rank}}</strong>, Total Skor: <strong>{{$data->total_nilai}}</strong></h2>
+    <a href="{{route('export', $data->soal_id)}}" class="btn btn-danger">
+        <i class="fa fa-file"></i> PDF
+    </a>
 </div>
 
 <div class="row">
@@ -72,6 +75,10 @@
                         @endforelse
                     </tbody>
                 </table>
+
+                @if ($data->is_selesai == '0' && $data->Soal->created_by == auth()->user()->id && auth()->user()->role == 'teacher')
+                    <a href="{{route('rapor.teacher.submit', $data->id)}}" onclick="return confirm('Apa anda yakin akan submit rapor ini?')" class="form-control btn btn-success">Submit</a>
+                @endif
             </div>
         </div>
     </div>

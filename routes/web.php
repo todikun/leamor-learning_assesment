@@ -125,8 +125,14 @@ Route::middleware('auth')->group(function(){
                 Route::get('{id}/koreksi', 'koreksiForm')->name('koreksi');
                 Route::post('{id}/koreksi', 'koreksiStore')->name('koreksi_store');
 
+                // submit
+                Route::get('{id}/submit', 'submit')->name('submit');
+
             });
     });
+
+    // pdf
+    Route::get('{id}/export/pdf', [RaporController::class,'exportPdf'])->name('export');
 
     Route::group(['middleware'=>'studentRole', 'prefix'=>'student'], function(){
 
