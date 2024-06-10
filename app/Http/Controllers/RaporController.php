@@ -86,4 +86,23 @@ class RaporController extends Controller
         return back()->with('success', 'Feedback berhasil ditambahkan');
     }
 
+    public function koreksiForm($id)
+    {
+        $data = UjianSiswa::find($id);
+        return view('pages.teacher.rapor.koreksi', compact('data'));
+    }
+
+    public function koreksiStore(Request $request, $id)
+    {
+        $data = UjianSiswa::find($id);
+        $nilai = $data->nilai;
+        $nilai[$request->no_soal] = (int) $request->nilai;
+        $data->update([
+            'nilai' => $nilai,
+            'total_nilai' => array_sum($nilai),
+        ]);
+        return back()->with('success', 'Koreksi Nilai berhasil disimpan');
+    }
+    
+
 }

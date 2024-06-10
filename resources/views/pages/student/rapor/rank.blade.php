@@ -50,18 +50,18 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <span class="text-{{$data->jawaban[$key] == $item->kunci_jawaban[0] ? 'success':'danger'}} ms-1">
-                                        <i class="fa fa-{{$data->jawaban[$key] == $item->kunci_jawaban[0] ? 'check':'times'}}"></i>
+                                    <span class="text-{{$data->nilai[$key] != '0' ? 'success':'danger'}} ms-1">
+                                        <i class="fa fa-{{$data->nilai[$key] != '0' ? 'check':'times'}}"></i>
                                     </span>
                                 </td>
-                                <td>{{$data->nilai[$key] ?? '-'}} 
+                                <td>{{$data->nilai[$key]}} 
                                 @php
                                     // essay = 5
                                     $soal_koreksi = ['5']
                                 @endphp
-                                @if (in_array($item->tipe_soal_id, $soal_koreksi) && auth()->user()->role == 'teacher')
+                                @if (in_array($item->tipe_soal_id, $soal_koreksi) && auth()->user()->role == 'teacher' && $data->nilai[$key] == '0')
                                     {{-- tombol koreksi nilai --}}
-                                    <span>yes</span>
+                                    <a href="{{route('rapor.teacher.koreksi', [$data->id, 'index'=>$key])}}" class="fa fa-edit text-warning ms-1 btn-koreksi"></a>
                                 @endif
                                 </td>
                             </tr>
@@ -100,40 +100,22 @@
         });
     });
 
-    $('.btn-edit').on('click', function (e) {
+    $('.btn-koreksi').on('click', function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
+        var modalSize = $(this).attr('data-modal') ?? '';
 
         $.ajax({
             url: url,
             dataType: 'HTML',
             method: 'GET',
             success: function (result) {
-                $('#modal-form').find('#modal-label').html('Edit Gejala');
-                $('#modal-form').find('.modal-body').html(result);
-                $('#modal-form').modal('show');
+                modalForm(result, 'Koreksi Soal', 'modal-xs');
             },
             error: function (err) {
                 console.log(err);
             },
         });
-    });
-
-    $('.btn-token').on('click', function(){
-        let icon = $(this).find('.icon');
-        let tokenShow = $('.token-show');
-        let tokenHide = $('.token-hide');
-        if (icon.hasClass('fa-eye-slash')) {
-            icon.removeClass('fa-eye-slash');
-            icon.addClass('fa-eye');
-            tokenShow.removeClass('d-none');
-            tokenHide.addClass('d-none');
-            return;
-        }
-        icon.addClass('fa-eye-slash');
-        icon.removeClass('fa-eye');
-        tokenShow.addClass('d-none');
-        tokenHide.removeClass('d-none');
     });
 
 </script>

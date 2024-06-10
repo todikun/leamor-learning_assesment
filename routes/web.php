@@ -117,8 +117,13 @@ Route::middleware('auth')->group(function(){
                 Route::get('{id}/ujian', 'ujian')->name('ujian');
                 Route::get('{soalId}/{idUjian}/rank', 'rank')->name('rank');
 
+                // feedback
                 Route::get('{id}/feedback', 'feedbackForm')->name('feedback');
                 Route::post('{id}/feedback', 'feedbackStore')->name('feedback_store');
+
+                // koreksi
+                Route::get('{id}/koreksi', 'koreksiForm')->name('koreksi');
+                Route::post('{id}/koreksi', 'koreksiStore')->name('koreksi_store');
 
             });
     });

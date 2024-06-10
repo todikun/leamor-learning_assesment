@@ -91,9 +91,4 @@ class UjianController extends Controller
         return view('pages.ujian.nilai', ['data' => $ujianSiswa, 'ujian' => true]);
     }
 
-    public function storeNilaiFeedback(Request $request, $id)
-    {
-        dd($id);
-    }
-
 }

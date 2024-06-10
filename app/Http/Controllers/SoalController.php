@@ -132,6 +132,11 @@ class SoalController extends Controller
                 $kunci_jawaban = [$request->input($i.'_kiri_kunci_jawaban.0'), $request->input($i.'_kanan_kunci_jawaban.0')];
             }
 
+            //soal tipe essay
+            if ($request->tipe_soal_id[$key] == '5') {
+                $kunci_jawaban = $request->input($i.'_opsi_jawaban');
+            }
+
             // dd($request->all(), $opsi_jawaban, $kunci_jawaban);
             SoalDetail::create([
                 'soal_id' => $soal->id,

@@ -173,76 +173,77 @@
                                                     </div>
                                                 </div>
                                                 
-                                            <div class="col-md opsi-jawaban">
-                                                @php
-                                                    $pilihan_ganda = ['a','b','c','d'];
-                                                    $tipe_soal = $item->tipe_soal_id;
-                                                    // dd($tipe_soal != '2', $item->opsi_jawaban)
-                                                @endphp
-                                                    @switch($item->tipe_soal_id)
-                                                        @case('1')
-                                                            @foreach ($pilihan_ganda as $index => $pilihan)
-                                                            {{-- pilihan ganda --}}  
-                                                        
-                                                                <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                    <div class="col-md-1">
-                                                                        <input type="radio" {{$pilihan == $item->kunci_jawaban[0] ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kunci_jawaban" required />
-                                                                    </div>
-                                                                    <div class="col-md-11">
-                                                                        <div>
-                                                                            <textarea class="form-control mb-2 summernote" name="{{$key+1}}_opsi_jawaban[]" cols="3" rows="3" required>{{$item->opsi_jawaban[$index]}}</textarea>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                @endforeach
-                                                            @break
-                                                        @case('2')
-                                                        {{-- mencocokan --}}
-                                                            @foreach ($pilihan_ganda as $index => $pilihan)
+                                                <div class="col-md opsi-jawaban">
+                                                    @php
+                                                        $pilihan_ganda = ['a','b','c','d'];
+                                                        $tipe_soal = $item->tipe_soal_id;
+                                                        // dd($tipe_soal != '2', $item->opsi_jawaban)
+                                                    @endphp
+                                                        @switch($item->tipe_soal_id)
+                                                            @case('1')
+                                                                @foreach ($pilihan_ganda as $index => $pilihan)
+                                                                {{-- pilihan ganda --}}  
                                                             
-                                                                <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                    <div class="col-md-6">
-                                                                        <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                            <div class="col-md-1 ms-3">
-                                                                                <input type="radio" {{$pilihan == $item->kunci_jawaban[0] ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kiri_kunci_jawaban[]" class="kunci-jawaban-value" required />
-                                                                            </div>
-                                                                            <div class="col-md-10">
-                                                                                <textarea class="form-control mb-2 summernote" name="{{$key+1}}_kiri_opsi_jawaban[]" cols="3" rows="3" required>{{$item->opsi_jawaban[0][$index]}}</textarea>
+                                                                    <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
+                                                                        <div class="col-md-1">
+                                                                            <input type="radio" {{$pilihan == $item->kunci_jawaban[0] ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kunci_jawaban" required />
+                                                                        </div>
+                                                                        <div class="col-md-11">
+                                                                            <div>
+                                                                                <textarea class="form-control mb-2 summernote" name="{{$key+1}}_opsi_jawaban[]" cols="3" rows="3" required>{{$item->opsi_jawaban[$index]}}</textarea>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                            <div class="col-md-1 ms-3">
-                                                                                <input type="radio" {{$pilihan == $item->kunci_jawaban[1] ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kanan_kunci_jawaban[]" class="kunci-jawaban-value" required />
+                                                                    @endforeach
+                                                                @break
+                                                            @case('2')
+                                                            {{-- mencocokan --}}
+                                                                @foreach ($pilihan_ganda as $index => $pilihan)
+                                                                
+                                                                    <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
+                                                                        <div class="col-md-6">
+                                                                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
+                                                                                <div class="col-md-1 ms-3">
+                                                                                    <input type="radio" {{$pilihan == $item->kunci_jawaban[0] ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kiri_kunci_jawaban[]" class="kunci-jawaban-value" required />
+                                                                                </div>
+                                                                                <div class="col-md-10">
+                                                                                    <textarea class="form-control mb-2 summernote" name="{{$key+1}}_kiri_opsi_jawaban[]" cols="3" rows="3" required>{{$item->opsi_jawaban[0][$index]}}</textarea>
+                                                                                </div>
                                                                             </div>
-                                                                            <div class="col-md-10">
-                                                                                <textarea class="form-control mb-2 summernote" name="{{$key+1}}_kanan_opsi_jawaban[]" cols="3" rows="3" required>{{$item->opsi_jawaban[1][$index]}}</textarea>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
+                                                                                <div class="col-md-1 ms-3">
+                                                                                    <input type="radio" {{$pilihan == $item->kunci_jawaban[1] ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kanan_kunci_jawaban[]" class="kunci-jawaban-value" required />
+                                                                                </div>
+                                                                                <div class="col-md-10">
+                                                                                    <textarea class="form-control mb-2 summernote" name="{{$key+1}}_kanan_opsi_jawaban[]" cols="3" rows="3" required>{{$item->opsi_jawaban[1][$index]}}</textarea>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                @endforeach
-                                                            @break
-                                                        @case('3')
-                                                        {{-- salah benar --}}
-                                                            <input type="hidden" value="benar" name="{{$key+1}}_opsi_jawaban[]" />
-                                                            <input type="radio" {{'benar' == $item->kunci_jawaban[0] ? 'checked':''}} name="{{$key+1}}_kunci_jawaban" class="kunci-jawaban-value ms-3" value="benar" /> benar
+                                                                    @endforeach
+                                                                @break
+                                                            @case('3')
+                                                            {{-- salah benar --}}
+                                                                <input type="hidden" value="benar" name="{{$key+1}}_opsi_jawaban[]" />
+                                                                <input type="radio" {{'benar' == $item->kunci_jawaban[0] ? 'checked':''}} name="{{$key+1}}_kunci_jawaban" class="kunci-jawaban-value ms-3" value="benar" /> benar
 
-                                                            <input type="hidden" value="salah" name="{{$key+1}}_opsi_jawaban[]" />
-                                                            <input type="radio" {{'salah' == $item->kunci_jawaban[0] ? 'checked':''}} name="{{$key+1}}_kunci_jawaban" class="kunci-jawaban-value ms-3" value="salah" /> salah
-                                                            
-                                                            @break
-                                                        @case('4')
-                                                        {{-- isian singkat --}}
-                                                            @break
-                                                        @case('5')
-                                                        {{-- essay --}}
-                                                            @break
-                                                        @default
-                                                            
-                                                    @endswitch
-                                            </div>
+                                                                <input type="hidden" value="salah" name="{{$key+1}}_opsi_jawaban[]" />
+                                                                <input type="radio" {{'salah' == $item->kunci_jawaban[0] ? 'checked':''}} name="{{$key+1}}_kunci_jawaban" class="kunci-jawaban-value ms-3" value="salah" /> salah
+                                                                
+                                                                @break
+                                                            @case('4')
+                                                            {{-- isian singkat --}}
+                                                                @break
+                                                            @case('5')
+                                                            {{-- essay --}}
+                                                                <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban[]" cols="3" rows="3" required>{{$item->kunci_jawaban[0]}}</textarea>
+                                                                @break
+                                                            @default
+                                                                
+                                                        @endswitch
+                                                </div>
 
                                             </div>
                 
@@ -782,7 +783,10 @@
                     break;
                 case '5':
                     // essay
-                    alert('coming soon!');
+                    opsi += `
+                        <div class="opsi-remove mb-3 col-md-12">
+                            <textarea class="form-control mb-2" name="${index}_opsi_jawaban[]" cols="3" rows="3" required></textarea>
+                        </div>`;
                     break;
                 default:
                     break;
