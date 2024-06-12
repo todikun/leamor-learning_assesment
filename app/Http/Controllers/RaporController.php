@@ -22,7 +22,9 @@ class RaporController extends Controller
         if ($role == 'student') {
             $data = Soal::with(['UjianSiswa' => function($q){
                 $q->where('user_id', auth()->user()->id);
-            }])->has('UjianSiswa')->get();
+            }])->has('UjianSiswa')->get()->filter(function($q){
+                return $q->UjianSiswa->isNotEmpty();
+            })->values();
             return view('pages.student.rapor.index', compact('data'));
         }
     }
