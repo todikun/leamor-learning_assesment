@@ -10,7 +10,7 @@
             <i class="align-middle" data-feather="list"></i> List View
         </a>
 
-        <a href="{{ route('soal.create') }}" class="btn btn-primary">
+        <a href="{{ route('soal.create') }}" class="btn btn-success">
             <i class="align-middle" data-feather="plus"></i> Create Proyek
         </a>
     </div> --}}

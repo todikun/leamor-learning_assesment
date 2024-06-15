@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Soal;
 use App\Models\Proyek;
+use App\Models\SoalDetail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class ProyekController extends Controller
     public function index()
     {
         // $data = Proyek::where('is_share', true)->where('is_deleted', false)->get();
-        $data = Soal::where('is_share', true)->where('is_deleted', false)->get();
+        $data = Soal::orderBy('id', 'desc')->where('is_share', true)->where('is_deleted', false)->get();
         return view('pages.teacher.proyek.index', compact('data'));
     }
 
@@ -54,7 +55,7 @@ class ProyekController extends Controller
 
     public function myProyek()
     {   
-        $data = Soal::where('created_by', auth()->user()->id)
+        $data = Soal::orderBy('id', 'desc')->where('created_by', auth()->user()->id)
                         ->where('is_deleted', false)
                         ->get();
         return view('pages.teacher.proyek.my-proyek', compact('data'));
@@ -88,9 +89,22 @@ class ProyekController extends Controller
             'created_by' => auth()->user()->id,
         ]);
         $data->update([
-            'token' => $data->id . Str::random(5) . date('Y', strtotime($data->created_at)),
+            'token' => $data->is_mandiri == false ? $data->id . Str::random(5) . date('Y', strtotime($data->created_at)) : null,
         ]);
-            
+           
+        $soal_detail = SoalDetail::where('soal_id', $soal->id)->get();
+        foreach ($soal_detail as $item) {
+            SoalDetail::create([
+                'soal_id' => $data->id,
+                'tipe_soal_id' => $item->tipe_soal_id,
+                'pertanyaan' => $item->pertanyaan,
+                'stimulus' => $item->stimulus,
+                'opsi_jawaban' => $item->opsi_jawaban,
+                'kunci_jawaban' => $item->kunci_jawaban,
+                'skor' => $item->skor,
+                'feedback' => $item->feedback,
+            ]);
+        }
         return redirect()->route('proyek.index')->with('success', 'Data berhasil disimpan');
     }
     /**

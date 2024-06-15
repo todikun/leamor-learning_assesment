@@ -16,6 +16,6 @@
     <h5 class="card-title my-3">Konfirmasi Password  <span class="text-danger">*</span></h5>
     <input type="password" name="konfirmasi_password" class="form-control mb-3" required />
 
-    <button type="submit" class="form-control btn btn-primary">Simpan</button>
+    <button type="submit" class="form-control btn btn-success">Simpan</button>
 </form>
 

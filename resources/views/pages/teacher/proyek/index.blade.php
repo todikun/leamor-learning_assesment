@@ -5,7 +5,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h3">Semua Proyek</h1>
-    <a href="{{ route('soal.create') }}" class="btn btn-primary">
+    <a href="{{ route('soal.create') }}" class="btn btn-success">
         <i class="align-middle" data-feather="plus"></i> Create Proyek
     </a>
 </div>

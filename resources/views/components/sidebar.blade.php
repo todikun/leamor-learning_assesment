@@ -1,4 +1,4 @@
-<nav id="sidebar" class="sidebar js-sidebar collapsed">
+<nav id="sidebar" class="sidebar js-sidebar">
 	<div class="sidebar-content js-simplebar">
 		<a class="sidebar-brand" href="{{ url('dashboard') }}">
 			<span class="align-middle">Leamor</span>
@@ -40,7 +40,7 @@
 					</a>
 				</li>
 
-				<li class="sidebar-item {{Route::is('rapor.student.index') ? 'active' : ''}}">
+				<li class="sidebar-item {{Route::is('rapor.student.*') ? 'active' : ''}}">
 					<a class="sidebar-link" href="{{route('rapor.student.index')}}">
 						<i class="align-middle " data-feather="layers"></i> <span class="align-middle">Rapor</span>
 					</a>

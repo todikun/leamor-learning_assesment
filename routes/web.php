@@ -147,7 +147,6 @@ Route::middleware('auth')->group(function(){
                 Route::post('form', 'ujianForm')->name('form');
                 Route::post('{id}/nilai_feedback', 'storeNilaiFeedback')->name('nilai_feedback');
                 Route::post('{id}/nilai', 'storeNilai')->name('nilai');
-                Route::get('{id}/mandiri', 'ujianMandiri')->name('mandiri');
             });
 
             // rapor

@@ -47,7 +47,7 @@
                                     <div class="text-center">
                                         <a href="{{ url('/') }}">
                                             <img src="{{ asset('dist/img/'.$param.'.png') }}" alt="img"
-                                                class="img-fluid rounded bg-primary" width="132" height="132" />
+                                                class="img-fluid rounded" style="background-color: #6ea8fe;" width="132" height="132" />
                                         </a>
                                     </div>
 
@@ -66,7 +66,7 @@
                                         </div>
 
                                         <input type="submit" value="Login"
-                                            class="form-control btn btn-lg btn-primary">
+                                            class="form-control btn btn-lg btn-success">
                                     </form>
 
                                     <div class="text-center my-3">

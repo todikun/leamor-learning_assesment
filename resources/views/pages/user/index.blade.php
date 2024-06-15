@@ -5,7 +5,7 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h3">Manajemen Siswa</h1>
-    <a href="{{ route('user.create') }}" class="btn btn-primary btn-add">
+    <a href="{{ route('user.create') }}" class="btn btn-success btn-add">
         <i class="align-middle" data-feather="plus"></i> Tambah Siswa
     </a>
 </div>
@@ -17,7 +17,7 @@
 
                 <table id="myTable" class="table">
                     <thead>
-                        <tr class="text-center">
+                        <tr class="text-center" style="background-color: #79dfc1;">
                             <th>#</th>
                             <th>Nama</th>
                             <th>Username</th>

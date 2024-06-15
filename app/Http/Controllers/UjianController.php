@@ -8,17 +8,16 @@ use Illuminate\Http\Request;
 
 class UjianController extends Controller
 {
-    public function ujianMandiri($id)
-    {
-        $soal = Soal::find($id);
-        return view('pages.student.identitas', ['soal' => $soal, 'ujian' => true]);
-    }
-
     public function cekAkses(Request $request)
     {
         $soal = Soal::whereToken($request->token)->first();
         if (!$soal) {
             return 'Kode akses tidak valid!';
+        }
+
+        $siswa = UjianSiswa::where('soal_id', $soal->id)->where('user_id', auth()->user()->id)->first();
+        if ($siswa) {
+            return 'Kamu sudah pernah mengikuti ujian ini!';
         }
         
         $waktuAksesUjian = strtotime($soal->waktu_akses_ujian);
@@ -34,7 +33,7 @@ class UjianController extends Controller
             return 'Ujian sudah berakhir pada ' . $lamaAksesUjianFormat;
         }
 
-        return view('pages.student.identitas', ['soal' => $soal, 'ujian' => true]);
+        return view('pages.student.identitas', compact('soal'));
     }
 
     public function ujianForm(Request $request)
@@ -47,7 +46,7 @@ class UjianController extends Controller
 
         $soal = Soal::find($request->soal_id);
 
-        return view('pages.ujian.soal', compact('soal', 'siswa'));
+        return view('pages.ujian.soal', ['soal' => $soal, 'siswa' => $siswa, 'ujian' => true]);
     }
 
     public function storeNilai(Request $request, $id)

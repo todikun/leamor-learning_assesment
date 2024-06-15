@@ -208,7 +208,8 @@
         });
 
         $('#soalForm').submit(function(e){
-            if (timePicker.val() == '' || datePicker.val() == '') {
+            var tokenDiv = $('.token-div');
+            if ((timePicker.val() == '' || datePicker.val() == '') && !tokenDiv.hasClass('d-none')) {
                 e.preventDefault();
                 alert('Data harus diisi semua!');
             }

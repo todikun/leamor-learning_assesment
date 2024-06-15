@@ -31,7 +31,7 @@
 
                 <div class="col-md-6">
                     <a href="{{route('login', ['q'=>'teacher'])}}" class="btn-login">
-                        <div class="card card-body bg-primary d-flex align-items-center justify-content-center">
+                        <div style="background-color: #6ea8fe;" class="card card-body d-flex align-items-center justify-content-center">
                             <img src="{{asset('dist/img/teacher.png')}}" alt="err" width="150px" height="150px" />
                         </div>
                     </a>
@@ -39,7 +39,7 @@
                 
                 <div class="col-md-6">
                     <a href="{{route('login', ['q'=>'student'])}}" class="btn-login">
-                        <div class="card card-body bg-primary d-flex align-items-center justify-content-center">
+                        <div style="background-color: #6ea8fe;" class="card card-body d-flex align-items-center justify-content-center">
                             <img src="{{asset('dist/img/student.png')}}" alt="err" width="150px" height="150px" />
                         </div>
                     </a>

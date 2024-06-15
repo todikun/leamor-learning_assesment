@@ -723,6 +723,7 @@
             var index = getIndexCurrentNavlinkActive();
             var appendAreaOpsi = $(`.appendAreaOpsi_${index}`);
             var opsi = '';
+            appendAreaOpsi.find('.isian-singkat').addClass('d-none');
 
             switch ($(e).val() ?? e) {
                 case '1':

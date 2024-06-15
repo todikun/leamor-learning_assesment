@@ -23,7 +23,7 @@
                                 </div>
                                 @else
                                 <div class="col-md-5 ms-3">
-                                    <a href="{{route('ayo_tes')}}" class="form-control btn btn-success">Menu Utama</a>
+                                    <a href="{{route('dashboard')}}" class="form-control btn btn-success">Menu Utama</a>
                                 </div>
                                 <div class="col-md-5 ms-3">
                                     <a href="{{route('rapor.student.detail', $data->Soal->id)}}" class="form-control btn btn-primary">Rapor</a>

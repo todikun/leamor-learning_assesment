@@ -12,6 +12,6 @@
         <option value="0">Tidak</option>
     </select>
 
-    <button type="submit" class="form-control btn btn-primary">Simpan</button>
+    <button type="submit" class="form-control btn btn-success">Simpan</button>
 </form>
 

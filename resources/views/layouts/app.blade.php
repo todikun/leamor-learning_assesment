@@ -33,6 +33,77 @@
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     
+    <style>
+        /* Sidebar */
+        #sidebar {
+            z-index: 1;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better separation */
+        }
+
+        .sidebar-content {
+            background: #ffffff;
+            padding: 20px; /* Adjust padding as needed */
+            overflow-y: auto; /* Enable vertical scrolling */
+            height: 100%; /* Make sure content area takes full height */
+        }
+
+        .sidebar-brand {
+            display: block;
+            padding: 10px 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: black;
+            text-decoration: none;
+        }
+
+        .sidebar-brand:hover {
+            color: #79dfc1;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .sidebar-item {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        a.sidebar-link {
+            color: black;
+            background: white;
+            font-size: 16px;
+        }
+
+        .sidebar-link svg.feather {
+            color: black;
+            height: 32px;
+            width: auto;
+        }
+
+        .sidebar-link:hover {
+            background-color: #79dfc1;
+        }
+
+        .sidebar-link.active {
+            background-color: #79dfc1;
+            color: black;
+        }
+        .sidebar-item.active .sidebar-link{
+            color: black;
+        }
+        .sidebar-item.active .sidebar-link svg.feather {
+            color: black;
+        }
+
+    </style>
     @stack('css')
 </head>
 
@@ -71,7 +142,7 @@
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">
-                        <button class="form-control btn btn-primary btn-lg" data-bs-dismiss="modal" aria-label="Close">Mulai Ujian</button>
+                        <button class="form-control btn btn-success btn-lg" data-bs-dismiss="modal" aria-label="Close">Mulai Ujian</button>
                     </div>
                   </div>
                 </div>
@@ -123,7 +194,7 @@
             });
         });
 
-        var navbar = $('.hamburger');
+        var navbar = $('i.hamburger');
         var sessionUjian = "{{$ujian ?? false}}";
         if (sessionUjian == true) {
             navbar.addClass('d-none')

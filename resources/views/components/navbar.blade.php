@@ -5,7 +5,7 @@
 				<i class="align-middle me-1" data-feather="user"></i>{{auth()->user()->nama}}</a>
 			<div class="dropdown-menu dropdown-menu-end">
 				@if (auth()->user()->role == 'teacher')
-				<a class="dropdown-item" href="{{route('user.index')}}" >Manajemen Akun Siswa</a>
+				<a class="dropdown-item {{Route::is('user.index') ? 'active' : ''}}" href="{{route('user.index')}}" >Manajemen Akun Siswa</a>
 				@endif
 				<a class="dropdown-item btn-edit" href="{{route('user.edit', auth()->user()->id)}}" >Profile</a>
 

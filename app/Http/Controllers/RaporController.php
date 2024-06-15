@@ -14,7 +14,7 @@ class RaporController extends Controller
         $role = auth()->user()->role;
         if ($role == 'teacher') {
             $data = Soal::where('created_by', auth()->user()->id)
-                            ->where('is_deleted', false)
+                            // ->where('is_deleted', false)
                             ->get();
             return view('pages.teacher.rapor.index', compact('data'));
         }
@@ -31,12 +31,24 @@ class RaporController extends Controller
 
     public function detail($id)
     {
+        $param = request('sort');
         $role = auth()->user()->role;
         if ($role == 'teacher') {
-            $data = Soal::with(['UjianSiswa' => function($q){
+            $data = Soal::with(['UjianSiswa' => function($q) use($param) {
                 $q->orderBy('total_nilai', 'desc');
             }])->find($id);
-            // dd($data,$id);
+            
+            if ($param == 'nama') {
+                $data->UjianSiswa = $data->UjianSiswa
+                                        ->each(function($item, $index) {
+                                            // tambah field rank
+                                            $item->rank = $index + 1;
+                                        })->sortBy(function($item) {
+                                            // urutkan berdasarkan nama
+                                            return $item->Siswa->nama;
+                                        })->values(); 
+            }
+
             return view('pages.teacher.rapor.detail', compact('data'));
         }
         
@@ -48,7 +60,7 @@ class RaporController extends Controller
 
     public function rank($soalId, $idUjian)
     {
-        $data = UjianSiswa::orderBy('nilai', 'desc')->where('soal_id', $soalId)->get();
+        $data = UjianSiswa::orderBy('total_nilai', 'desc')->where('soal_id', $soalId)->get();
         // dd($data->where('id',$idUjian)->first()->Soal->SoalDetail);
         $rank = 1;
         foreach ($data as $item) {
@@ -57,6 +69,9 @@ class RaporController extends Controller
             }
             $rank++;
         }
+        $data = UjianSiswa::orderBy('total_nilai', 'desc')->where('soal_id', $soalId)->get();
+       
+        // dd($data->where('id',$idUjian)->first(), $data);
         return view('pages.student.rapor.rank', [
             'data' =>$data->where('id',$idUjian)->first(),
             'rank' =>$rank,

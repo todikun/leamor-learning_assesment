@@ -9,6 +9,7 @@ use App\Models\TmpFile;
 use App\Models\TipeSoal;
 use App\Models\SoalDetail;
 use App\Models\UjianSiswa;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class SoalController extends Controller
@@ -20,7 +21,7 @@ class SoalController extends Controller
      */
     public function index()
     {
-        $data = Soal::where('created_by', auth()->user()->id)->get();
+        $data = Soal::orderBy('id', 'desc')->where('created_by', auth()->user()->id)->get();
         return view('pages.teacher.soal.index', compact('data'));
     }
 
@@ -276,6 +277,7 @@ class SoalController extends Controller
             'batch'=>$request->batch,
             'cover'=>$cover,
             'is_mandiri' => $request->is_mandiri,
+            'token' => $request->is_mandiri == false ? $soal->id . Str::random(5) . date('Y', strtotime($soal->created_at)) : null,
             'waktu_akses_ujian' => $request->is_mandiri == false ? $request->tanggal_ujian.' '.$request->jam_ujian.':00' : null,
         ]);
 

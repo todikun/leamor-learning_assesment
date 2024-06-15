@@ -14,7 +14,7 @@
 
                 <table id="myTable" class="table">
                     <thead>
-                        <tr class="text-center">
+                        <tr class="text-center" style="background-color: #79dfc1;">
                             <th>No</th>
                             <th>Tanggal Ujian</th>
                             <th>Action</th>

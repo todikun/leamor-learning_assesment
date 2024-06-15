@@ -18,12 +18,12 @@
             @if (auth()->user()->role == 'student')
                 <img src="{{asset('dist/img/fighting.png')}}" alt="err" height="300px" width="auto" />
 
-                <form action="{{route('ujian.akses')}}" method="POST">
+                <form action="{{route('ujian.akses')}}" id="tokenForm" method="POST">
                     @csrf
                     <div class="row row justify-content-md-center mt-2">
                         <div class="col-4">
-                            <input type="text" name="token" placeholder="Kode Akses" class="form-control mb-2" required />
-                            <button type="submit" class="form-control btn btn-success mb-2">Submit</button>
+                            <input type="text" id="tokenInput" name="token" style="background: #55cca8;" placeholder="Kode Akses" class="form-control py-3 mb-1" />
+                            <span style="color: rgb(179, 175, 175); font-size: 12px">tekan enter untuk submit</span>
                         </div>
                     </div>
                 </form>
@@ -54,6 +54,14 @@
                     console.log(err);
                 },
             });
+        });
+
+        var tokenInput = $('#tokenInput');
+        tokenInput.on('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                tokenInput.val() != '' ? $('#tokenForm').submit() : alert('Kode akses tidak boleh kosong!');
+            }
         });
     </script>
 @endpush

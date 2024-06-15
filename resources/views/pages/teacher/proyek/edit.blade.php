@@ -13,7 +13,7 @@
         <option {{$data->is_share == 0 ? 'selected':''}} value="0">Tidak</option>
     </select>
 
-    <button type="submit" class="btn btn-primary">Simpan</button>
+    <button type="submit" class="btn btn-success">Simpan</button>
 
     <a href="{{route('proyek.undo', $data->id)}}" onclick="return confirm('Apa anda yakin menghapus proyek ini?')" class="btn btn-danger">Hapus</a>
 </form>

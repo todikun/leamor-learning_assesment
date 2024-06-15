@@ -5,6 +5,13 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h3">Rapor Ujian: <strong>{{$data->nama ?? '-'}}</strong> </h1>
+    <div class="col-md-4 d-flex">
+        <h1 class="h3">Filter:</h1>
+        <select name="filter" class="form-control form-select ms-3" onchange="sortData(this)">
+            <option {{request()->get('sort') == 'nama' ? 'selected':''}} value="nama">Nama</option>
+            <option {{!request()->get('sort') || request()->get('sort') == 'rank' ? 'selected':''}} value="rank">Rank</option>
+        </select>
+    </div>
 </div>
 
 <div class="row">
@@ -13,11 +20,12 @@
             <div class="card-body">
 
                 <table id="myTable" class="table">
-                    <thead>
+                    <thead style="background-color: #79dfc1">
                         <tr class="text-center">
-                            <th>Rank</th>
+                            <th>No</th>
                             <th>Nama Siswa</th>
                             <th>Nilai</th>
+                            <th>Rank</th>
                             <th>Waktu Pelaksanaan</th>
                             <th>File Ujian</th>
                         </tr>
@@ -27,7 +35,8 @@
                             <tr class="text-center">
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$item->Siswa->nama}}</td>
-                                <td>{{array_sum($item->nilai)}}</td>
+                                <td>{{$item->total_nilai}}</td>
+                                <td>{{$item->rank ?? $loop->iteration}}</td>
                                 <td>{{date('d F Y H:i', strtotime($item->created_at))}}</td>
                                 <td>
                                     <a href="{{route('rapor.teacher.rank', [$data->id, $item->id])}}" class="btn btn-secondary">
@@ -52,7 +61,12 @@
 
 <script>
     
-
+    function sortData(e) {
+        if (e.value != '') {
+            let url = "{{route('rapor.teacher.detail', $data->id)}}";
+            window.location.replace(url+'?sort='+e.value);
+        }
+    }
     // event button edit
     $('.btn-add').on('click', function (e) {
         e.preventDefault();

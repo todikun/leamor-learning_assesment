@@ -11,7 +11,7 @@
             <i class="align-middle" data-feather="folder"></i> Folder View
         </a>
 
-        <a href="{{ route('soal.create') }}" class="btn btn-primary ">
+        <a href="{{ route('soal.create') }}" class="btn btn-success ">
             <i class="align-middle" data-feather="plus"></i> Create Soal
         </a>
     </div>
@@ -80,17 +80,11 @@
                                         class="btn btn-sm btn-warning">
                                         <i class="fa fa-edit"></i> Soal
                                     </a>
-                                    <form
-                                        action="{{ route('soal.destroy', $item->id) }}"
-                                        method="post" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit"
-                                            class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Apakah yakin data ini ingin dihapus?')">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
+
+                                    <a href="{{ route('proyek.undo', $item->id) }}"
+                                        class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i> 
+                                    </a>
                                     <a href="{{ route('soal.edit', $item->id) }}"
                                         class="btn btn-sm btn-secondary">
                                         <i class="fa fa-gear"></i>
