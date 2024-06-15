@@ -20,6 +20,7 @@ class UserTableSeeder extends Seeder
                 'nama' => 'Jhon Doe',
                 'username' => 'jhon',
                 'role' => 'teacher',
+                'is_verified' => true,
                 'password' => bcrypt('password'),
                 'created_at' => Carbon::now()
             ],
@@ -27,6 +28,7 @@ class UserTableSeeder extends Seeder
                 'nama' => 'Anne Doe',
                 'username' => 'anne',
                 'role' => 'teacher',
+                'is_verified' => true,
                 'password' => bcrypt('password'),
                 'created_at' => Carbon::now()
             ],
@@ -34,6 +36,7 @@ class UserTableSeeder extends Seeder
                 'nama' => 'Rick Doe',
                 'username' => 'rick',
                 'role' => 'teacher',
+                'is_verified' => true,
                 'password' => bcrypt('password'),
                 'created_at' => Carbon::now()
             ],
@@ -41,6 +44,7 @@ class UserTableSeeder extends Seeder
                 'nama' => 'Budi',
                 'username' => 'budi',
                 'role' => 'student',
+                'is_verified' => true,
                 'password' => bcrypt('password'),
                 'created_at' => Carbon::now()
             ],
@@ -48,6 +52,16 @@ class UserTableSeeder extends Seeder
                 'nama' => 'Putri',
                 'username' => 'putri',
                 'role' => 'student',
+                'is_verified' => true,
+                'password' => bcrypt('password'),
+                'created_at' => Carbon::now()
+            ],
+
+            [
+                'nama' => 'Admin',
+                'username' => 'admin',
+                'role' => 'admin',
+                'is_verified' => true,
                 'password' => bcrypt('password'),
                 'created_at' => Carbon::now()
             ],

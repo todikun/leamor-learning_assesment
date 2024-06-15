@@ -22,12 +22,20 @@ class LoginController extends Controller
 
     public function loginAction(Request $request)
     {
+        if (!request('q') || (request('q') != 'teacher' && request('q') != 'student')) {
+            return redirect('/')->with('error', 'Invalid URL!');
+        }
+        
         $credentials = $request->validate([
             'username' => 'required',
             'password' => 'required'
         ]);
 
         if (Auth::attempt($credentials)) {
+            if (auth()->user()->role == 'teacher' && auth()->user()->is_verified == false) {
+                Auth::logout();
+                return redirect('/')->with('error', 'Akun anda belum diverifikasi oleh Admin!');
+            }
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
         }

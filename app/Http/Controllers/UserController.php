@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = User::whereRole('student')->get();
+        $data = User::get();
         return view('pages.user.index', compact('data'));
     }
 
@@ -49,10 +49,19 @@ class UserController extends Controller
             'sekolah' => $request->sekolah ?? null,
             'password' => bcrypt($request->password),
             'role' => $request->role,
+            'is_verified' => $request->role == 'teacher' ? false : true,
         ]);
 
         return redirect()->route('login', ['q'=>$request->role])->with('success', 'Akun berhasil dibuat');
     }
+
+    public function verify($id)
+    {
+        $user = User::find($id);
+        $user->update(['is_verified'=>true]);
+        return back()->with('success', 'Data berhasi diupdate');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

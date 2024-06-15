@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3">Manajemen Siswa</h1>
+    <h1 class="h3">Manajemen Akun</h1>
     <a href="{{ route('user.create') }}" class="btn btn-success btn-add">
-        <i class="align-middle" data-feather="plus"></i> Tambah Siswa
+        <i class="align-middle" data-feather="plus"></i> Tambah Akun
     </a>
 </div>
 
@@ -21,6 +21,8 @@
                             <th>#</th>
                             <th>Nama</th>
                             <th>Username</th>
+                            <th>Role</th>
+                            <th>Verified</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -30,7 +32,17 @@
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$item->nama}}</td>
                                 <td>{{$item->username}}</td>
+                                <td>{{$item->role}}</td>
+                                <td><h1 class="text-{{$item->is_verified == true ? 'success' : 'danger'}}">
+                                    <i class="fa fa-{{$item->is_verified == true ? 'check' : 'times'}}"></i>
+                                </h1></td>
                                 <td>
+                                    @if ($item->is_verified == false)
+                                        <a href="{{route('teacher.verify', $item->id)}}" onclick="return confirm('Apa anda yakin akan memproses akun ini?')" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-check"></i> Verify
+                                        </a>
+                                    @endif
+
                                     <a href="{{route('user.edit', $item->id)}}" class="btn btn-warning btn-sm btn-edit">
                                         <i class="fa fa-edit"></i>
                                     </a>

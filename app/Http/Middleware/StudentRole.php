@@ -16,7 +16,7 @@ class StudentRole
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role == 'student') {
+        if (auth()->user()->role == 'student' || auth()->user()->role == 'admin') {
             return $next($request);
         }
         return abort(403);

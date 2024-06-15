@@ -6,7 +6,7 @@
 
 		<ul class="sidebar-nav">
 
-			@if (auth()->user()->role == 'teacher')
+			@if (in_array(auth()->user()->role, ['teacher', 'admin']))
 				<li class="sidebar-item {{Route::is('proyek.index') ? 'active' : ''}}">
 					<a class="sidebar-link" href="{{route('proyek.index')}}">
 						<i class="align-middle " data-feather="folder"></i> <span class="align-middle">Semua Proyek</span>
@@ -32,7 +32,7 @@
 				</li>
 			@endif
 
-			@if (auth()->user()->role == 'student')
+			@if (in_array(auth()->user()->role, ['student']))
 
 				<li class="sidebar-item {{Route::is('ayo_tes') ? 'active' : ''}}">
 					<a class="sidebar-link" href="{{route('ayo_tes')}}">

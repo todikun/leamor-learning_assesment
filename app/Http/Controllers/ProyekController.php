@@ -17,8 +17,10 @@ class ProyekController extends Controller
      */
     public function index()
     {
-        // $data = Proyek::where('is_share', true)->where('is_deleted', false)->get();
-        $data = Soal::orderBy('id', 'desc')->where('is_share', true)->where('is_deleted', false)->get();
+        $data = Soal::orderBy('id', 'desc')->where(function($q){
+            $q->where('is_share', true);
+            $q->where('is_deleted', false);
+        })->get();
         return view('pages.teacher.proyek.index', compact('data'));
     }
 
@@ -55,9 +57,12 @@ class ProyekController extends Controller
 
     public function myProyek()
     {   
-        $data = Soal::orderBy('id', 'desc')->where('created_by', auth()->user()->id)
-                        ->where('is_deleted', false)
-                        ->get();
+        $data = Soal::orderBy('id', 'desc')->where(function($q){
+            if (auth()->user()->role == 'teacher') {
+                $q->where('created_by', auth()->user()->id);
+            }
+            $q->where('is_deleted', false);
+        })->get();
         return view('pages.teacher.proyek.my-proyek', compact('data'));
     }
 

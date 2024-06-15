@@ -51,7 +51,7 @@
                                         </a>
                                     </div>
 
-                                    <form action="{{ route('login.action') }}" method="POST">
+                                    <form action="{{ route('login.action', ['q'=>$param]) }}" method="POST">
                                         @csrf
 
                                         <div class="mb-3">

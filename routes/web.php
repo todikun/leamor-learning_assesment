@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function(){
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
+    Route::get('teacher/{id}/verify', [UserController::class, 'verify'])->name('teacher.verify');
     Route::resource('user', UserController::class);
 
     Route::group(['middleware'=>'teacherRole', 'prefix'=>'teacher'], function(){

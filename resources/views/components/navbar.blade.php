@@ -4,8 +4,8 @@
 			<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" title="{{strtoupper(auth()->user()->nama)}}" data-bs-toggle="dropdown">
 				<i class="align-middle me-1" data-feather="user"></i>{{auth()->user()->nama}}</a>
 			<div class="dropdown-menu dropdown-menu-end">
-				@if (auth()->user()->role == 'teacher')
-				<a class="dropdown-item {{Route::is('user.index') ? 'active' : ''}}" href="{{route('user.index')}}" >Manajemen Akun Siswa</a>
+				@if (in_array(auth()->user()->role, ['admin']))
+					<a class="dropdown-item {{Route::is('user.index') ? 'active' : ''}}" href="{{route('user.index')}}" >Manajemen Akun</a>
 				@endif
 				<a class="dropdown-item btn-edit" href="{{route('user.edit', auth()->user()->id)}}" >Profile</a>
 

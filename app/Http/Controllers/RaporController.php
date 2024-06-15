@@ -12,6 +12,11 @@ class RaporController extends Controller
     public function index()
     {
         $role = auth()->user()->role;
+        if ($role == 'admin') {
+            $data = Soal::get();
+            return view('pages.teacher.rapor.index', compact('data'));
+        }
+
         if ($role == 'teacher') {
             $data = Soal::where('created_by', auth()->user()->id)
                             // ->where('is_deleted', false)
@@ -33,7 +38,7 @@ class RaporController extends Controller
     {
         $param = request('sort');
         $role = auth()->user()->role;
-        if ($role == 'teacher') {
+        if (in_array($role, ['teacher', 'admin'])) {
             $data = Soal::with(['UjianSiswa' => function($q) use($param) {
                 $q->orderBy('total_nilai', 'desc');
             }])->find($id);
