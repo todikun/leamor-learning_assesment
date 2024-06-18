@@ -147,13 +147,14 @@ class SoalController extends Controller
                     'opsi_jawaban' => $opsi_jawaban,
                     'kunci_jawaban' => $kunci_jawaban,
                     'skor' => $request->skor[$key],
+                    'feedback' => $request->feedback[$key],
                 ]);
             }
             
             // Move file from dir tmp -> uploads
             \App\Helpers\_tmpFile::moveFile($stimulusDokumen);
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return back()->with('error', $th->getMessage());
         }
         return view('pages.teacher.soal.open-akses', compact('soal'));
     }

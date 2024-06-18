@@ -15,6 +15,23 @@
             justify-content: center;
             align-items: center;
         }
+
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            background-color: #f8f9fa;
+        }
+        .svg-content {
+            width: 300px;
+            height: 150px;
+        }
+        .title {
+            font-size: 10px;
+            font-weight: bold;
+            text-anchor: middle;
+        }
     </style>
 </head>
 <body>
@@ -25,8 +42,17 @@
 
                 @include('components.alert')
                 <div class="pb-3 mb-3">
-                    <h3 class="mb-5 fw-bold">Welcome to Leamor</h3>
-                    <span>As</span>
+                    <div class="svg-container">
+                        <svg class="svg-content" viewBox="0 0 100 50">
+                            <path id="curve" d="M10,40 A40,20 0 0,1 90,40" fill="transparent"/>
+                            <text class="title">
+                                <textPath href="#curve" startOffset="50%">
+                                    Welcome to Leamor
+                                </textPath>
+                            </text>
+                        </svg>
+                    </div>
+                    <span>As</span> 
                 </div>
 
                 <div class="col-md-6">

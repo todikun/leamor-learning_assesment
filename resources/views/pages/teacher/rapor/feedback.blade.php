@@ -2,7 +2,7 @@
 <form action="{{route('rapor.teacher.feedback_store', $data->id)}}" method="post">
     @csrf
 
-    <input type="hidden" name="soal_detail_id" value="{{request('index')}}" />
+    <input type="hidden" name="no_soal" value="{{request('index')}}" />
     <h5 class="card-title mb-2">Feedback </h5>
     <textarea name="feedback" class="form-control summernote mb-2" cols="3" rows="3" required></textarea>
 

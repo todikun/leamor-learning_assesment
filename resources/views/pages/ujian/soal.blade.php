@@ -91,6 +91,9 @@
         
                                             </div>
                                         @endforeach
+
+                                    {{-- feedback --}}
+                                    <input type="hidden" name="feedback[]" value="{{$item->feedback ?? null}}" />
                             
                                     </div>
                                 </div>

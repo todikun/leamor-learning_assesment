@@ -35,14 +35,12 @@
                                 <td>{{$item->TipeSoal->nama}}</td>
                                 <td>{!!$item->pertanyaan!!}</td>
                                 <td>
-                                    @php
-                                        $guruFeedback = $data->UjianSiswaFeedback->where('ujian_siswa_id', $data->id)->where('soal_detail_id',$item->id)->first();
-                                    @endphp
-                                    @if (!isset($guruFeedback) && auth()->user()->role == 'teacher')
-                                        <a href="{{route('rapor.teacher.feedback', [$data->id,'index'=>$item->id])}}" class="text-danger btn-feedback">Isi feedback</a>
-                                    @else
-                                        {!!$guruFeedback->feedback ?? '-'!!}</td>    
+                                    @if ($data->feedback[$key] == null && auth()->user()->role == 'teacher')
+                                        <a href="{{route('rapor.teacher.feedback', [$data->id,'index'=>$key])}}" class="text-danger btn-feedback">Isi feedback</a>
+                                    @else    
+                                        {!!$data->feedback[$key] ?? '-'!!}</td>
                                     @endif
+
                                 <td>
                                     @if (is_array($data->jawaban[$key]))
                                         @foreach ($data->jawaban[$key] as $j)

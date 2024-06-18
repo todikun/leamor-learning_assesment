@@ -100,10 +100,11 @@ class RaporController extends Controller
 
     public function feedbackStore(Request $request, $id)
     {
-        UjianSiswaFeedback::create([
-            'ujian_siswa_id' => $id,
-            'soal_detail_id' => $request->soal_detail_id,
-            'feedback' => $request->feedback,
+        $data = UjianSiswa::find($id);
+        $feedback = $data->feedback;
+        $feedback[$request->no_soal] = $request->feedback;
+        $data->update([
+            'feedback' => $feedback,
         ]);
         return back()->with('success', 'Feedback berhasil ditambahkan');
     }

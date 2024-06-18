@@ -162,10 +162,7 @@
                                                             @break
                                                         @case('3')
                                                         {{-- salah benar --}}
-                                                        @php
-                                                            // dd($item->opsi_jawaban);
-                                                        @endphp
-                                                            <input type="radio" name="no_{{$key+1}}" class="ms-3" value="{{$jawaban}}" /> {{$jawaban}}
+                                                            <input type="radio" name="no_{{$key+1}}" class="ms-3" value="{{$jawaban}}" required /> {{$jawaban}}
                                                             @break
                                                         @case('4')
                                                         {{-- isian singkat --}}

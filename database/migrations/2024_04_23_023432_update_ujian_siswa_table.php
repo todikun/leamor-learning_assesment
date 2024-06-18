@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('ujian_siswas', function (Blueprint $table) {
-            $table->string('rank')->nullable()->after('total_nilai');
+            $table->text('feedback')->nullable()->after('jawaban');
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('rank');
+            $table->dropColumn('feedback');
         });
     }
 };

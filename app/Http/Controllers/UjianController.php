@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class UjianController extends Controller
 {
+    public function ujianMandiri($id)
+    {
+        $soal = Soal::find($id);
+        return view('pages.student.identitas', compact('soal'));
+    }
+
     public function cekAkses(Request $request)
     {
         $soal = Soal::whereToken($request->token)->first();
@@ -59,6 +65,7 @@ class UjianController extends Controller
         try {
             foreach ($soal->SoalDetail as $index => $item) {
                 $jawabanUser[] = $request->input('no_'.$index + 1);
+                $feedback[] = $request->feedback[$index] ?? null;
     
                 if ($item->kunci_jawaban[0] == $request->input('no_'.$index + 1)) {
                     $benar += 1;
@@ -93,6 +100,7 @@ class UjianController extends Controller
             $ujianSiswa = UjianSiswa::find($request->ujian_siswa_id);
             $ujianSiswa->update([
                 'jawaban' => $jawabanUser,
+                'feedback' => $feedback,
                 'nilai' => $skor,
                 'total_nilai' => $totalSkor,
             ]);

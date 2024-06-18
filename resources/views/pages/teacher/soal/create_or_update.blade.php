@@ -119,7 +119,7 @@
                                     </div>
 
                                     {{-- feedback --}}
-                                    {{-- <div class="col-md-12">
+                                    <div class="col-md-12">
                                         <div class="card">
                                             <div class="card-body">
                                                 <div class="card-body">
@@ -128,7 +128,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> --}}
+                                    </div>
                 
                                 </div>
                         
@@ -153,7 +153,7 @@
                                             </div>
 
                                             <div class="form-group mb-2">
-                                                <h5 class="card-title mb-2">Skor</h5>
+                                                <h5 class="card-title mb-2">Skor <span class="text-danger">*</span></h5>
                                                 <input type="number" class="form-control mb-2" value="{{$item->skor}}" placeholder="Skor" name="skor[]" required/>
                                             </div>
                 
@@ -305,14 +305,14 @@
                                 </div>
 
                                 {{-- feedback --}}
-                                {{-- <div class="col-md-12">
+                                <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title mb-2">Feedback </h5>
                                             <textarea name="feedback[]" class="form-control feedback-summernote" cols="3" rows="3"></textarea>
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
             
                             </div>
                     
@@ -338,7 +338,7 @@
                                         </div>
 
                                         <div class="form-group mb-2">
-                                            <h5 class="card-title mb-2">Skor</h5>
+                                            <h5 class="card-title mb-2">Skor <span class="text-danger">*</span></h5>
                                             <input type="number" class="form-control mb-2" placeholder="Skor" name="skor[]" required />
                                         </div>
             
@@ -498,6 +498,16 @@
                             </div>
                         </div>
 
+                        {{-- feedback --}}
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-2">Feedback </h5>
+                                    <textarea name="feedback[]" class="form-control feedback-summernote" cols="3" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
             
                     {{-- opsi --}}
@@ -522,7 +532,7 @@
                                 </div>
 
                                 <div class="form-group mb-2">
-                                    <h5 class="card-title mb-2">Skor</h5>
+                                    <h5 class="card-title mb-2">Skor <span class="text-danger">*</span></h5>
                                     <input type="number" class="form-control mb-2" placeholder="Skor" name="skor[]" required/>
                                 </div>
 
@@ -530,8 +540,15 @@
     
                                 <div class="appendAreaOpsi_${globalIndex}">
                                     <div class="row d-flex mb-3">
-                                        <div class="col-md">
+                                        <div class="col-md isian-singkat d-none">
                                             <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
+                                            <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
+                                                <i class="fa fa-plus p-2"></i> 
+                                            </a>
+                                            <span class="mx-3"></span>
+                                            <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
+                                                <i class="fa fa-times p-2"></i> 
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md opsi-jawaban" >
@@ -573,7 +590,7 @@
 
             // re-init summernote
             summernote();
-            // feedbackSummernote();
+            feedbackSummernote();
         });
 
         btnSoalRemove.on('click',function(){
@@ -821,20 +838,20 @@
             });
         }
 
-        // function feedbackSummernote()
-        // {
-        //     $('.feedback-summernote').summernote({
-        //         tabsize: 2,
-        //         height: 120,
-        //         toolbar: [
-        //             ['insert', ['picture']],
-        //         ]
-        //     });
-        // }
+        function feedbackSummernote()
+        {
+            $('.feedback-summernote').summernote({
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['insert', ['picture']],
+                ]
+            });
+        }
 
         $(function() {
             summernote();
-            // feedbackSummernote();
+            feedbackSummernote();
         });
     </script>
     
