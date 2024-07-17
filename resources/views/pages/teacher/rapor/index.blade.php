@@ -23,8 +23,7 @@
         <div class="col mb-2 text-center">
             <div class="d-inline-block position-relative">
                 <a href="#" style="cursor: default">
-                    <img src="{{asset('dist/img/folder.png')}}" alt="err" width="50px" height="50px" />
-                </a>
+                    <img src="{{asset('uploads/'.$item->cover)}}" alt="err" width="50px" height="50px" /></a>
                 <a href="{{route('rapor.teacher.detail', $item->id)}}" title="Rapor" class=" bg-success text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
                     <i class="align-middle p-1" data-feather="file"></i> 
                 </a>
