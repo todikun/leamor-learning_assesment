@@ -23,7 +23,7 @@
         <div class="col mb-2 text-center">
             <div class="d-inline-block position-relative">
                 <a href="#" style="cursor: default">
-                    <img src="{{asset('dist/img/folder.png')}}" alt="err" width="50px" height="50px" />
+                    <img src="{{asset('dist/uploads/'.$item->cover)}}" alt="err" width="50px" height="50px" />
                 </a>
                 <a href="{{route('soal.edit', $item->id)}}" title="Edit proyek" class=" bg-warning text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
                     <i class="align-middle p-1" data-feather="edit-2"></i> 
