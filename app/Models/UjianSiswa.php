@@ -15,6 +15,17 @@ class UjianSiswa extends Model
         'feedback'=>'array',
         'nilai'=>'array',
     ];
+    protected $appends = ['tanggal_format', 'jam_format'];
+
+    public function getTanggalFormatAttribute()
+    {
+        return \Carbon\Carbon::parse($this->created_at)->locale('id')->translatedFormat('j F Y');
+    }
+
+    public function getJamFormatAttribute()
+    {
+        return \Carbon\Carbon::parse($this->created_at)->locale('id')->translatedFormat('H:i');
+    }
 
     public function Soal()
     {
@@ -24,10 +35,5 @@ class UjianSiswa extends Model
     public function Siswa()
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id');
-    }
-
-    public function UjianSiswaFeedback()
-    {
-        return $this->hasMany('App\Models\UjianSiswaFeedback', 'ujian_siswa_id', 'id');
     }
 }

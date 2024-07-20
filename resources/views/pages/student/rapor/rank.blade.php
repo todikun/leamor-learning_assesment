@@ -6,7 +6,7 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="h3">Rapor Ujian: <strong>{{$data->Soal->nama ?? '-'}}</strong> </h1>
     <h2 class="h3"><strong>{{$data->Siswa->nama}}</strong>, Peringkat: <strong>{{$rank}}</strong>, Total Skor: <strong>{{$data->total_nilai}}</strong></h2>
-    <a href="{{route('export', $data->soal_id)}}" class="btn btn-danger">
+    <a href="{{route('export.permateri', $data->id)}}" class="btn btn-danger">
         <i class="fa fa-file"></i> PDF
     </a>
 </div>

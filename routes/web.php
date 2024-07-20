@@ -20,6 +20,9 @@ use App\Http\Controllers\DashboardController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('laporan', function(){
+    return view('pages.student.rapor.cetak');
+});
 
 Route::get('phpinfo', function(){
     return phpinfo();
@@ -133,7 +136,7 @@ Route::middleware('auth')->group(function(){
     });
 
     // pdf
-    Route::get('{id}/export/pdf', [RaporController::class,'exportPdf'])->name('export');
+    Route::get('{id}/export/pdf', [RaporController::class,'exportPdfPermateri'])->name('export.permateri');
 
     Route::group(['middleware'=>'studentRole', 'prefix'=>'student'], function(){
 

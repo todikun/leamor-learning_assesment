@@ -136,10 +136,19 @@ class RaporController extends Controller
         return back()->with('success', 'Rapor berhasil disubmit');
     }
 
-    public function exportPdf($id)
+    public function exportPdfPermateri($id)
     {
-        $data = UjianSiswa::where('soal_id', $id)->orderBy('total_nilai', 'desc')->get();
-        dd($data);
+        $data = UjianSiswa::with(['Soal', 'Siswa'])->find($id);
+        $dataRank = UjianSiswa::orderBy('total_nilai', 'desc')->where('soal_id', $data->soal_id)->get();
+        // dd($data->where('id',$idUjian)->first()->Soal->SoalDetail);
+        $rank = 1;
+        foreach ($dataRank as $item) {
+            if ($item->id == $data->id) {
+                break;
+            }
+            $rank++;
+        }
+        return view('pages.student.rapor.cetak', compact('data', 'rank'));
     }
 
 }
