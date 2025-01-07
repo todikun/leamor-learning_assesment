@@ -44,15 +44,9 @@ class UjianController extends Controller
 
     public function ujianForm(Request $request)
     {
-        $siswa = UjianSiswa::create([
-            'soal_id' => $request->soal_id,
-            'pernyataan' => $request->pernyataan,
-            'user_id' => auth()->user()->id,
-        ]);
-
         $soal = Soal::find($request->soal_id);
 
-        return view('pages.ujian.soal', ['soal' => $soal, 'siswa' => $siswa, 'ujian' => true]);
+        return view('pages.ujian.soal', ['soal' => $soal, 'pernyataan' => $request->pernyataan, 'ujian' => true]);
     }
 
     public function storeNilai(Request $request, $id)
@@ -97,8 +91,10 @@ class UjianController extends Controller
                 }
             }
     
-            $ujianSiswa = UjianSiswa::find($request->ujian_siswa_id);
-            $ujianSiswa->update([
+            $ujianSiswa = UjianSiswa::create([
+                'soal_id' => $soal->id,
+                'pernyataan' => $request->pernyataan,
+                'user_id' => auth()->user()->id,
                 'jawaban' => $jawabanUser,
                 'feedback' => $feedback,
                 'nilai' => $skor,

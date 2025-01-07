@@ -86,7 +86,7 @@
                                                             </div>
                                                             <div class="col-md stimulus-tipe">
                                                                 @if ($stimulus['tipe'] == 'teks')
-                                                                    <textarea name="{{$key+1}}_stimulus[]" class="form-control mb-2 text-stimulus" cols="3" rows="3" required="required">{{$stimulus['value']}}</textarea>
+                                                                    <textarea name="{{$key+1}}_stimulus[]" class="form-control mb-2 text-stimulus stimulus-summernote" cols="3" rows="3" required="required">{{$stimulus['value']}}</textarea>
                                                                 @else
                                                                     {{-- <input name="{{$key+1}}_stimulus[]" type="file" class="form-control mb-2" required="required"> --}}
                                                                     <div class="row d-flex">
@@ -652,7 +652,7 @@
             }
 
             var textarea = `
-                <textarea name="${index}_stimulus[]" class="form-control mb-2 text-stimulus" cols="3" rows="3" required></textarea>
+                <textarea name="${index}_stimulus[]" class="form-control mb-2 text-stimulus stimulus-summernote" cols="3" rows="3" required></textarea>
             `;
 
             var fileInput = `
@@ -685,6 +685,7 @@
             switch ($(e).val()) {
                 case 'teks':
                     stimulusDiv.append(textarea);
+                    stimulusSummernote();
                     break;
                 case 'dokumen':
                     stimulusDiv.append(fileInput);
@@ -834,6 +835,22 @@
                     // ['table', ['table']],
                     ['insert', ['picture']],
                     // ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+            });
+        }
+
+        function stimulusSummernote() {
+            $('.stimulus-summernote').summernote({
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    // ['style', ['style']],
+                    ['font', ['bold', 'underline', 'italic']],
+                    // ['color', ['color']],
+                    // ['para', ['ul', 'ol', 'paragraph']],
+                    // ['table', ['table']],
+                    // ['insert', ['picture']],
+                    // ['view', ['fullscreen', 'codeview', 'help']]
                 ]
             });
         }
@@ -851,6 +868,7 @@
 
         $(function() {
             summernote();
+            stimulusSummernote();
             feedbackSummernote();
         });
     </script>

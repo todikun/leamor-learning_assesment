@@ -34,6 +34,19 @@
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
     
     <style>
+        /* Summernote*/
+        
+            /* biar style font default normal */
+            .note-editable {
+                font-weight: normal !important;
+            }
+        /* Summernote*/
+
+        .dashed-border {
+            border: 2px dashed #534f4f; /* Garis border putus-putus, warna hitam, dengan ketebalan 2px */
+            padding: 10px;
+        }
+
         /* Sidebar */
         #sidebar {
             z-index: 1;
@@ -247,7 +260,9 @@
             var gambar = ['jpg', 'jpeg', 'png']
             if (gambar.includes(jenisDokumen[1])) {
                 html = `
-                <img src=${dokumen} class="rounded" width="450px height="auto />
+                <a target="_blank" href="${dokumen}">
+                    <img src=${dokumen} class="rounded" width="450px height="auto />
+                </a>
                 `;
             }
 

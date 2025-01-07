@@ -60,10 +60,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <h5 class="card-title my-3">Batch <span class="text-danger">*</span></h5>
-                                    <div class="input-group mb-3">
-                                        <input type="number" class="form-control" name="batch" placeholder="Batch" />
-                                        <span class="input-group-text">menit</span>
-                                    </div>
+                                    <input type="number" class="form-control mb-3" name="batch" placeholder="Batch" />
                                 </div>
                                 <div class="col-md-4">
                                     <h5 class="card-title my-3">Dapat berbagi <span class="text-danger">*</span></h5>

@@ -7,7 +7,12 @@
 <form id="formSoal" action="{{route('ujian.nilai', $soal->id)}}" method="post" enctype="multipart/form-data">
     @csrf
 
-    <input type="hidden" name="ujian_siswa_id" value="{{$siswa->id}}"/>
+    @forelse ($pernyataan as $p)
+        <input type="hidden" name="pernyataan[]" value="{{$p}}" />
+    @empty
+        <input type="hidden" name="pernyataan[]" value="" />
+    @endforelse
+
     <div class="row mb-3 justify-content-center pb-3">
         <div class="col-md-4 alert alert-success ms-auto">
             <h2 class="text-center my-3 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h2>
@@ -62,30 +67,41 @@
                                                             $image  = ['png', 'jpg', 'jpeg'];
                                                             $extension = explode('.', $stimulus['value']);
                                                         @endphp
-                                                        @if ($stimulus['tipe'] == 'teks')
-                                                            <textarea class="form-control mb-2" cols="3" rows="3" required>{{$stimulus['value']}}</textarea>
-                                                        @else
-                                                        <li>
-                                                            @if (in_array($extension[1], $audio))
-                                                                <div class="d-flex justify-content-center align-items-center">
-                                                                    <audio controls class="audio-player">
-                                                                        <source src="{{asset('uploads/'.$stimulus['value'])}}" type="audio/mpeg">
-                                                                        Your browser does not support the audio element.
-                                                                    </audio>
+                                                        <ul>
+                                                            @if ($stimulus['tipe'] == 'teks')
+                                                            <li>
+                                                                <div class="dashed-border ms-2">
+                                                                    {{$stimulus['value']}}
                                                                 </div>
+                                                            </li>
+                                                            @else
+                                                            <li>
+                                                                @if (in_array($extension[1], $audio))
+                                                                    <div class="d-flex justify-content-center align-items-center">
+                                                                        <audio controls class="audio-player">
+                                                                            <source src="{{asset('uploads/'.$stimulus['value'])}}" type="audio/mpeg">
+                                                                            Your browser does not support the audio element.
+                                                                        </audio>
+                                                                    </div>
+                                                                @endif
+                                                                @if (in_array($extension[1], $video))
+                                                                    <div class="d-flex justify-content-center align-items-center ms-2">
+                                                                        <video controls width="100%" height="auto">
+                                                                            <source src="{{asset('uploads/' . $stimulus['value'])}}" type="video/mp4">
+                                                                            Your browser does not support the video tag.
+                                                                        </video>
+                                                                    </div>
+                                                                @endif
+                                                                @if (in_array($extension[1], $image))
+                                                                    <div class="d-flex justify-content-center align-items-center ms-2">
+                                                                        <a href="{{asset('uploads/' . $stimulus['value'])}}" target="_blank" title="Klik pada gambar untuk memperbesar">
+                                                                            <img src="{{asset('uploads/' . $stimulus['value'])}}" alt="img" width="360px;" height="auto"/>
+                                                                        </a>
+                                                                    </div>
+                                                                @endif
+                                                            </li>
                                                             @endif
-                                                            @if (in_array($extension[1], $video))
-                                                                <div class="d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-secondary btn-xs my-1 btn-show" data-value="{{$stimulus['value']}}" data-jenis="Video">Show</button>
-                                                                </div>
-                                                            @endif
-                                                            @if (in_array($extension[1], $image))
-                                                                <div class="d-flex justify-content-center align-items-center">
-                                                                    <button type="button" class="btn btn-secondary btn-xs my-1 btn-show" data-value="{{$stimulus['value']}}" data-jenis="Image">Show</button>
-                                                                </div>
-                                                            @endif
-                                                        </li>
-                                                        @endif
+                                                        </ul>
                                                     </div>
                                                 </div>
         
@@ -106,7 +122,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-2">
                                         <h5 class="card-title mb-2">Pertanyaan </h5>
-                                        <div>
+                                        <div class="dashed-border">
                                             {!!$item->pertanyaan!!}
                                         </div>
                                     </div>

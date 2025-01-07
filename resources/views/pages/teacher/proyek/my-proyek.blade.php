@@ -23,10 +23,10 @@
         <div class="col mb-2 text-center">
             <div class="d-inline-block position-relative">
                 <a href="#" style="cursor: default">
-                    <img src="{{asset('uploads/'.$item->cover)}}" alt="err" width="50px" height="50px" />
+                    <img src="{{asset('uploads/'.$item->cover)}}" alt="err" width="150px" height="150px" />
                 </a>
-                <a href="{{route('soal.edit', $item->id)}}" title="Edit proyek" class=" bg-warning text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
-                    <i class="align-middle p-1" data-feather="edit-2"></i> 
+                <a href="{{route('soal.edit', $item->id)}}" title="Edit proyek {{$item->nama}}" class=" bg-warning text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
+                    <i class="align-middle p-1" style="width:32px; height:32px; margin: 6px;" data-feather="edit-2"></i> 
                 </a>
             </div>            
             <h5 class="fw-bold">{{$item->nama}}</h5>

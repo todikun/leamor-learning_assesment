@@ -23,9 +23,9 @@
         <div class="col mb-2 text-center">
             <div class="d-inline-block position-relative">
                 <a href="#" style="cursor: default">
-                    <img src="{{asset('uploads/'.$item->cover)}}" alt="err" width="50px" height="50px" /></a>
+                    <img src="{{asset('uploads/'.$item->cover)}}" alt="err" width="150px" height="150px" />
                 <a href="{{route('rapor.teacher.detail', $item->id)}}" title="Rapor" class=" bg-success text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
-                    <i class="align-middle p-1" data-feather="file"></i> 
+                    <i class="align-middle p-1" style="width:32px; height:32px; margin: 6px;" data-feather="file"></i> 
                 </a>
             </div>            
             <h5 class="fw-bold">{{$item->nama}}</h5>
