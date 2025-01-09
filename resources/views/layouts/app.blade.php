@@ -242,6 +242,7 @@
             var value = e.dataset.value;
             
             var baseUrl = "{{env('APP_URL')}}";
+            var baseUrlAsset = "{{env('ASSET_URL', '')}}";
             var dokumen = baseUrl + url;
 
             var html = ''

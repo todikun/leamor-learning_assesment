@@ -116,7 +116,7 @@
                                 @php
                                     if ($soal->is_mandiri == false) {
                                         $explode = explode(' ', $soal->waktu_akses_ujian);
-                                        $waktu = explode(':', $explode[1]);
+                                        $waktu = explode(':', $explode[1] ?? '');
                                         array_pop($waktu);
     
                                         $jam_ujian = implode(':',$waktu);
