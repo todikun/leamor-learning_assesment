@@ -317,6 +317,19 @@
             $('#modal-form').modal('show');
         }
 
+        function stopAudioPlayer() {
+            var audioPlayers = document.querySelectorAll('.audio-player');
+            audioPlayers.forEach(function(player) {
+                player.addEventListener('play', function() {
+                    audioPlayers.forEach(function(otherPlayer) {
+                        if (otherPlayer !== player) {
+                            otherPlayer.pause();
+                        }
+                    });
+                });
+            });
+        }
+
     </script>
 
     @stack('script')

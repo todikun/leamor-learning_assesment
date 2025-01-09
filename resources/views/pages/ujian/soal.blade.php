@@ -40,7 +40,7 @@
                             <div class="row d-flex align-items-stretch">
 
                                 <div class="col-md-5">
-        
+            
                                     {{-- stimulus --}}
                                     <div class="col-md-12">
                                         <div class="row d-flex mb-3">
@@ -70,14 +70,14 @@
                                                         <ul>
                                                             @if ($stimulus['tipe'] == 'teks')
                                                             <li>
-                                                                <div class="dashed-border ms-2">
-                                                                    {{$stimulus['value']}}
+                                                                <div class="my-2 ms-2">
+                                                                    {!!$stimulus['value']!!}
                                                                 </div>
                                                             </li>
                                                             @else
                                                             <li>
                                                                 @if (in_array($extension[1], $audio))
-                                                                    <div class="d-flex justify-content-center align-items-center">
+                                                                    <div class="d-flex justify-content-center align-items-center ms-2">
                                                                         <audio controls class="audio-player">
                                                                             <source src="{{asset('uploads/'.$stimulus['value'])}}" type="audio/mpeg">
                                                                             Your browser does not support the audio element.
@@ -86,7 +86,7 @@
                                                                 @endif
                                                                 @if (in_array($extension[1], $video))
                                                                     <div class="d-flex justify-content-center align-items-center ms-2">
-                                                                        <video controls width="100%" height="auto">
+                                                                        <video controls width="100%" height="auto" class="audio-player">
                                                                             <source src="{{asset('uploads/' . $stimulus['value'])}}" type="video/mp4">
                                                                             Your browser does not support the video tag.
                                                                         </video>
@@ -107,9 +107,6 @@
         
                                             </div>
                                         @endforeach
-
-                                    {{-- feedback --}}
-                                    <input type="hidden" name="feedback[]" value="{{$item->feedback ?? null}}" />
                             
                                     </div>
                                 </div>
@@ -122,19 +119,12 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-2">
                                         <h5 class="card-title mb-2">Pertanyaan </h5>
-                                        <div class="dashed-border">
+                                        <div class="mb-2">
                                             {!!$item->pertanyaan!!}
                                         </div>
                                     </div>
-    
-                                    <hr>
         
                                     <div class="appendAreaOpsi_{{$key+1}}">
-                                        <div class="row d-flex mb-3">
-                                            <div class="col-md">
-                                                <span class="mb-3 me-1">Opsi </span>
-                                            </div>
-                                        </div>
                                         <div class="col-md opsi-jawaban">
                                             @php
                                                 $pilihan_ganda = ['a','b','c','d'];
@@ -144,14 +134,10 @@
                                                 @switch($item->tipe_soal_id)
                                                     @case('1')
                                                     {{-- pilihan ganda --}}
-                                                        <div class="mb-3 d-flex">
-                                                            <div class="col-md-1">
-                                                                <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}" required />
-                                                            </div>
-                                                            <div class="col-md-11">
-                                                                <div>
-                                                                    {!!$jawaban!!}
-                                                                </div>
+                                                        <div class="d-flex mb-2">
+                                                            <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}" required />
+                                                            <div class="ms-1">
+                                                                {!!$jawaban!!}
                                                             </div>
                                                         </div>
                                                         @break
@@ -182,10 +168,7 @@
                                                         @break
                                                     @case('3')
                                                     {{-- salah benar --}}
-                                                    @php
-                                                        // dd($item->opsi_jawaban);
-                                                    @endphp
-                                                        <input type="radio" name="no_{{$key+1}}" class="ms-3" value="{{$jawaban}}" /> {{$jawaban}}
+                                                        <input type="radio" name="no_{{$key+1}}" class="ms-3" value="{{$jawaban}}" required /> {{$jawaban}}
                                                         @break
                                                     @case('4')
                                                     {{-- isian singkat --}}
@@ -331,19 +314,10 @@
             myModal.find('.modal-title').html(jenisDokumen);
             myModal.find('.modal-body').html(html);
             myModal.modal('show');
-        });
+        });   
 
-        function stopAudioPlayer() {
-            var audioPlayers = document.querySelectorAll('.audio-player');
-            audioPlayers.forEach(function(player) {
-                player.addEventListener('play', function() {
-                    audioPlayers.forEach(function(otherPlayer) {
-                        if (otherPlayer !== player) {
-                            otherPlayer.pause();
-                        }
-                    });
-                });
-            });
-        }   
+        $('audio, video').on('play', function() {
+            stopAudioPlayer();
+        });
     </script>
 @endpush

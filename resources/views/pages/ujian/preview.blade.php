@@ -64,8 +64,8 @@
                                                             <ul>
                                                                 @if ($stimulus['tipe'] == 'teks')
                                                                 <li>
-                                                                    <div class="dashed-border ms-2">
-                                                                        {{$stimulus['value']}}
+                                                                    <div class="my-2 ms-2">
+                                                                        {!!$stimulus['value']!!}
                                                                     </div>
                                                                 </li>
                                                                 @else
@@ -80,7 +80,7 @@
                                                                     @endif
                                                                     @if (in_array($extension[1], $video))
                                                                         <div class="d-flex justify-content-center align-items-center ms-2">
-                                                                            <video controls width="100%" height="auto">
+                                                                            <video controls width="100%" height="auto" class="audio-player">
                                                                                 <source src="{{asset('uploads/' . $stimulus['value'])}}" type="video/mp4">
                                                                                 Your browser does not support the video tag.
                                                                             </video>
@@ -113,17 +113,12 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-2">
                                             <h5 class="card-title mb-2">Pertanyaan </h5>
-                                            <div class="dashed-border">
+                                            <div class="mb-2">
                                                 {!!$item->pertanyaan!!}
                                             </div>
                                         </div>
             
                                         <div class="appendAreaOpsi_{{$key+1}}">
-                                            <div class="row d-flex mb-3">
-                                                <div class="col-md">
-                                                    <span class="mb-3 me-1">Opsi </span>
-                                                </div>
-                                            </div>
                                             <div class="col-md opsi-jawaban">
                                                 @php
                                                     $pilihan_ganda = ['a','b','c','d'];
@@ -133,14 +128,10 @@
                                                     @switch($item->tipe_soal_id)
                                                         @case('1')
                                                         {{-- pilihan ganda --}}
-                                                            <div class="mb-3 d-flex">
-                                                                <div class="col-md-1">
-                                                                    <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}" required />
-                                                                </div>
-                                                                <div class="col-md-11">
-                                                                    <div>
-                                                                        {!!$jawaban!!}
-                                                                    </div>
+                                                            <div class="d-flex mb-2">
+                                                                <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}" required />
+                                                                <div class="ms-1">
+                                                                    {!!$jawaban!!}
                                                                 </div>
                                                             </div>
                                                             @break
@@ -330,6 +321,12 @@
                     });
                 });
             });
-        }   
+        } 
+        
+        $('audio, video').on('play', function() {
+            stopAudioPlayer();
+        });
+         
+
     </script>
 @endpush
