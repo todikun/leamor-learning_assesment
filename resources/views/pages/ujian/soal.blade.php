@@ -3,8 +3,10 @@
 @section('title', 'Ujian')
 
 @section('content')
-
-<form id="formSoal" action="{{route('ujian.nilai', $soal->id)}}" method="post" enctype="multipart/form-data">
+@php
+    $route = $ujian == true ? route('ujian.nilai', $soal->id) : route('soal.nilai', $soal->id);
+@endphp
+<form id="formSoal" action="{{$route}}" method="post" enctype="multipart/form-data">
     @csrf
 
     @forelse ($pernyataan as $p)
@@ -13,12 +15,11 @@
         <input type="hidden" name="pernyataan[]" value="" />
     @endforelse
 
-    <div class="row mb-3 justify-content-center pb-3">
-        <div class="col-md-4 alert alert-success ms-auto">
-            <h2 class="text-center my-3 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h2>
-            <h5>Topik <strong>{{$soal->nama}}</h5>
-        </div>
+    <div class="justify-content-center ">
+        <h3 class="text-center mb-1 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h4>
+        <p class="text-center">Topik <strong>{{$soal->nama}}</h5>
     </div>
+
     <div class="row d-flex">
         <div class="col-md-2">
             <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
@@ -43,9 +44,9 @@
             
                                     {{-- stimulus --}}
                                     <div class="col-md-12">
-                                        <div class="row d-flex mb-3">
+                                        <div class="row d-flex mb-2">
                                             <div class="col-md">
-                                                <span class="mb-3 me-1">Stimulus</span>
+                                                <span class="me-1">Stimulus</span>
                                             </div>
                                         </div>
                                         
@@ -53,13 +54,6 @@
                                             <div class="appendAreaStimulus_{{$key+1}}">
                                                 
                                                 <div class="row d-flex stimulus-container mb-2">
-                                                    {{-- <div class="col-md-4">
-                                                        <select class="form-control form-select stimulus-select mb-2" onchange="changeStimulus(this)" required>
-                                                            <option value="">-- PILIH --</option>
-                                                            <option {{$stimulus['tipe'] == 'teks' ? 'selected':''}} value="teks">Teks</option>
-                                                            <option {{$stimulus['tipe'] == 'dokumen' ? 'selected':''}} value="dokumen">Dokumen</option>
-                                                        </select>
-                                                    </div> --}}
                                                     <div class="col-md stimulus-tipe">
                                                         @php
                                                             $audio = ['mp3'];
@@ -67,41 +61,35 @@
                                                             $image  = ['png', 'jpg', 'jpeg'];
                                                             $extension = explode('.', $stimulus['value']);
                                                         @endphp
-                                                        <ul>
-                                                            @if ($stimulus['tipe'] == 'teks')
-                                                            <li>
-                                                                <div class="my-2 ms-2">
-                                                                    {!!$stimulus['value']!!}
+                                                        @if ($stimulus['tipe'] == 'teks')
+                                                            <div class="mb-1 ms-2" style="font-weight: normal">
+                                                                {!!$stimulus['value']!!}
+                                                            </div>
+                                                        @else
+                                                            @if (in_array($extension[1], $audio))
+                                                                <div class=" mb-1 d-flex justify-content-center align-items-center ms-2">
+                                                                    <audio controls class="audio-player">
+                                                                        <source src="{{asset('uploads/'.$stimulus['value'])}}" type="audio/mpeg">
+                                                                        Your browser does not support the audio element.
+                                                                    </audio>
                                                                 </div>
-                                                            </li>
-                                                            @else
-                                                            <li>
-                                                                @if (in_array($extension[1], $audio))
-                                                                    <div class="d-flex justify-content-center align-items-center ms-2">
-                                                                        <audio controls class="audio-player">
-                                                                            <source src="{{asset('uploads/'.$stimulus['value'])}}" type="audio/mpeg">
-                                                                            Your browser does not support the audio element.
-                                                                        </audio>
-                                                                    </div>
-                                                                @endif
-                                                                @if (in_array($extension[1], $video))
-                                                                    <div class="d-flex justify-content-center align-items-center ms-2">
-                                                                        <video controls width="100%" height="auto" class="audio-player">
-                                                                            <source src="{{asset('uploads/' . $stimulus['value'])}}" type="video/mp4">
-                                                                            Your browser does not support the video tag.
-                                                                        </video>
-                                                                    </div>
-                                                                @endif
-                                                                @if (in_array($extension[1], $image))
-                                                                    <div class="d-flex justify-content-center align-items-center ms-2">
-                                                                        <a href="{{asset('uploads/' . $stimulus['value'])}}" target="_blank" title="Klik pada gambar untuk memperbesar">
-                                                                            <img src="{{asset('uploads/' . $stimulus['value'])}}" alt="img" width="360px;" height="auto"/>
-                                                                        </a>
-                                                                    </div>
-                                                                @endif
-                                                            </li>
                                                             @endif
-                                                        </ul>
+                                                            @if (in_array($extension[1], $video))
+                                                                <div class="mb-1 d-flex justify-content-center align-items-center ms-2">
+                                                                    <video controls width="100%" height="auto" class="audio-player">
+                                                                        <source src="{{asset('uploads/' . $stimulus['value'])}}" type="video/mp4">
+                                                                        Your browser does not support the video tag.
+                                                                    </video>
+                                                                </div>
+                                                            @endif
+                                                            @if (in_array($extension[1], $image))
+                                                                <div class="mb-1 d-flex justify-content-center align-items-center ms-2">
+                                                                    <a href="{{asset('uploads/' . $stimulus['value'])}}" target="_blank" title="Klik pada gambar untuk memperbesar">
+                                                                        <img src="{{asset('uploads/' . $stimulus['value'])}}" alt="img" width="360px;" height="auto"/>
+                                                                    </a>
+                                                                </div>
+                                                            @endif
+                                                        @endif
                                                     </div>
                                                 </div>
         
@@ -119,7 +107,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-2">
                                         <h5 class="card-title mb-2">Pertanyaan </h5>
-                                        <div class="mb-2">
+                                        <div class="mb-2" style="font-weight: normal">
                                             {!!$item->pertanyaan!!}
                                         </div>
                                     </div>
@@ -136,7 +124,7 @@
                                                     {{-- pilihan ganda --}}
                                                         <div class="d-flex mb-2">
                                                             <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}" required />
-                                                            <div class="ms-1">
+                                                            <div class="ms-1" style="font-weight: normal">
                                                                 {!!$jawaban!!}
                                                             </div>
                                                         </div>

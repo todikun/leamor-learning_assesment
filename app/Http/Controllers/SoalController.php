@@ -173,8 +173,10 @@ class SoalController extends Controller
     public function preview($id)
     {
         $data['soal'] = Soal::find($id);
+        $data['ujian'] = false;
+        $data['pernyataan'] = [];
         if ($data['soal']->SoalDetail->count() > 0) {
-            return view('pages.ujian.preview')->with($data);
+            return view('pages.ujian.soal')->with($data);
         }
         return 'soal kosong';
     }
