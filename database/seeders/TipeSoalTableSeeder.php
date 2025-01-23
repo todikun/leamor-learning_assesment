@@ -22,14 +22,14 @@ class TipeSoalTableSeeder extends Seeder
                 'nama' => 'Mencocokkan',
             ],
             [
-                'nama' => 'Salah Benar',
+                'nama' => 'Benar Salah',
             ],
-            [
-                'nama' => 'Isian Singkat',
-            ],
-            [
-                'nama' => 'Essay',
-            ],
+            // [
+            //     'nama' => 'Isian Singkat',
+            // ],
+            // [
+            //     'nama' => 'Essay',
+            // ],
         ];
         TipeSoal::insert($data);
     }

@@ -1,4 +1,14 @@
 <div class="navbar-collapse collapse">
+	
+	@if (isset($ujian))
+	<div class="d-flex justify-content-center w-100 mt-1">
+		<div class="text-center">
+			<h3 class="text-center mb-1 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h3>
+			<p class="text-center">Topik <strong>{{$soal->nama}}</strong></p>
+		</div>
+	</div>
+	@endif
+
 	<ul class="navbar-nav navbar-align">
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" title="{{strtoupper(auth()->user()->nama)}}" data-bs-toggle="dropdown">

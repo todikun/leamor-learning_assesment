@@ -15,24 +15,18 @@
         <input type="hidden" name="pernyataan[]" value="" />
     @endforelse
 
-    <div class="justify-content-center ">
-        <h3 class="text-center mb-1 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h4>
-        <p class="text-center">Topik <strong>{{$soal->nama}}</h5>
-    </div>
-
     <div class="row d-flex">
-        <div class="col-md-2">
-            <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
+        <div class="col-md-1">
+            <div class="nav flex-row nav-pills cek-nav-link" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
                 @foreach ($soal->SoalDetail as $item)
-                    <button style="width: 1.5rem; background-color: rgb(223, 232, 240)" class="nav-link cek-nav m-1 d-flex justify-content-center align-items-center {{$loop->iteration == 1 ? 'active':''}}" id="v-pills-soal_{{$loop->iteration}}-tab" data-index="{{$loop->iteration}}" data-bs-toggle="pill" data-bs-target="#v-pills-soal_{{$loop->iteration}}" type="button" role="tab" aria-controls="v-pills-soal_{{$loop->iteration}}" aria-selected="true">
+                    <button style="width: 1.5rem; background-color: rgb(223, 232, 240); pointer-events: none;" class="nav-link cek-nav m-1 d-flex justify-content-center align-items-center {{$loop->iteration == 1 ? 'active':''}}" data-checked="false" id="v-pills-soal_{{$loop->iteration}}-tab" data-index="{{$loop->iteration}}" data-bs-toggle="pill" data-bs-target="#v-pills-soal_{{$loop->iteration}}" type="button" role="tab" aria-controls="v-pills-soal_{{$loop->iteration}}" aria-selected="true">
                         <span class="text-center">{{$loop->iteration}}</span>
                     </button>
                 @endforeach
             </div>
         </div>
         
-        <div class="col-md-10">
-            
+        <div class="col-md">
             <div class="tab-content" id="v-pills-tabContent">
                 @foreach ($soal->SoalDetail as $key => $item)
                 <div class="tab-pane fade show {{$loop->iteration == 1 ? 'active':''}}" id="v-pills-soal_{{$loop->iteration}}" role="tabpanel" aria-labelledby="v-pills-soal_{{$loop->iteration}}-tab">
@@ -115,61 +109,104 @@
                                     <div class="appendAreaOpsi_{{$key+1}}">
                                         <div class="col-md opsi-jawaban">
                                             @php
-                                                $pilihan_ganda = ['a','b','c','d'];
+                                                $pilihan_ganda = ['A','B','C','D'];
                                                 $tipe_soal = $item->tipe_soal_id
                                             @endphp
-                                            @foreach ($item->tipe_soal_id != '2' ? $item->opsi_jawaban : $item->opsi_jawaban[0] as $j => $jawaban)
-                                                @switch($item->tipe_soal_id)
-                                                    @case('1')
+                                            @switch($item->tipe_soal_id)
+                                                @case('1')
+                                                    @foreach ($item->opsi_jawaban as $j => $jawaban)
                                                     {{-- pilihan ganda --}}
-                                                        <div class="d-flex mb-2">
-                                                            <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}" required />
-                                                            <div class="ms-1" style="font-weight: normal">
+                                                        <div class="pilihan-ganda-opsi d-flex align-items-center mb-2" data-nomor="{{$key+1}}">
+                                                            <div class="col-md-1 d-flex align-items-center justify-content-center soal_{{$key+1}}">
+                                                                <input class="opsi" type="checkbox" style="margin: 0;" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}[]" />
+                                                                <span class="ms-1 fw-bold" style="font-size: 16px;">{{$pilihan_ganda[$j]}}.</span>
+                                                            </div>
+                                                            <div class="col-md d-flex">
                                                                 {!!$jawaban!!}
                                                             </div>
                                                         </div>
-                                                        @break
-                                                    @case('2')
-                                                    {{-- mencocokan --}}
-                                                    <div class="mb-3 d-flex align-items-center justify-content-center">
-                                                        <div class="col-md-6">
-                                                            <div class="mb-3 d-flex">
-                                                                <div class="col-md-1 ms-3">
-                                                                    <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}_kiri" class="kunci-jawaban-value" required />
-                                                                </div>
-                                                                <div class="col-md-11">
-                                                                    {!!$item->opsi_jawaban[0][$j]!!}
-                                                                </div>
-                                                            </div>
+                                                    @endforeach
+                                                    @break
+
+                                                @case('2')
+                                                {{-- mencocokan --}}
+
+                                                    <div class="d-flex mt-3 mb-2">
+                                                        <div class="col-md-5 opsi-kiri mx-auto">
+                                                            <table class="table table-bordered border-hijau">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <td class="text-center">{{$item->opsi_jawaban['judul']['kiri']}}</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($item->opsi_jawaban['opsi_jawaban_kiri'] as $no => $opsi)
+                                                                        <tr>
+                                                                            <td><strong>{{$no+1}}.</strong> {{$opsi}}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <div class="mb-3 d-flex">
-                                                                <div class="col-md-1 ms-3">
-                                                                    <input type="radio" value="{{$pilihan_ganda[$j]}}" name="no_{{$key+1}}_kanan" class="kunci-jawaban-value" required />
-                                                                </div>
-                                                                <div class="col-md-11">
-                                                                    {!!$item->opsi_jawaban[1][$j]!!}
-                                                                </div>
-                                                            </div>
+
+                                                        <div class="col-md-5 opsi-kanan mx-auto">
+                                                            <table class="table table-bordered border-hijau">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <td class="text-center">{{$item->opsi_jawaban['judul']['kanan']}}</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($item->opsi_jawaban['opsi_jawaban_kanan'] as $no => $opsi)
+                                                                        <tr>
+                                                                            <td><strong>{{$no+1}}.</strong> {{$opsi}}</td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
                                                         </div>
+
                                                     </div>
-                                                        @break
-                                                    @case('3')
-                                                    {{-- salah benar --}}
-                                                        <input type="radio" name="no_{{$key+1}}" class="ms-3" value="{{$jawaban}}" required /> {{$jawaban}}
-                                                        @break
-                                                    @case('4')
-                                                    {{-- isian singkat --}}
-                                                        <textarea class="form-control mb-2" name="no_{{$key+1}}[]" cols="3" rows="3" required></textarea>
-                                                        @break
-                                                    @case('5')
-                                                    {{-- essay --}}
-                                                        <textarea class="form-control mb-2" name="no_{{$key+1}}" cols="3" rows="3" required></textarea>
-                                                        @break
-                                                    @default
-                                                        
-                                                @endswitch
-                                            @endforeach
+
+                                                    <div class="row justify-content-center flex-column align-items-center">
+                                                        <p class="text-center mb-2">Jawaban</p>
+                                                        @foreach ($item->kunci_jawaban as $jawaban)
+                                                            <div class="col-md-2 mb-2">
+                                                                <input oninput="checkInput({{$key+1}})" class="form-control kunci-jawaban-mencocokan baris-{{$key+1}}" name="no_{{$key+1}}[]">
+                                                            </div>    
+                                                        @endforeach
+                                                    </div>
+
+                                                    @break
+                                                @case('3')
+                                                {{-- benar salah --}}
+                                                    <table class="table table-bordered border-hijau">
+                                                        <tbody>
+                                                            @foreach ($item->opsi_jawaban as $j => $jawaban)
+                                                                <tr class="border-hijau opsi-benar-salah_{{$key+1}} baris-{{$j+1}}">
+                                                                    <td class="border-hijau" width="70%">{{$jawaban}}</td>
+                                                                    <td class="border-hijau" width="15%">
+                                                                        <input type="checkbox" onchange="benarSalahOpsiChecked('benar', {{$j+1}})" value="benar" class="opsi opsi-benar" name="no_{{$key+1}}[]" /> Benar
+                                                                    </td>
+                                                                    <td class="border-hijau" width="15%">
+                                                                        <input type="checkbox" onchange="benarSalahOpsiChecked('salah', {{$j+1}})" value="salah" class="opsi opsi-salah" name="no_{{$key+1}}[]" /> Salah
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                    @break
+                                                @case('4')
+                                                {{-- isian singkat --}}
+                                                    <textarea class="form-control mb-2" name="no_{{$key+1}}[]" cols="3" rows="3" required></textarea>
+                                                    @break
+                                                @case('5')
+                                                {{-- essay --}}
+                                                    <textarea class="form-control mb-2" name="no_{{$key+1}}" cols="3" rows="3" required></textarea>
+                                                    @break
+                                                @default
+                                                    
+                                            @endswitch
                                         </div>
     
                                     </div>
@@ -186,16 +223,28 @@
         </div>
         
     </div>
-    <button type="submit" onclick="return confirm('Apa kamu yakin untuk mengakhiri ujian ini?')" class="form-control btn btn-success btn-lg position-sticky my-3 mx-1" style="float: right;">
-        SUBMIT
+
+    <button type="submit" onclick="return confirm('Apa kamu yakin untuk mengakhiri ujian ini?')" class="btn btn-success position-sticky my-3 mx-1 {{sizeof($soal->SoalDetail) == 1 ? '' : 'd-none'}} btn-save" style="float: right;">
+        <i class="fa fa-save"></i> Selesai dan Simpan
     </button>
-    
+
+    <button type="button" onclick="navSoal('next')" class="nav-soal btn btn-success position-sticky my-3 mx-1 {{sizeof($soal->SoalDetail) == 1 ? 'd-none' : ''}} btn-next" style="float: right;">
+        Selanjutnya <i class="fa fa-arrow-right"></i>
+    </button>
+
+    <button type="button" onclick="navSoal('previous')" class="nav-soal btn btn-success position-sticky my-3 mx-1 d-none btn-previous" style="float: right;">
+        <i class="fa fa-arrow-left"></i> Sebelumnya
+    </button>
 
 </form>
 @endsection
 
 @push('css')
-    <style>      
+    <style>   
+        .border-hijau {
+            border: 2px solid #79dfc1;
+        }
+
         @keyframes zoomIn {
             0% {
                 transform: scale(0.5);
@@ -226,6 +275,13 @@
     <script> 
         var myModal = $('#modal-form');
         var modalReminder = $('#modal-reminder');
+        var jumlahSoal = @json($soal->SoalDetail->toArray() ?? []);
+
+        var warnaNomorTab = {};
+        jumlahSoal.forEach((el, iteration) => {
+            warnaNomorTab[iteration + 1] = false;
+        });
+        
 
         $(document).ready(function(){
             $('.cek-nav.active').css('background-color', 'blue');
@@ -307,5 +363,148 @@
         $('audio, video').on('play', function() {
             stopAudioPlayer();
         });
+
+        function navSoal(value) {
+            var btnPrevious = $('.btn-previous');
+            var btnNext = $('.btn-next');
+            var btnSave = $('.btn-save');
+            var currentTab = $('.nav-link.active');
+            var nextTab = currentTab.next('.nav-link');
+            var prevTab = currentTab.prev('.nav-link');
+
+            var nextTabNomor = nextTab.find('span').html();
+            var prevTabNomor = prevTab.find('span').html();
+
+            if (value === 'next' && nextTab.length > 0) {
+                // Pindah ke tab berikutnya
+                nextTab.trigger('click');
+                if (warnaNomorTab[nextTabNomor] == true) {
+                    nextTab.css('background', 'linear-gradient(to bottom, #1cbb8c 100%, blue 0%)');
+                } else {
+                    nextTab.css('background', 'blue');
+                }
+
+                nextTab.find('span').css('color', 'white');
+                prevTab.find('span').css('color', 'black');
+                
+                btnPrevious.removeClass('d-none');
+                
+                // Cek apakah sudah berada di tab terakhir, jika ya sembunyikan tombol "Selanjutnya"
+                if (nextTab.is(':last-child')) {
+                    btnNext.addClass('d-none');
+                    btnSave.removeClass('d-none');
+                }
+            }
+
+            if (value === 'previous') {
+                var prevTab = currentTab.prev('.nav-link'); // Tab sebelumnya
+                nextTab.find('span').css('color', 'black');
+
+                if (prevTab.length > 0) {
+                    // Pindah ke tab sebelumnya
+                    prevTab.trigger('click'); // Memicu klik pada tab sebelumnya untuk memperbarui tampilan
+                    if (warnaNomorTab[prevTabNomor] == true) {
+                        prevTab.css('background', 'linear-gradient(to bottom, #1cbb8c 100%, blue 0%)');
+                    } else {
+                        prevTab.css('background', 'blue');
+                    }
+                    
+                    prevTab.find('span').css('color', 'white');
+                    nextTab.find('span').css('color', 'black');
+
+                    btnNext.removeClass('d-none');
+                    btnSave.addClass('d-none');
+                }
+                
+                // Cek apakah sudah berada di tab pertama, jika ya sembunyikan tombol "Sebelumnya"
+                if (prevTab.is(':first-child')) {
+                    btnPrevious.addClass('d-none');
+                }
+            }
+
+        }
+
+        // pilihan ganda , max checked opsi = 2
+        $('.pilihan-ganda-opsi').each(function() {
+            var soal = $(this);
+            var nomor = soal.data('nomor');
+            var checkboxes = soal.find('input[type="checkbox"]');
+            
+            checkboxes.on('change', function() {
+                var checkedCount = $(`.pilihan-ganda-opsi .soal_${nomor}`).find('input[type="checkbox"]:checked').length;
+                
+                if ($(this).prop('checked') && checkedCount <= 2) {
+                    $('.nav-link.active').attr('data-checked', true);
+                    warnaNomorTab[nomor] = true;
+                }
+
+                if ($(this).prop('checked') && checkedCount > 2) {
+                    $(this).prop('checked', false);
+                } 
+
+                if (!$(this).prop('checked') && checkedCount == 0) {
+                    $('.nav-link.active').attr('data-checked', false);
+                    warnaNomorTab[nomor] = false;
+                }
+
+                // jika ada terjawab soal maka ada warna hijau di tab nomor soal
+                ubahNomorTabSoal(nomor);
+            });
+        });
+
+        function getIndexCurrentNavlinkActive() {
+            var index = '';
+            $('.cek-nav-link').each(function() {
+                index = $(this).find('.nav-link.active').data('index');
+            });
+            return index;
+        }
+        
+        // soal mencocokan -> warna tombol tab
+        function checkInput(value) {
+            var semuaInputTerisi = false;
+
+            $(`.kunci-jawaban-mencocokan.baris-${value}`).each(function() {
+                if ($(this).val().trim() !== "") {
+                    semuaInputTerisi = true;
+                }
+            });
+
+            if (semuaInputTerisi == true) {
+                warnaNomorTab[value] = true
+            } else {
+                warnaNomorTab[value] = false
+            }
+            ubahNomorTabSoal(value)
+            
+        }
+        
+        // benar salah
+        function benarSalahOpsiChecked(value, baris)
+        {
+            var index = getIndexCurrentNavlinkActive();
+            var element = $(`.opsi-benar-salah_${index}.baris-${baris}`);
+            console.log(index,baris, element);
+            
+            if (value == 'benar') {
+                element.find('.opsi-salah').prop('checked', false)
+            } else {
+                element.find('.opsi-benar').prop('checked', false)
+            }
+        }
+
+        function ubahNomorTabSoal(jawaban)
+        {
+            var currentTab = $('.nav-link.active');
+            var warnaHijau = 'linear-gradient(to bottom, #1cbb8c 100%, blue 0%)';
+            
+            if (warnaNomorTab[jawaban] == true) {
+                currentTab.css('background', warnaHijau);
+            } else {
+                currentTab.css('background', 'blue');
+            }
+        }
+        
+
     </script>
 @endpush

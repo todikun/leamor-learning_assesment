@@ -47,7 +47,7 @@
                                     <div class="text-center">
                                         <a href="{{ url('/') }}">
                                             <img src="{{ asset('dist/img/'.$param.'.png') }}" alt="img"
-                                                class="img-fluid rounded" style="background-color: #6ea8fe;" width="132" height="132" />
+                                                class="img-fluid rounded" style="background-color: #79dfc1;" width="132" height="132" />
                                         </a>
                                     </div>
 

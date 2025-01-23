@@ -161,7 +161,7 @@
                 
                                             <div class="appendAreaOpsi_{{$key+1}}">
                                                 <div class="row d-flex mb-3">
-                                                    <div class="col-md isian-singkat {{$item->tipe_soal_id  != '4' ? 'd-none':''}}">
+                                                    <div class="col-md btn-add-remove-opsi {{$item->tipe_soal_id  != '4' ? 'd-none':''}}">
                                                         <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
                                                         <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                             <i class="fa fa-plus p-2"></i> 
@@ -171,26 +171,48 @@
                                                             <i class="fa fa-times p-2"></i> 
                                                         </a>
                                                     </div>
+                                                    
+                                                    {{-- <div class="btn-add-remove-opsi-mencocokan d-none">
+                                                        <div class="row d-flex">
+                                                            <div class="col-md-6">
+                                                                <a href="javascript:;" onclick="opsiAdd(this, 'kiri')" class="bg-success text-white rounded-circle position-absolute ">
+                                                                    <i class="fa fa-plus p-2"></i> 
+                                                                </a>
+                                                                <a href="javascript:;" onclick="opsiRemove(this, 'kiri')" class="ms-5 bg-danger text-white rounded-circle position-absolute">
+                                                                    <i class="fa fa-times p-2"></i> 
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <a href="javascript:;" style="float:right;" onclick="opsiRemove(this, 'kanan')" class="ms-3 bg-danger text-white rounded-circle ">
+                                                                    <i class="fa fa-times p-2"></i> 
+                                                                </a>
+                                                                <a href="javascript:;" style="float:right;" onclick="opsiAdd(this, 'kanan')" class="bg-success text-white rounded-circle ">
+                                                                    <i class="fa fa-plus p-2"></i> 
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div> --}}
+
                                                 </div>
                                                 
                                                 <div class="col-md opsi-jawaban">
                                                     @php
-                                                        $pilihan_ganda = ['a','b','c','d'];
+                                                        $pilihan_ganda = ['A','B','C','D'];
                                                         $tipe_soal = $item->tipe_soal_id;
-                                                        // dd($tipe_soal != '2', $item->opsi_jawaban)
                                                     @endphp
                                                         @switch($item->tipe_soal_id)
                                                             @case('1')
                                                                 @foreach ($pilihan_ganda as $index => $pilihan)
                                                                 {{-- pilihan ganda --}}  
                                                             
-                                                                    <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                        <div class="col-md-1">
-                                                                            <input type="radio" {{$pilihan == $item->kunci_jawaban[0] ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kunci_jawaban" required />
+                                                                    <div class="pilihan-ganda-opsi opsi-remove mb-3 d-flex align-items-center justify-content-center">
+                                                                        <div class="col-md-1 align-items-center justify-content-center soal_{{$key+1}}">
+                                                                            <input type="checkbox" onclick="pilihanGandaOpsiMaxTwoChecked({{$key+1}})" {{in_array($pilihan, $item->kunci_jawaban) ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kunci_jawaban[]" class="opsi" />
+                                                                            <span style="font-size: 14px;">{{$pilihan}}</span>
                                                                         </div>
                                                                         <div class="col-md-11">
                                                                             <div>
-                                                                                <textarea class="form-control mb-2 summernote" name="{{$key+1}}_opsi_jawaban[]" cols="3" rows="3" required>{{$item->opsi_jawaban[$index]}}</textarea>
+                                                                                <textarea class="form-control mb-2 summernote" name="{{$key+1}}_opsi_jawaban[]" cols="3" rows="3">{{$item->opsi_jawaban[$index]}}</textarea>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -198,40 +220,68 @@
                                                                 @break
                                                             @case('2')
                                                             {{-- mencocokan --}}
-                                                                @foreach ($pilihan_ganda as $index => $pilihan)
-                                                                
-                                                                    <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                        <div class="col-md-6">
-                                                                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                                <div class="col-md-1 ms-3">
-                                                                                    <input type="radio" {{$pilihan == $item->kunci_jawaban[0] ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kiri_kunci_jawaban[]" class="kunci-jawaban-value" required />
-                                                                                </div>
-                                                                                <div class="col-md-10">
-                                                                                    <textarea class="form-control mb-2 summernote" name="{{$key+1}}_kiri_opsi_jawaban[]" cols="3" rows="3" required>{{$item->opsi_jawaban[0][$index]}}</textarea>
+
+                                                                <div class="d-flex justify-content-center">
+                                                                    <div class="col-md-4 text-center mb-2 mx-auto">
+                                                                        <textarea class="form-control mb-2" name="judul_kiri[]" placeholder="Judul" style="height: 12px;" required>{{$item->opsi_jawaban['judul']['kiri']}}</textarea>
+                                                                    </div>
+                                                                    <div class="col-md-4 text-center mb-2 mx-auto">
+                                                                        <textarea class="form-control mb-2" name="judul_kanan[]" placeholder="Judul" style="height: 12px;" required>{{$item->opsi_jawaban['judul']['kanan']}}</textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="d-flex mt-3 mb-2">
+                                                                    <div class="col-md-6 opsi-kiri">
+                                                                        @foreach ($item->opsi_jawaban['opsi_jawaban_kiri'] as $no => $opsi)
+                                                                            <div class="col-md-10">
+                                                                                <div class="input-group mb-3">
+                                                                                    <div class="input-group-prepend">
+                                                                                        <span class="input-group-text" id="basic-addon1">{{$no+1}}</span>
+                                                                                    </div>
+                                                                                    <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban_kiri[]" style="height: 12px;" required="">{{$opsi}}</textarea>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                                                                <div class="col-md-1 ms-3">
-                                                                                    <input type="radio" {{$pilihan == $item->kunci_jawaban[1] ? 'checked':''}} value="{{$pilihan}}" name="{{$key+1}}_kanan_kunci_jawaban[]" class="kunci-jawaban-value" required />
+                                                                        @endforeach
+                                                                    </div>
+            
+                                                                    <div class="col-md-6 opsi-kanan">
+                                                                        <div class="col-md-10" style="float:right;">
+                                                                            @foreach ($item->opsi_jawaban['opsi_jawaban_kanan'] as $no => $opsi)
+                                                                                <div class="input-group mb-3">
+                                                                                    <div class="input-group-prepend">
+                                                                                        <span class="input-group-text" id="basic-addon4">{{$no+1}}</span>
+                                                                                    </div>
+                                                                                    <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban_kanan[]" style="height: 12px;" required="">{{$opsi}}</textarea>
                                                                                 </div>
-                                                                                <div class="col-md-10">
-                                                                                    <textarea class="form-control mb-2 summernote" name="{{$key+1}}_kanan_opsi_jawaban[]" cols="3" rows="3" required>{{$item->opsi_jawaban[1][$index]}}</textarea>
-                                                                                </div>
-                                                                            </div>
+                                                                            @endforeach
                                                                         </div>
                                                                     </div>
+            
+                                                                </div>
+            
+                                                                <div class="row justify-content-center flex-column align-items-center">
+                                                                    <p class="text-center mb-2">Jawaban</p>
+                                                                    @foreach ($item->kunci_jawaban as $jawaban)
+                                                                        <div class="col-md-2 mb-2">
+                                                                            <input class="form-control " name="{{$key+1}}_kunci_jawaban[]">
+                                                                        </div>    
                                                                     @endforeach
-                                                                @break
-                                                            @case('3')
-                                                            {{-- salah benar --}}
-                                                                <input type="hidden" value="benar" name="{{$key+1}}_opsi_jawaban[]" />
-                                                                <input type="radio" {{'benar' == $item->kunci_jawaban[0] ? 'checked':''}} name="{{$key+1}}_kunci_jawaban" class="kunci-jawaban-value ms-3" value="benar" /> benar
+                                                                </div>
 
-                                                                <input type="hidden" value="salah" name="{{$key+1}}_opsi_jawaban[]" />
-                                                                <input type="radio" {{'salah' == $item->kunci_jawaban[0] ? 'checked':''}} name="{{$key+1}}_kunci_jawaban" class="kunci-jawaban-value ms-3" value="salah" /> salah
-                                                                
+                                                                @break
+                                                            @case('3')  
+                                                            {{-- benar salah --}}
+                                                                @foreach ($item->opsi_jawaban as $baris => $opsi)
+                                                                    <div class="opsi-remove mb-2 d-flex">
+                                                                        <div class="col-md-8 me-2">
+                                                                            <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban[]" required>{{$opsi}}</textarea>
+                                                                        </div>
+                                                                        <div class="col-md opsi-benar-salah_{{$key+1}} baris-{{$baris+1}}">
+                                                                            <input type="checkbox" onchange="benarSalahOpsiChecked('benar', {{$baris+1}})" {{$item->kunci_jawaban[$baris] == 'benar' ? 'checked':''}} value="benar" class="opsi opsi-benar" name="{{$key+1}}_kunci_jawaban[]" /> Benar
+                                                                            <input type="checkbox" onchange="benarSalahOpsiChecked('salah', {{$baris+1}})" {{$item->kunci_jawaban[$baris] == 'salah' ? 'checked':''}} value="salah" class="opsi opsi-salah" name="{{$key+1}}_kunci_jawaban[]" /> Salah
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
                                                                 @break
                                                             @case('4')
                                                             {{-- isian singkat --}}
@@ -346,7 +396,7 @@
             
                                         <div class="appendAreaOpsi_1">
                                             <div class="row d-flex mb-3">
-                                                <div class="col-md isian-singkat d-none">
+                                                <div class="col-md btn-add-remove-opsi d-none">
                                                     <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
                                                     <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                         <i class="fa fa-plus p-2"></i> 
@@ -356,6 +406,28 @@
                                                         <i class="fa fa-times p-2"></i> 
                                                     </a>
                                                 </div>
+
+                                                <div class="btn-add-remove-opsi-mencocokan d-none">
+                                                    <div class="row d-flex">
+                                                        <div class="col-md-6">
+                                                            <a href="javascript:;" onclick="opsiAdd(this, 'kiri')" class="bg-success text-white rounded-circle position-absolute ">
+                                                                <i class="fa fa-plus p-2"></i> 
+                                                            </a>
+                                                            <a href="javascript:;" onclick="opsiRemove(this, 'kiri')" class="ms-5 bg-danger text-white rounded-circle position-absolute">
+                                                                <i class="fa fa-times p-2"></i> 
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <a href="javascript:;" style="float:right;" onclick="opsiRemove(this, 'kanan')" class="ms-3 bg-danger text-white rounded-circle ">
+                                                                <i class="fa fa-times p-2"></i> 
+                                                            </a>
+                                                            <a href="javascript:;" style="float:right;" onclick="opsiAdd(this, 'kanan')" class="bg-success text-white rounded-circle ">
+                                                                <i class="fa fa-plus p-2"></i> 
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                             <div class="col-md opsi-jawaban" >
 
@@ -394,7 +466,6 @@
 
         function setNilaiIndex(e) {
             globalIndex = parseInt($(e).attr('data-index'));
-            console.log(globalIndex);
         }
 
         function tmpUpload(e)
@@ -540,7 +611,7 @@
     
                                 <div class="appendAreaOpsi_${globalIndex}">
                                     <div class="row d-flex mb-3">
-                                        <div class="col-md isian-singkat d-none">
+                                        <div class="col-md btn-add-remove-opsi d-none">
                                             <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
                                             <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                 <i class="fa fa-plus p-2"></i> 
@@ -550,9 +621,11 @@
                                                 <i class="fa fa-times p-2"></i> 
                                             </a>
                                         </div>
+
+                                        
                                     </div>
                                     <div class="col-md opsi-jawaban" >
-            
+                                        
                                     </div>
 
                                 </div>
@@ -588,6 +661,11 @@
                 });
             }
 
+
+            // tombol navigation tab
+            var nextTab = $('.nav-link.active').next('.nav-link');
+            nextTab.trigger('click');
+            
             // re-init summernote
             summernote();
             feedbackSummernote();
@@ -595,12 +673,17 @@
 
         btnSoalRemove.on('click',function(){
             var navLink = tabs.find('.nav-link'); 
-            var tabPane = tabContents.find('.tab-pane'); 
-            if (navLink.length > 1) {
-                navLink.last().remove();
-                tabPane.last().remove();
-                globalIndex--;
-            }
+            var tabPane = tabContents.find('.tab-pane');
+            
+            var prevTab = $('.nav-link.active').prev('.nav-link');
+            prevTab.trigger('click');
+            setTimeout(() => {
+                if (navLink.length > 1) {
+                    navLink.last().remove();
+                    tabPane.last().remove();
+                    globalIndex--;
+                }
+            }, 300);
         });
 
     //  stimulus 
@@ -700,11 +783,25 @@
         var btnOpsiAdd = $('.btnOpsiAdd'); 
         var btnOpsiRemove = $('.btnOpsiRemove'); 
         
-        function opsiAdd(e) {
+        function opsiAdd(e, opsi = null) {
+            
             var index = getIndexCurrentNavlinkActive();
             var tipeSoal = $(`.tipe-soal_${index}`);
             var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban');
-            var opsi = `
+            var indexBenarSalah = $(`.opsi-benar-salah_${index}`).length;
+            
+            var opsiBenarSalah = `
+                <div class="opsi-remove mb-2 d-flex">
+                    <div class="col-md-8 me-2">
+                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban[]" required></textarea>
+                    </div>
+                    <div class="col-md opsi-benar-salah_${index} baris-${indexBenarSalah+1}">
+                        <input type="checkbox" onchange="benarSalahOpsiChecked('benar', ${indexBenarSalah+1})" value="benar" class="opsi opsi-benar" name="${index}_kunci_jawaban[]" /> Benar
+                        <input type="checkbox" onchange="benarSalahOpsiChecked('salah', ${indexBenarSalah+1})" value="salah" class="opsi opsi-salah" name="${index}_kunci_jawaban[]" /> Salah
+                    </div>
+                </div>
+            `;
+            var opsiEssay = `
             <div class="opsi-remove mb-3 col-md-12">
                 <textarea class="form-control mb-2" name="${index}_opsi_jawaban[]" cols="3" rows="3" required></textarea>
             </div>`;
@@ -715,24 +812,35 @@
                 if (appendAreaOpsi.children().length > 0) {
                     appendAreaOpsi.children().remove();   
                 }
-            } else if (tipeSoal.val() == '3') {
-                return;
-            } else {
-                opsi == '' ? changeOpsi(tipeSoal.val()) : null;
-                appendAreaOpsi.append(opsi);
-                var value  = appendAreaOpsi.children().length;
-                appendAreaOpsi.find('.opsi-remove .kunci-jawaban-value').last().val(value)
-                summernote();
+            } else if (tipeSoal.val() == '3'){
+                appendAreaOpsi.append(opsiBenarSalah);
             }
         }
 
-        function opsiRemove(e) {
+        function opsiRemove(e, opsi = null) {
             var index = getIndexCurrentNavlinkActive();
-            var appendAreaOpsi = $(`.appendAreaOpsi_${index}`).find('.opsi-jawaban .opsi-remove');
+            var appendAreaOpsi = $(`.appendAreaOpsi_${index}`);
             var tipeSoal = $(`.tipe-soal_${index}`);
            
-            if (tipeSoal.val() != '3' && appendAreaOpsi.length > 0) {
-                appendAreaOpsi.last().remove();
+            if (opsi != null) {
+                var elementKiri = appendAreaOpsi.find('.opsi-jawaban').find('.opsi-kiri').children();
+                var elementKiriKunciJawaban = appendAreaOpsi.find('.opsi-jawaban').find('.kunci-jawaban-mencocokan').children();
+            
+                var elementKanan = appendAreaOpsi.find('.opsi-jawaban').find('.opsi-kanan').children();
+                var elementKananKunciJawaban = appendAreaOpsi.find('.opsi-jawaban').find('.kunci-jawaban-mencocokan').find(`.baris-kanan-${elementKanan.length}`);
+
+                if (opsi == 'kiri' && elementKiri.length > 1) {
+                    elementKiri.last().remove();
+                    elementKiriKunciJawaban.last().remove();
+                }
+
+                if (opsi == 'kanan' && elementKanan.length > 0) {
+                    elementKanan.last().remove();
+                    elementKananKunciJawaban.remove();
+                }
+                
+            } else if (appendAreaOpsi.find('.opsi-jawaban .opsi-remove').length > 1) {
+                appendAreaOpsi.find('.opsi-jawaban .opsi-remove').last().remove();
             }
         }
 
@@ -741,68 +849,147 @@
             var index = getIndexCurrentNavlinkActive();
             var appendAreaOpsi = $(`.appendAreaOpsi_${index}`);
             var opsi = '';
-            appendAreaOpsi.find('.isian-singkat').addClass('d-none');
+            var content = '';
+            appendAreaOpsi.find('.btn-add-remove-opsi').addClass('d-none');
+
+            appendAreaOpsi.find('.opsi-jawaban').html('');
+            appendAreaOpsi.find('.opsi-jawaban').removeClass('d-flex');
 
             switch ($(e).val() ?? e) {
                 case '1':
                     // pilihan ganda
-                    var pilihan = ['a','b','c','d'];
+                    var pilihan = ['A','B','C','D'];
                     pilihan.forEach(value => {
-                        opsi += `
-                            <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                <div class="col-md-1">
-                                    <input type="radio" value="${value}" name="${index}_kunci_jawaban" class="kunci-jawaban-value" required />
+                        content += `
+                            <div class="opsi-remove pilihan-ganda-opsi mb-3 d-flex align-items-center justify-content-center">
+                                <div class="col-md-1 align-items-center justify-content-center soal_${index}">
+                                    <input type="checkbox" style="margin: 0;" onclick="pilihanGandaOpsiMaxTwoChecked(${index})" value="${value}" name="${index}_kunci_jawaban[]" class="kunci-jawaban-value opsi" />
+                                    <span style="font-size: 14px;">${value}</span>
                                 </div>
                                 <div class="col-md-11">
-                                    <textarea class="form-control mb-2 summernote" name="${index}_opsi_jawaban[]" cols="3" rows="3" required></textarea>
+                                    <textarea class="form-control mb-2 summernote" name="${index}_opsi_jawaban[]" cols="3" rows="3"></textarea>
                                 </div>
                             </div>`;
                     });
+                    opsi = `
+                        <div class="pilihan-ganda-opsi">
+                            ${content}
+                        </div>
+                    `;
+                    appendAreaOpsi.find('.opsi-jawaban').html(opsi);
                     break;
                 case '2':
                     // mencocokan
-                    var pilihan = ['a','b','c','d'];
-                    pilihan.forEach(value => {
-                        opsi += `
-                        <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                            <div class="col-md-6">
-                                <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                    <div class="col-md-1 ms-3">
-                                        <input type="radio" value="${value}" name="${index}_kiri_kunci_jawaban[]" class="kunci-jawaban-value" required />
-                                    </div>
-                                    <div class="col-md-10">
-                                        <textarea class="form-control mb-2 summernote" name="${index}_kiri_opsi_jawaban[]" cols="3" rows="3" required></textarea>
-                                    </div>
+                    appendAreaOpsi.find('.opsi-jawaban').append(
+                        `
+                            <div class="d-flex justify-content-center">
+                                <div class="col-md-4 text-center mb-2 mx-auto">
+                                    <textarea class="form-control mb-2" name="judul_kiri" placeholder="Judul" style="height: 12px;" required></textarea>
+                                </div>
+                                <div class="col-md-4 text-center mb-2 mx-auto">
+                                    <textarea class="form-control mb-2" name="judul_kanan" placeholder="Judul" style="height: 12px;" required></textarea>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                                    <div class="col-md-1 ms-3">
-                                        <input type="radio" value="${value}" name="${index}_kanan_kunci_jawaban[]" class="kunci-jawaban-value" required />
-                                    </div>
-                                    <div class="col-md-10">
-                                        <textarea class="form-control mb-2 summernote" name="${index}_kanan_opsi_jawaban[]" cols="3" rows="3" required></textarea>
+                        `
+                    );
+                    appendAreaOpsi.find('.opsi-jawaban').append(
+                        `
+                        <div class='d-flex mt-3 mb-2'>
+                            <div class='col-md-6 opsi-kiri'>
+                                <div class="col-md-10">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">1</span>
+                                        </div>
+                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kiri[]" style="height: 12px;" required></textarea>
                                     </div>
                                 </div>
+
+                                <div class="col-md-10">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon2">2</span>
+                                        </div>
+                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kiri[]" style="height: 12px;" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">3</span>
+                                        </div>
+                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kiri[]" style="height: 12px;" required></textarea>
+                                    </div>
+                                </div>
+
                             </div>
+                            <div class='col-md-6 opsi-kanan'>
+                                <div class="col-md-10" style="float:right;">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon4">1</span>
+                                        </div>
+                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-10" style="float:right;">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon5">2</span>
+                                        </div>
+                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-10" style="float:right;">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon6">3</span>
+                                        </div>
+                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-10" style="float:right;">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon7">4</span>
+                                        </div>
+                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <div>
+                        `
+                    );
+                    appendAreaOpsi.find('.opsi-jawaban').append(
+                        `<div class='row justify-content-center'>
+                            <p class="text-center mb-2">Jawaban</>
+                            <div class="col-md-2">
+                                <input class="form-control mb-2" name="${index}_kunci_jawaban[]" />
+                                <input class="form-control mb-2" name="${index}_kunci_jawaban[]" />
+                                <input class="form-control mb-2" name="${index}_kunci_jawaban[]" />
+                            </div>    
                         </div>`
-                    });
+                    );
                     break;
                 case '3':
                     // salah benar
-                    opsi = 
-                    `
-                    <div class="opsi-remove mb-3 d-flex align-items-center justify-content-center">
-                        <div class="col-md ms-3">
-                            <input type="hidden" value="benar" name="${index}_opsi_jawaban[]" />
-                            <input type="radio" name="${index}_kunci_jawaban" class="kunci-jawaban-value" value="benar" /> benar
+                    opsi += `
+                        <div class="opsi-remove mb-2 d-flex">
+                            <div class="col-md-8 me-2">
+                                <textarea class="form-control mb-2" name="${index}_opsi_jawaban[]" required></textarea>
+                            </div>
+                            <div class="col-md opsi-benar-salah_${index} baris-1">
+                                <input type="checkbox" onchange="benarSalahOpsiChecked('benar', '1')" value="benar" class="opsi opsi-benar" name="${index}_kunci_jawaban[]" /> Benar
+                                <input type="checkbox" onchange="benarSalahOpsiChecked('salah', '1')" value="salah" class="opsi opsi-salah" name="${index}_kunci_jawaban[]" /> Salah
+                            </div>
                         </div>
-                        <div class="col-md ms-3">
-                            <input type="hidden" value="salah" name="${index}_opsi_jawaban[]" />
-                            <input type="radio" name="${index}_kunci_jawaban" class="kunci-jawaban-value" value="salah" /> salah
-                        </div>
-                    </div>
                     `;
+                    appendAreaOpsi.find('.opsi-jawaban').html(opsi);
+                    appendAreaOpsi.find('.btn-add-remove-opsi').removeClass('d-none');
                     break;
                 case '4':
                     // isian singkat
@@ -818,8 +1005,36 @@
                 default:
                     break;
             }
-            appendAreaOpsi.find('.opsi-jawaban').html(opsi);
+
             summernote();
+        }
+
+        // pilihan ganda , max checked opsi = 2
+        function pilihanGandaOpsiMaxTwoChecked(nomor)
+        {
+            var checkboxes = $(`.pilihan-ganda-opsi .soal_${nomor}`).find('input[type="checkbox"]');
+            checkboxes.on('change', function() {
+                var checkedCount = $(`.pilihan-ganda-opsi .soal_${nomor}`).find('input[type="checkbox"]:checked').length;
+
+                if ($(this).prop('checked') && checkedCount > 2) {
+                    $(this).prop('checked', false)
+                } 
+            });
+
+        }
+
+        // benar salah
+        function benarSalahOpsiChecked(value, baris)
+        {
+            var index = getIndexCurrentNavlinkActive();
+            var element = $(`.opsi-benar-salah_${index}.baris-${baris}`);
+            console.log(baris, element);
+            
+            if (value == 'benar') {
+                element.find('.opsi-salah').prop('checked', false)
+            } else {
+                element.find('.opsi-benar').prop('checked', false)
+            }
         }
     
     // summernote 

@@ -1,4 +1,4 @@
-<nav id="sidebar" class="sidebar js-sidebar {{isset($ujian) ? 'collapsed' : ''}}">
+<nav id="sidebar" class="sidebar js-sidebar {{isset($ujian) || isset($hide_sidebar) ? 'collapsed' : ''}}">
 	<div class="sidebar-content js-simplebar">
 		<a class="sidebar-brand" href="{{ url('dashboard') }}">
 			<span class="align-middle">Leamor</span>
