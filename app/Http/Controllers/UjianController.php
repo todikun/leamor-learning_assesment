@@ -104,7 +104,7 @@ class UjianController extends Controller
             return $th->getMessage();
         }
 
-        return view('pages.ujian.nilai', ['data' => $ujianSiswa, 'ujian' => true]);
+        return view('pages.ujian.nilai', ['data' => $ujianSiswa]);
     }
 
 }

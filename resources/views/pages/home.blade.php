@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Leamor</title>
+    <title>{{env('APP_NAME')}}</title>
     <style>
         body, html {
             height: 100%;
@@ -62,6 +62,7 @@
                             <img src="{{asset('dist/img/teacher.png')}}" alt="err" width="150px" height="150px" />
                         </div>
                     </a>
+                    <p class="text-center mt-3">Guru</p>
                 </div>
                 
                 <div class="col-md-6">
@@ -70,6 +71,7 @@
                             <img src="{{asset('dist/img/student.png')}}" alt="err" width="150px" height="150px" />
                         </div>
                     </a>
+                    <p class="text-center mt-3">Siswa</p>
                 </div>
               </div>
           </div>

@@ -16,7 +16,7 @@
 
     <link rel="canonical" href="https://demo-basic.adminkit.io/pages-sign-in.html" />
 
-    <title>Log In | Leamor</title>
+    <title>Log In | {{env('APP_NAME')}}</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link href="{{ asset('dist/css/app.css') }}" rel="stylesheet">
@@ -36,7 +36,7 @@
                             <div class="card-body">
                                 <div class="card-title my-2">
                                     <a href="{{url('/')}}" style="text-decoration: none;">
-                                        <h3 class="text-center">Leamor</h3>
+                                        <h3 class="text-center">{{env('APP_NAME')}}</h3>
                                     </a>
                                     <h5 class="text-center">Login As <b>{{$param}}</b></span>
                                 </div>

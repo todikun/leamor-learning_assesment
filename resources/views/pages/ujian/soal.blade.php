@@ -180,9 +180,13 @@
                                                     @break
                                                 @case('3')
                                                 {{-- benar salah --}}
+
+                                                    <p class="text-center my-3">
+                                                        {{$item->opsi_jawaban['judul']}}
+                                                    </p>
                                                     <table class="table table-bordered border-hijau">
                                                         <tbody>
-                                                            @foreach ($item->opsi_jawaban as $j => $jawaban)
+                                                            @foreach ($item->opsi_jawaban['opsi'] as $j => $jawaban)
                                                                 <tr class="border-hijau opsi-benar-salah_{{$key+1}} baris-{{$j+1}}">
                                                                     <td class="border-hijau" width="70%">{{$jawaban}}</td>
                                                                     <td class="border-hijau" width="15%">
@@ -484,13 +488,29 @@
         {
             var index = getIndexCurrentNavlinkActive();
             var element = $(`.opsi-benar-salah_${index}.baris-${baris}`);
-            console.log(index,baris, element);
+            var semuaElement = $(`.opsi-benar-salah_${index}`);
+            var semuaInputTerisi = false;
             
             if (value == 'benar') {
                 element.find('.opsi-salah').prop('checked', false)
             } else {
                 element.find('.opsi-benar').prop('checked', false)
             }
+
+            semuaElement.each(function(){
+                $(this).find('.opsi').each(function(){
+                    if ($(this).prop('checked') == true) {
+                        semuaInputTerisi = true;
+                    }
+                })
+            })
+
+            if (semuaInputTerisi == true) {
+                warnaNomorTab[index] = true
+            } else {
+                warnaNomorTab[index] = false
+            }
+            ubahNomorTabSoal(index)
         }
 
         function ubahNomorTabSoal(jawaban)

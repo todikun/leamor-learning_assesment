@@ -16,7 +16,7 @@
 
     <link rel="canonical" href="https://demo-basic.adminkit.io/pages-sign-in.html" />
 
-    <title>Register | Leamor</title>
+    <title>Register | {{env('APP_NAME')}}</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link href="{{ asset('dist/css/app.css') }}" rel="stylesheet">

@@ -4,7 +4,7 @@
 
 @section('content')
 
-<form action="{{route('soal.create_update')}}" method="post" enctype="multipart/form-data">
+<form id="formSoal" action="{{route('soal.create_update')}}" method="post" enctype="multipart/form-data">
     @csrf
 
     <input type="hidden" name="soal_id" value="{{$soal->id}}" />
@@ -161,8 +161,8 @@
                 
                                             <div class="appendAreaOpsi_{{$key+1}}">
                                                 <div class="row d-flex mb-3">
-                                                    <div class="col-md btn-add-remove-opsi {{$item->tipe_soal_id  != '4' ? 'd-none':''}}">
-                                                        <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
+                                                    <div class="col-md btn-add-remove-opsi {{$item->tipe_soal_id  != '3' ? 'd-none':''}}">
+                                                        {{-- <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span> --}}
                                                         <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                             <i class="fa fa-plus p-2"></i> 
                                                         </a>
@@ -170,6 +170,17 @@
                                                         <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
                                                             <i class="fa fa-times p-2"></i> 
                                                         </a>
+
+                                                        <div class="judul-benar-salah">
+                                                            @if ($item->tipe_soal_id == '3')
+                                                                <div class="d-flex justify-content-center mt-3 mb-2">
+                                                                    <div class="col-md-6 text-center mb-2 mx-auto">
+                                                                        <textarea class="form-control mb-2" name="{{$key+1}}_judul" placeholder="Judul" style="height: 12px;" required>{{$item->opsi_jawaban['judul']}}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+
                                                     </div>
                                                     
                                                     {{-- <div class="btn-add-remove-opsi-mencocokan d-none">
@@ -221,12 +232,15 @@
                                                             @case('2')
                                                             {{-- mencocokan --}}
 
+                                                            @php
+                                                                // dd($item->opsi_jawaban)
+                                                            @endphp
                                                                 <div class="d-flex justify-content-center">
                                                                     <div class="col-md-4 text-center mb-2 mx-auto">
-                                                                        <textarea class="form-control mb-2" name="judul_kiri[]" placeholder="Judul" style="height: 12px;" required>{{$item->opsi_jawaban['judul']['kiri']}}</textarea>
+                                                                        <textarea class="form-control mb-2" name="{{$key+1}}_judul_kiri" placeholder="Judul" style="height: 12px;" required>{{$item->opsi_jawaban['judul']['kiri']}}</textarea>
                                                                     </div>
                                                                     <div class="col-md-4 text-center mb-2 mx-auto">
-                                                                        <textarea class="form-control mb-2" name="judul_kanan[]" placeholder="Judul" style="height: 12px;" required>{{$item->opsi_jawaban['judul']['kanan']}}</textarea>
+                                                                        <textarea class="form-control mb-2" name="{{$key+1}}_judul_kanan" placeholder="Judul" style="height: 12px;" required>{{$item->opsi_jawaban['judul']['kanan']}}</textarea>
                                                                     </div>
                                                                 </div>
 
@@ -263,7 +277,7 @@
                                                                     <p class="text-center mb-2">Jawaban</p>
                                                                     @foreach ($item->kunci_jawaban as $jawaban)
                                                                         <div class="col-md-2 mb-2">
-                                                                            <input class="form-control " name="{{$key+1}}_kunci_jawaban[]">
+                                                                            <input class="form-control " name="{{$key+1}}_kunci_jawaban[]" value="{{$jawaban}}">
                                                                         </div>    
                                                                     @endforeach
                                                                 </div>
@@ -271,7 +285,7 @@
                                                                 @break
                                                             @case('3')  
                                                             {{-- benar salah --}}
-                                                                @foreach ($item->opsi_jawaban as $baris => $opsi)
+                                                                @foreach ($item->opsi_jawaban['opsi'] as $baris => $opsi)
                                                                     <div class="opsi-remove mb-2 d-flex">
                                                                         <div class="col-md-8 me-2">
                                                                             <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban[]" required>{{$opsi}}</textarea>
@@ -397,7 +411,7 @@
                                         <div class="appendAreaOpsi_1">
                                             <div class="row d-flex mb-3">
                                                 <div class="col-md btn-add-remove-opsi d-none">
-                                                    <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
+                                                    {{-- <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span> --}}
                                                     <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                         <i class="fa fa-plus p-2"></i> 
                                                     </a>
@@ -405,6 +419,7 @@
                                                     <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
                                                         <i class="fa fa-times p-2"></i> 
                                                     </a>
+                                                    <div class="judul-benar-salah"></div>
                                                 </div>
 
                                                 <div class="btn-add-remove-opsi-mencocokan d-none">
@@ -447,7 +462,7 @@
         </div>
         
     </div>
-    <button type="submit" class="btn btn-lg btn-success position-sticky my-7 mx-5" style="float: right;">
+    <button type="button" id="btnSubmit" class="btn btn-lg btn-success position-sticky my-7 mx-5" style="float: right;">
         SAVE
     </button>
     
@@ -612,7 +627,6 @@
                                 <div class="appendAreaOpsi_${globalIndex}">
                                     <div class="row d-flex mb-3">
                                         <div class="col-md btn-add-remove-opsi d-none">
-                                            <span class="mb-3 me-1">Opsi <span class="text-danger">*</span></span>
                                             <a href="javascript:;" onclick="opsiAdd(this)" class="me-3 bg-success text-white rounded-circle position-absolute">
                                                 <i class="fa fa-plus p-2"></i> 
                                             </a>
@@ -620,6 +634,9 @@
                                             <a href="javascript:;" onclick="opsiRemove(this)" class="bg-danger text-white rounded-circle position-absolute">
                                                 <i class="fa fa-times p-2"></i> 
                                             </a>
+
+                                            <div class="judul-benar-salah"></div>
+
                                         </div>
 
                                         
@@ -689,6 +706,26 @@
     //  stimulus 
         var btnStimulusAdd = $('.btnStimulusAdd'); 
         var btnStimulusRemove = $('.btnStimulusRemove'); 
+
+        // form submit
+        $('#btnSubmit').on('click', function(event) {
+            let error = false;
+            let requiredFields = $('#formSoal').find('input[required], select[required], textarea[required], input[type="file"][required]');
+    
+            requiredFields.each(function() {
+                if ($(this).val() === "") {
+                    error = true;
+                }
+            });
+
+            if (error == true) {
+                alert('Masih ada inputan yang kosong. Harap lengkapi terlebih dahulu sebelum submit form.')
+            } else {
+                $('#formSoal').submit();
+            }
+    
+        });
+
 
         function getIndexCurrentNavlinkActive() {
             var index = '';
@@ -884,10 +921,10 @@
                         `
                             <div class="d-flex justify-content-center">
                                 <div class="col-md-4 text-center mb-2 mx-auto">
-                                    <textarea class="form-control mb-2" name="judul_kiri" placeholder="Judul" style="height: 12px;" required></textarea>
+                                    <textarea class="form-control mb-2" name="${index}_judul_kiri" placeholder="Judul" style="height: 12px;" required></textarea>
                                 </div>
                                 <div class="col-md-4 text-center mb-2 mx-auto">
-                                    <textarea class="form-control mb-2" name="judul_kanan" placeholder="Judul" style="height: 12px;" required></textarea>
+                                    <textarea class="form-control mb-2" name="${index}_judul_kanan" placeholder="Judul" style="height: 12px;" required></textarea>
                                 </div>
                             </div>
                         `
@@ -990,6 +1027,13 @@
                     `;
                     appendAreaOpsi.find('.opsi-jawaban').html(opsi);
                     appendAreaOpsi.find('.btn-add-remove-opsi').removeClass('d-none');
+                    appendAreaOpsi.find('.btn-add-remove-opsi').find('.judul-benar-salah').html(`
+                        <div class="d-flex justify-content-center mt-3 mb-2">
+                            <div class="col-md-6 text-center mb-2 mx-auto">
+                                <textarea class="form-control mb-2" name="${index}_judul" placeholder="Judul" style="height: 12px;" required></textarea>
+                            </div>
+                        </div>
+                    `);
                     break;
                 case '4':
                     // isian singkat

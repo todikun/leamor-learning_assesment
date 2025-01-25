@@ -16,7 +16,7 @@
 
     <link rel="canonical" href="https://demo-basic.adminkit.io/pages-sign-in.html" />
 
-    <title>Rapor | Leamor</title>
+    <title>Rapor | {{env('APP_NAME')}}</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link href="{{ asset('dist/css/app.css') }}" rel="stylesheet">
@@ -63,7 +63,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <p style="font-size: 40px; letter-spacing: 6px;" class="fw-bold text-success">REPORT CARD</p>
-                                <p style="font-size: 30px; color: black; letter-spacing: 6px;">LEAMOR</p>
+                                <p style="font-size: 30px; color: black; letter-spacing: 6px;">{{env('APP_NAME')}}</p>
                             </div>
 
                             <div class="row justify-content-between px-5">

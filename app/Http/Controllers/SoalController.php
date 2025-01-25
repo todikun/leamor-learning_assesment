@@ -11,6 +11,7 @@ use App\Models\SoalDetail;
 use App\Models\UjianSiswa;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SoalController extends Controller
 {
@@ -101,7 +102,9 @@ class SoalController extends Controller
     public function createOrUpdateSoal(Request $request)
     {
         // dd($request->all());
+
         try {
+
             $soal = Soal::find($request->soal_id);
             $soalDetail = SoalDetail::where('soal_id', $soal->id);
             if ($soalDetail->exists()) {
@@ -127,8 +130,12 @@ class SoalController extends Controller
                     $index++;
                 }
 
-                $opsi_jawaban = $request->input($i.'_opsi_jawaban');
                 $kunci_jawaban = $request->input($i.'_kunci_jawaban');
+
+                // soal pilihan ganda
+                if ($request->tipe_soal_id[$key] == '1') {
+                    $opsi_jawaban = $request->input($i.'_opsi_jawaban');
+                }
 
                 // soal tipe mencocokan
                 if ($request->tipe_soal_id[$key] == '2') {
@@ -136,11 +143,19 @@ class SoalController extends Controller
                     $opsi_jawaban_kanan = $request->input($i.'_opsi_jawaban_kanan');
                     $opsi_jawaban = [
                         'judul' => [
-                            'kiri' => $request->input('judul_kiri')[$i],
-                            'kanan' => $request->input('judul_kanan')[$i],
+                            'kiri' => $request->input($i.'_judul_kiri'),
+                            'kanan' => $request->input($i.'_judul_kanan'),
                         ],
                         'opsi_jawaban_kiri' => $opsi_jawaban_kiri,
                         'opsi_jawaban_kanan' => $opsi_jawaban_kanan,
+                    ];
+                }
+
+                // soal tipe benar salah
+                if ($request->tipe_soal_id[$key] == '3') {
+                    $opsi_jawaban = [
+                        'judul' => $request->input($i.'_judul'),
+                        'opsi' => $request->input($i.'_opsi_jawaban'),
                     ];
                 }
 
@@ -163,7 +178,10 @@ class SoalController extends Controller
             
             // Move file from dir tmp -> uploads
             \App\Helpers\_tmpFile::moveFile($stimulusDokumen);
+
         } catch (\Throwable $th) {
+
+            dd($th->getMessage());
             return back()->with('error', $th->getMessage());
         }
         return view('pages.teacher.soal.open-akses', compact('soal'));
