@@ -121,8 +121,6 @@ Route::middleware('auth')->group(function(){
                 Route::get('{id}/ujian', 'ujian')->name('ujian');
                 Route::get('{soalId}/{idUjian}/rank', 'rank')->name('rank');
 
-                // feedback
-                Route::get('{id}/feedback', 'feedbackForm')->name('feedback');
                 Route::post('{id}/feedback', 'feedbackStore')->name('feedback_store');
 
                 // koreksi
@@ -135,6 +133,9 @@ Route::middleware('auth')->group(function(){
             });
     });
 
+    // feedback
+    Route::get('rapor/{id}/feedback', [RaporController::class, 'feedbackForm'])->name('rapor.teacher.feedback');
+    
     // pdf
     Route::get('{id}/export/pdf', [RaporController::class,'exportPdfPermateri'])->name('export.permateri');
 

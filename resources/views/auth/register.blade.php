@@ -35,7 +35,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="card-title my-2">
-                                    <h3 class="text-center">Leamor</h3>
+                                    <h3 class="text-center">{{env('APP_NAME')}}</h3>
                                     <h5 class="text-center">Register</span>
                                 </div>
                                 @include('components.alert')

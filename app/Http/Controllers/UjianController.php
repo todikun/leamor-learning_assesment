@@ -52,43 +52,39 @@ class UjianController extends Controller
     public function storeNilai(Request $request, $id)
     {
         $soal = Soal::find($id);
-        $benar = 0;
         $skor = [];
-        $totalSkor = 0;
         $jawabanUser = []; 
         try {
             foreach ($soal->SoalDetail as $index => $item) {
                 $jawabanUser[] = $request->input('no_'.$index + 1);
-                $feedback[] = $request->feedback[$index] ?? null;
-    
-                if ($item->kunci_jawaban[0] == $request->input('no_'.$index + 1)) {
-                    $benar += 1;
-                    $skor[] = $item->skor;
-                    $totalSkor += $item->skor;
-                } else if($item->tipe_soal_id == '2') {
-                    // soal mencocokan
-                    $opsi_kiri = $request->input('no_'.($index + 1).'_kiri');
-                    $opsi_kanan = $request->input('no_'.($index + 1).'_kanan');
-                    $jawabanUser[$index] = [$opsi_kiri, $opsi_kanan];
-                    if (in_array($opsi_kiri, $item->kunci_jawaban) && in_array($opsi_kanan, $item->kunci_jawaban)) {
-                        $benar += 1;
-                        $skor[] = $item->skor;
-                        $totalSkor += $item->skor;
-                    } else {
-                        $skor[] = 0;
+                $feedback[] = $request->feedback[$index] ?? $item->feedback;
+                              
+                // pilihan ganda
+                if ($item->tipe_soal_id == '1') {
+                    $tempBenar = 0;
+                    foreach ($jawabanUser[$index] ?? [] as $jawaban) {
+                        if (in_array($jawaban, $item->kunci_jawaban)) {
+                            $tempBenar += 1;
+                        }
                     }
-                } else if($item->tipe_soal_id == '4') {
-                    // soal isian singkat
-                    if ($item->kunci_jawaban == $request->input('no_'.$index + 1)) {
-                        $benar += 1;
-                        $skor[] = $item->skor;
-                        $totalSkor += $item->skor;
-                    } else {
-                        $skor[] = 0;
-                    }
-                } else {
-                    $skor[] = 0;
+                    $butir_kunci_jawaban = sizeof($item->kunci_jawaban);
+                    $skor_per_butir = $item->skor / $butir_kunci_jawaban;
+                    $skor[] = $tempBenar * $skor_per_butir;
                 }
+
+                // mencocokan / benar salah
+                if ($item->tipe_soal_id == '2' || $item->tipe_soal_id == '3') {
+                    $tempBenar = 0;
+                    foreach ($jawabanUser[$index] ?? [] as $key => $jawaban) {
+                        if ($jawaban == $item->kunci_jawaban[$key]) {
+                            $tempBenar += 1;
+                        }
+                    }
+                    $butir_kunci_jawaban = sizeof($item->kunci_jawaban);
+                    $skor_per_butir = $item->skor / $butir_kunci_jawaban;
+                    $skor[] = $tempBenar * $skor_per_butir;
+                }
+
             }
     
             $ujianSiswa = UjianSiswa::create([
@@ -98,7 +94,7 @@ class UjianController extends Controller
                 'jawaban' => $jawabanUser,
                 'feedback' => $feedback,
                 'nilai' => $skor,
-                'total_nilai' => $totalSkor,
+                'total_nilai' => array_sum($skor),
             ]);
         } catch (\Throwable $th) {
             return $th->getMessage();

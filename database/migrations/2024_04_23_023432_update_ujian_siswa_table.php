@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('ujian_siswas', function (Blueprint $table) {
-            $table->text('feedback')->nullable()->after('jawaban');
+            $table->longText('feedback')->nullable()->after('jawaban');
         });
     }
 

@@ -231,13 +231,12 @@
                                                                 @break
                                                             @case('2')
                                                             {{-- mencocokan --}}
-
-                                                            @php
-                                                                // dd($item->opsi_jawaban)
-                                                            @endphp
                                                                 <div class="d-flex justify-content-center">
                                                                     <div class="col-md-4 text-center mb-2 mx-auto">
                                                                         <textarea class="form-control mb-2" name="{{$key+1}}_judul_kiri" placeholder="Judul" style="height: 12px;" required>{{$item->opsi_jawaban['judul']['kiri']}}</textarea>
+                                                                    </div>
+                                                                    <div class="col-md-2 text-center mb-2 mx-auto">
+                                                                        <p class="mb-2">Jawaban</p>
                                                                     </div>
                                                                     <div class="col-md-4 text-center mb-2 mx-auto">
                                                                         <textarea class="form-control mb-2" name="{{$key+1}}_judul_kanan" placeholder="Judul" style="height: 12px;" required>{{$item->opsi_jawaban['judul']['kanan']}}</textarea>
@@ -245,41 +244,36 @@
                                                                 </div>
 
                                                                 <div class="d-flex mt-3 mb-2">
-                                                                    <div class="col-md-6 opsi-kiri">
+                                                                    <div class="col-md-4 opsi-kiri">
                                                                         @foreach ($item->opsi_jawaban['opsi_jawaban_kiri'] as $no => $opsi)
-                                                                            <div class="col-md-10">
-                                                                                <div class="input-group mb-3">
-                                                                                    <div class="input-group-prepend">
-                                                                                        <span class="input-group-text" id="basic-addon1">{{$no+1}}</span>
-                                                                                    </div>
-                                                                                    <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban_kiri[]" style="height: 12px;" required="">{{$opsi}}</textarea>
+                                                                            <div class="input-group mb-3">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text" id="basic-addon1">{{$no+1}}</span>
                                                                                 </div>
+                                                                                <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban_kiri[]" style="height: 12px;" required="">{{$opsi}}</textarea>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
+
+                                                                    <div class="col-md-2 jawaban mx-auto">
+                                                                        @foreach ($item->kunci_jawaban as $jawaban)
+                                                                        <div class="mb-3">
+                                                                            <input class="form-control" name="{{$key+1}}_kunci_jawaban[]" value="{{$jawaban}}">
+                                                                        </div>
+                                                                        @endforeach
+                                                                    </div>
+            
+                                                                    <div class="col-md-4 opsi-kanan ms-2">
+                                                                        @foreach ($item->opsi_jawaban['opsi_jawaban_kanan'] as $no => $opsi)
+                                                                            <div class="input-group mb-3">
+                                                                                <div class="input-group-prepend">
+                                                                                    <span class="input-group-text" id="basic-addon4">{{$no+1}}</span>
+                                                                                </div>
+                                                                                <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban_kanan[]" style="height: 12px;" required="">{{$opsi}}</textarea>
                                                                             </div>
                                                                         @endforeach
                                                                     </div>
             
-                                                                    <div class="col-md-6 opsi-kanan">
-                                                                        <div class="col-md-10" style="float:right;">
-                                                                            @foreach ($item->opsi_jawaban['opsi_jawaban_kanan'] as $no => $opsi)
-                                                                                <div class="input-group mb-3">
-                                                                                    <div class="input-group-prepend">
-                                                                                        <span class="input-group-text" id="basic-addon4">{{$no+1}}</span>
-                                                                                    </div>
-                                                                                    <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban_kanan[]" style="height: 12px;" required="">{{$opsi}}</textarea>
-                                                                                </div>
-                                                                            @endforeach
-                                                                        </div>
-                                                                    </div>
-            
-                                                                </div>
-            
-                                                                <div class="row justify-content-center flex-column align-items-center">
-                                                                    <p class="text-center mb-2">Jawaban</p>
-                                                                    @foreach ($item->kunci_jawaban as $jawaban)
-                                                                        <div class="col-md-2 mb-2">
-                                                                            <input class="form-control " name="{{$key+1}}_kunci_jawaban[]" value="{{$jawaban}}">
-                                                                        </div>    
-                                                                    @endforeach
                                                                 </div>
 
                                                                 @break
@@ -923,6 +917,9 @@
                                 <div class="col-md-4 text-center mb-2 mx-auto">
                                     <textarea class="form-control mb-2" name="${index}_judul_kiri" placeholder="Judul" style="height: 12px;" required></textarea>
                                 </div>
+                                <div class="col-md-2 text-center mb-2 mx-auto">
+                                    <p class="mb-2">Jawaban</p>
+                                </div>
                                 <div class="col-md-4 text-center mb-2 mx-auto">
                                     <textarea class="form-control mb-2" name="${index}_judul_kanan" placeholder="Judul" style="height: 12px;" required></textarea>
                                 </div>
@@ -932,85 +929,76 @@
                     appendAreaOpsi.find('.opsi-jawaban').append(
                         `
                         <div class='d-flex mt-3 mb-2'>
-                            <div class='col-md-6 opsi-kiri'>
-                                <div class="col-md-10">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">1</span>
-                                        </div>
-                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kiri[]" style="height: 12px;" required></textarea>
+                            <div class='col-md-4 opsi-kiri'>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">1</span>
                                     </div>
+                                    <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kiri[]" style="height: 12px;" required></textarea>
                                 </div>
 
-                                <div class="col-md-10">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon2">2</span>
-                                        </div>
-                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kiri[]" style="height: 12px;" required></textarea>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon2">2</span>
                                     </div>
+                                    <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kiri[]" style="height: 12px;" required></textarea>
                                 </div>
-                                <div class="col-md-10">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3">3</span>
-                                        </div>
-                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kiri[]" style="height: 12px;" required></textarea>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3">3</span>
                                     </div>
+                                    <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kiri[]" style="height: 12px;" required></textarea>
                                 </div>
 
                             </div>
-                            <div class='col-md-6 opsi-kanan'>
-                                <div class="col-md-10" style="float:right;">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon4">1</span>
-                                        </div>
-                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
+
+                            <div class="col-md-2 jawaban mx-auto">
+                                <div class="mb-3">
+                                    <input class="form-control" name="${index}_kunci_jawaban[]">
+                                </div>
+                                <div class="mb-3">
+                                    <input class="form-control" name="${index}_kunci_jawaban[]">
+                                </div>
+                                <div class="mb-3">
+                                    <input class="form-control" name="${index}_kunci_jawaban[]">
+                                </div>
+                            </div>
+
+                            <div class='col-md-4 opsi-kanan ms-2'>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon4">1</span>
                                     </div>
+                                    <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
                                 </div>
                                 
-                                <div class="col-md-10" style="float:right;">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon5">2</span>
-                                        </div>
-                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon5">2</span>
                                     </div>
+                                    <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
                                 </div>
-                                
-                                <div class="col-md-10" style="float:right;">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon6">3</span>
-                                        </div>
-                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
+                            
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon6">3</span>
                                     </div>
+                                    <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
                                 </div>
-                                
-                                <div class="col-md-10" style="float:right;">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon7">4</span>
-                                        </div>
-                                        <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
+                            
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon7">4</span>
                                     </div>
+                                    <textarea class="form-control mb-2" name="${index}_opsi_jawaban_kanan[]" style="height: 12px;" required></textarea>
                                 </div>
 
                             </div>
                         <div>
                         `
                     );
-                    appendAreaOpsi.find('.opsi-jawaban').append(
-                        `<div class='row justify-content-center'>
-                            <p class="text-center mb-2">Jawaban</>
-                            <div class="col-md-2">
-                                <input class="form-control mb-2" name="${index}_kunci_jawaban[]" />
-                                <input class="form-control mb-2" name="${index}_kunci_jawaban[]" />
-                                <input class="form-control mb-2" name="${index}_kunci_jawaban[]" />
-                            </div>    
-                        </div>`
-                    );
+                    
                     break;
                 case '3':
                     // salah benar
@@ -1090,7 +1078,7 @@
                     // ['style', ['style']],
                     ['font', ['bold', 'underline', 'italic']],
                     // ['color', ['color']],
-                    // ['para', ['ul', 'ol', 'paragraph']],
+                    ['para', ['ul', 'ol', 'paragraph']],
                     // ['table', ['table']],
                     ['insert', ['picture']],
                     // ['view', ['fullscreen', 'codeview', 'help']]
@@ -1106,7 +1094,7 @@
                     // ['style', ['style']],
                     ['font', ['bold', 'underline', 'italic']],
                     // ['color', ['color']],
-                    // ['para', ['ul', 'ol', 'paragraph']],
+                    ['para', ['ul', 'ol', 'paragraph']],
                     // ['table', ['table']],
                     // ['insert', ['picture']],
                     // ['view', ['fullscreen', 'codeview', 'help']]
@@ -1121,6 +1109,7 @@
                 height: 120,
                 toolbar: [
                     ['insert', ['picture']],
+                    ['para', ['ul', 'ol', 'paragraph']],
                 ]
             });
         }

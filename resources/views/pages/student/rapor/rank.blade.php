@@ -23,7 +23,8 @@
                             <th>Tipe Soal</th>
                             <th>Soal</th>
                             <th>Feedback</th>
-                            <th>Jawaban</th>
+                            <th>Kunci Jawaban</th>
+                            <th>Jawaban Siswa</th>
                             <th>Koreksi</th>
                             <th>Skor</th>
                         </tr>
@@ -35,11 +36,18 @@
                                 <td>{{$item->TipeSoal->nama}}</td>
                                 <td>{!!$item->pertanyaan!!}</td>
                                 <td>
-                                    @if ($data->feedback[$key] == null && auth()->user()->role == 'teacher')
-                                        <a href="{{route('rapor.teacher.feedback', [$data->id,'index'=>$key])}}" class="text-danger btn-feedback">Isi feedback</a>
-                                    @else    
-                                        {!!$data->feedback[$key] ?? '-'!!}</td>
+                                    <a href="{{route('rapor.teacher.feedback', [$data->id,'index'=>$key])}}" class="btn-feedback">Lihat feedback</a>
+                                </td>
+
+                                <td>
+                                    @if (is_array($data->Soal->SoalDetail[$key]->kunci_jawaban))
+                                        @foreach ($data->Soal->SoalDetail[$key]->kunci_jawaban as $j)
+                                            {!!$j!!}, 
+                                        @endforeach
+                                    @else
+                                        {!!$data->Soal->SoalDetail[$key]->kunci_jawaban!!}
                                     @endif
+                                </td>
 
                                 <td>
                                     @if (is_array($data->jawaban[$key]))
@@ -51,9 +59,24 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <span class="text-{{$data->nilai[$key] != '0' ? 'success':'danger'}} ms-1">
-                                        <i class="fa fa-{{$data->nilai[$key] != '0' ? 'check':'times'}}"></i>
-                                    </span>
+                                    @php
+                                        if ($data->nilai[$key] != '0' && $data->nilai[$key] == $data->Soal->SoalDetail[$key]->skor) {
+                                            $color = 'success';
+                                            $icon = 'check';
+                                            $ctt = '';
+                                        } else if ($data->nilai[$key] != '0') {
+                                            $color = 'warning';
+                                            $icon = 'triangle-exclamation';
+                                            $ctt = 'Hampir benar keseluruhan jawaban';
+                                        } else {
+                                            $color = 'danger';
+                                            $icon = 'times';
+                                            $ctt = '';
+                                        }
+                                    @endphp
+                                    <span class="text-{{$color}} ms-1">
+                                        <i class="fa fa-{{$icon}}"></i>
+                                    </span> <strong style="font-size: 12px;">{{$ctt}}</strong>
                                 </td>
                                 <td>{{$data->nilai[$key]}} 
                                 @php
@@ -98,7 +121,7 @@
             dataType: 'HTML',
             method: 'GET',
             success: function (result) {
-                modalForm(result, 'Update Feedback');
+                modalForm(result, 'Feedback', 'modal-xl');
             },
             error: function (err) {
                 console.log(err);

@@ -38,11 +38,11 @@
             
                                     {{-- stimulus --}}
                                     <div class="col-md-12">
-                                        <div class="row d-flex mb-2">
+                                        {{-- <div class="row d-flex mb-2">
                                             <div class="col-md">
                                                 <span class="me-1">Stimulus</span>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         
                                         @foreach ($item->stimulus as $stimulus)
                                             <div class="appendAreaStimulus_{{$key+1}}">
@@ -100,7 +100,7 @@
                                 {{-- opsi --}}
                                 <div class="col-md-6">
                                     <div class="form-group mb-2">
-                                        <h5 class="card-title mb-2">Pertanyaan </h5>
+                                        {{-- <h5 class="card-title mb-2">Pertanyaan </h5> --}}
                                         <div class="mb-2" style="font-weight: normal">
                                             {!!$item->pertanyaan!!}
                                         </div>
@@ -132,7 +132,7 @@
                                                 {{-- mencocokan --}}
 
                                                     <div class="d-flex mt-3 mb-2">
-                                                        <div class="col-md-5 opsi-kiri mx-auto">
+                                                        <div class="col-md-4 opsi-kiri">
                                                             <table class="table table-bordered border-hijau">
                                                                 <thead>
                                                                     <tr>
@@ -149,7 +149,26 @@
                                                             </table>
                                                         </div>
 
-                                                        <div class="col-md-5 opsi-kanan mx-auto">
+                                                        <div class="col-md-2 jawaban">
+                                                            <table class="table table-bordered border-hijau">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <td class="text-center">Jawaban</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($item->kunci_jawaban as $jawaban)
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input oninput="checkInput({{$key+1}})" class="form-control kunci-jawaban-mencocokan baris-{{$key+1}}" name="no_{{$key+1}}[]">
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                        <div class="col-md-4 opsi-kanan ms-5">
                                                             <table class="table table-bordered border-hijau">
                                                                 <thead>
                                                                     <tr>
@@ -166,15 +185,6 @@
                                                             </table>
                                                         </div>
 
-                                                    </div>
-
-                                                    <div class="row justify-content-center flex-column align-items-center">
-                                                        <p class="text-center mb-2">Jawaban</p>
-                                                        @foreach ($item->kunci_jawaban as $jawaban)
-                                                            <div class="col-md-2 mb-2">
-                                                                <input oninput="checkInput({{$key+1}})" class="form-control kunci-jawaban-mencocokan baris-{{$key+1}}" name="no_{{$key+1}}[]">
-                                                            </div>    
-                                                        @endforeach
                                                     </div>
 
                                                     @break

@@ -75,7 +75,6 @@ class RaporController extends Controller
             $rank++;
         }
         $data = UjianSiswa::orderBy('total_nilai', 'desc')->where('soal_id', $soalId)->get();
-       
         // dd($data->where('id',$idUjian)->first(), $data);
         return view('pages.student.rapor.rank', [
             'data' =>$data->where('id',$idUjian)->first(),
@@ -95,7 +94,8 @@ class RaporController extends Controller
     public function feedbackForm($id)
     {
         $data = UjianSiswa::find($id);
-        return view('pages.teacher.rapor.feedback', compact('data'));
+        $index = request('index') ?? '';
+        return view('pages.teacher.rapor.feedback', compact('data', 'index'));
     }
 
     public function feedbackStore(Request $request, $id)
