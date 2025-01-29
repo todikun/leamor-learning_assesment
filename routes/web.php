@@ -108,6 +108,7 @@ Route::middleware('auth')->group(function(){
                 Route::get('{id}/preview', 'preview')->name('preview');
                 Route::post('{id}/nilai', 'previewNilai')->name('nilai');
                 Route::get('{id}/users', 'listUsers')->name('users');
+                Route::get('{id}/copy', 'copySoal')->name('copy');
             });
         Route::resource('soal', SoalController::class);
 

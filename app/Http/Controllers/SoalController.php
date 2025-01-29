@@ -22,8 +22,45 @@ class SoalController extends Controller
      */
     public function index()
     {
-        $data = Soal::orderBy('id', 'desc')->where('created_by', auth()->user()->id)->get();
+        $data = Soal::orderBy('id', 'desc')
+            ->where('created_by', auth()->user()->id)
+            ->where('is_deleted', false)
+            ->get();
         return view('pages.teacher.soal.index', compact('data'));
+    }
+
+    public function copySoal($id)
+    {
+        $soal = Soal::findOrFail($id);
+        $data = Soal::create([
+            'pernyataan'=>$soal->pernyataan,
+            'nama'=>$soal->nama.'_copy',
+            'waktu_ujian'=>$soal->waktu_ujian,
+            'cover'=>$soal->cover,
+            'batch' => $soal->batch.'_copy',
+            'is_share' => $soal->is_share,
+            'waktu_akses_ujian' => $soal->waktu_akses_ujian,
+            'is_mandiri' => $soal->is_mandiri,
+            'created_by' => auth()->user()->id,
+        ]);
+        $data->update([
+            'token' => $data->is_mandiri == false ? $data->id . Str::random(5) . date('Y', strtotime($data->created_at)) : null,
+        ]);
+           
+        $soal_detail = SoalDetail::where('soal_id', $soal->id)->get();
+        foreach ($soal_detail as $item) {
+            SoalDetail::create([
+                'soal_id' => $data->id,
+                'tipe_soal_id' => $item->tipe_soal_id,
+                'pertanyaan' => $item->pertanyaan,
+                'stimulus' => $item->stimulus,
+                'opsi_jawaban' => $item->opsi_jawaban,
+                'kunci_jawaban' => $item->kunci_jawaban,
+                'skor' => $item->skor,
+                'feedback' => $item->feedback,
+            ]);
+        }
+        return redirect()->route('soal.index')->with('success', 'Soal berhasil di copy');
     }
 
     /**

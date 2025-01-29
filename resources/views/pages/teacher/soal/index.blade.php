@@ -72,6 +72,12 @@
                                         class="btn btn-sm btn-success">
                                         <i class="fa fa-users"></i> 
                                     </a>
+
+                                    <a href="{{ route('soal.copy', $item->id) }}"
+                                        class="btn btn-sm btn-primary" onclick="return confirm('Apa anda yakin copy soal ini?')">
+                                        <i class="fa fa-file"></i> Copy
+                                    </a>
+
                                     <a href="{{ route('soal.preview', $item->id) }}"
                                         class="btn btn-sm btn-secondary">
                                         <i class="fa fa-eye"></i> Preview

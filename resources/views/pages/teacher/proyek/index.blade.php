@@ -14,10 +14,10 @@
 <div class="container">
     <div class="row row-cols-md-3 row-cols-lg-6">
       @forelse ($data as $item)
-        <div class="col mb-2 text-center">
+        <div class="col mb-2 text-center ml-3">
             <div class="d-inline-block position-relative">
                 
-                    <img src="{{asset('dist/img/folder.png')}}" alt="err" width="50px" height="50px" />
+                    <img src="{{asset('uploads/'.$item->cover)}}" alt="err" width="150px" height="150px" />
                     @if (auth()->user()->id != $item->created_by)
                         <a href="{{route('proyek.copy', $item->id)}}" onclick="return confirm('Apa anda yakin mengcopy proyek ini?')" title="Copy proyek" class="bg-success text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
                             <i class="align-middle" data-feather="plus"></i> 

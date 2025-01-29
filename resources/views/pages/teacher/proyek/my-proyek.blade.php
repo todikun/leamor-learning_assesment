@@ -20,7 +20,7 @@
 <div class="container">
     <div class="row row-cols-md-3 row-cols-lg-6">
       @forelse ($data as $item)
-        <div class="col mb-2 text-center">
+        <div class="col mb-2 text-center ml-3">
             <div class="d-inline-block position-relative">
                 <a href="#" style="cursor: default">
                     <img src="{{asset('uploads/'.$item->cover)}}" alt="err" width="150px" height="150px" />

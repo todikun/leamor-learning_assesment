@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Soal')
+@section('title', 'Rapor')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3">Rapor Ujian: <strong>{{$data->Soal->nama ?? '-'}}</strong> </h1>
-    <h2 class="h3"><strong>{{$data->Siswa->nama}}</strong>, Peringkat: <strong>{{$rank}}</strong>, Total Skor: <strong>{{$data->total_nilai}}</strong></h2>
+    <h4 class="h4">Rapor Ujian: {{$data->Soal->nama ?? '-'}} </h4>
+    <h4 class="h4">{{$data->Siswa->nama}}, Peringkat: {{$rank}}, Total Skor: {{$data->total_nilai}}</h4>
     <a href="{{route('export.permateri', $data->id)}}" class="btn btn-danger">
         <i class="fa fa-file"></i> PDF
     </a>

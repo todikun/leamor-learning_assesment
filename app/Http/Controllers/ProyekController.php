@@ -172,7 +172,7 @@ class ProyekController extends Controller
         $data->update([
             'is_deleted' => true
         ]);
-        return redirect()->route('proyek.my')->with('success', 'Data berhasil dihapus');
+        return back()->with('success', 'Data berhasil dihapus');
     }
 
     public function redo($id)
