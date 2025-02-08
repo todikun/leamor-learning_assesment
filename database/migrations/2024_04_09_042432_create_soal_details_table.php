@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->integer('soal_id');
             $table->integer('tipe_soal_id');
-            $table->text('pertanyaan');
-            $table->text('stimulus');
-            $table->text('opsi_jawaban');
+            $table->longText('pertanyaan');
+            $table->longText('stimulus');
+            $table->longText('opsi_jawaban');
             $table->text('kunci_jawaban');
             $table->integer('skor');
             $table->longText('feedback')->nullable();

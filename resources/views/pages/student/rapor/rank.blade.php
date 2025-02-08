@@ -121,7 +121,7 @@
             dataType: 'HTML',
             method: 'GET',
             success: function (result) {
-                modalForm(result, 'Feedback', 'modal-xl');
+                modalForm(result, 'Feedback', 'modal-fullscreen');
             },
             error: function (err) {
                 console.log(err);

@@ -15,18 +15,22 @@
         <input type="hidden" name="pernyataan[]" value="" />
     @endforelse
 
-    <div class="row d-flex">
-        <div class="col-md-1">
-            <div class="nav flex-row nav-pills cek-nav-link" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
-                @foreach ($soal->SoalDetail as $item)
-                    <button style="width: 1.5rem; background-color: rgb(223, 232, 240); pointer-events: none;" class="nav-link cek-nav m-1 d-flex justify-content-center align-items-center {{$loop->iteration == 1 ? 'active':''}}" data-checked="false" id="v-pills-soal_{{$loop->iteration}}-tab" data-index="{{$loop->iteration}}" data-bs-toggle="pill" data-bs-target="#v-pills-soal_{{$loop->iteration}}" type="button" role="tab" aria-controls="v-pills-soal_{{$loop->iteration}}" aria-selected="true">
-                        <span class="text-center">{{$loop->iteration}}</span>
-                    </button>
-                @endforeach
+    <div class="row">
+
+        <div class="row d-flex justify-content-center">
+
+            <div class="col-md-12 mb-3">
+                <div class="nav flex-row nav-pills cek-nav-link" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
+                    @foreach ($soal->SoalDetail as $item)
+                        <button style="width: 1.5rem; background-color: rgb(223, 232, 240); pointer-events: none;" class="nav-link cek-nav m-1 d-flex justify-content-center align-items-center {{$loop->iteration == 1 ? 'active':''}}" data-checked="false" id="v-pills-soal_{{$loop->iteration}}-tab" data-index="{{$loop->iteration}}" data-bs-toggle="pill" data-bs-target="#v-pills-soal_{{$loop->iteration}}" type="button" role="tab" aria-controls="v-pills-soal_{{$loop->iteration}}" aria-selected="true">
+                            <span class="text-center">{{$loop->iteration}}</span>
+                        </button>
+                    @endforeach
+                </div>
             </div>
         </div>
         
-        <div class="col-md">
+        <div class="col-md-12">
             <div class="tab-content" id="v-pills-tabContent">
                 @foreach ($soal->SoalDetail as $key => $item)
                 <div class="tab-pane fade show {{$loop->iteration == 1 ? 'active':''}}" id="v-pills-soal_{{$loop->iteration}}" role="tabpanel" aria-labelledby="v-pills-soal_{{$loop->iteration}}-tab">

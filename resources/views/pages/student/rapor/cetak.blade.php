@@ -91,36 +91,28 @@
 
                             <div class="row justify-content-center d-flex">
                                 <div class="col-md-4 connected-hr">
-                                    <p>Nama</p>
-                                    <hr class="text-success pt-1">
-                                    <p>Sekolah</p>
-                                    <hr class="text-success pt-1">
+                                    @foreach ($data->Soal->pernyataan as $item)
+                                        <p>{{$item}}</p>
+                                        <hr class="text-success pt-1">
+                                    @endforeach
                                     <p>Materi</p>
                                     <hr class="text-success pt-1">
                                     <p>Nilai</p>
                                     <hr class="text-success pt-1">
                                     <p>Peringkat</p>
                                     <hr class="text-success pt-1">
-                                    @foreach ($data->Soal->pernyataan as $item)
-                                        <p>{{$item}}</p>
-                                        <hr class="text-success pt-1">
-                                    @endforeach
                                 </div>
                                 <div class="col-md-6 connected-hr fw-bold">
-                                    <p>: {{$data->Siswa->nama}}</p>
-                                    <hr class="text-success pt-1">
-                                    <p>: {{$data->Siswa->sekolah}}</p>
-                                    <hr class="text-success pt-1">
+                                    @foreach ($data->pernyataan as $item)
+                                        <p>: {{$item}}</p>
+                                        <hr class="text-success pt-1">
+                                    @endforeach
                                     <p>: {{$data->Soal->nama}}</p>
                                     <hr class="text-success pt-1">
                                     <p>: {{$data->total_nilai}}</p>
                                     <hr class="text-success pt-1">
                                     <p>: {{$rank}}</p>
                                     <hr class="text-success pt-1">
-                                    @foreach ($data->pernyataan as $item)
-                                        <p>: {{$item}}</p>
-                                        <hr class="text-success pt-1">
-                                    @endforeach
                                 </div>
                             </div>
 

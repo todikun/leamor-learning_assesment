@@ -19,7 +19,7 @@ class RaporController extends Controller
 
         if ($role == 'teacher') {
             $data = Soal::where('created_by', auth()->user()->id)
-                            // ->where('is_deleted', false)
+                            ->where('is_deleted', false)
                             ->get();
             return view('pages.teacher.rapor.index', compact('data'));
         }

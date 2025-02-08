@@ -14,7 +14,8 @@
 <script>
     $('.summernote').summernote({
         tabsize: 2,
-        height: 120,
+        minHeight: 220,
+        maxHeight: null,
         toolbar: [
             ['insert', ['picture']],
         ]

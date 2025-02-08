@@ -11,9 +11,9 @@
 <div class="container">
     <div class="row row-cols-md-3 row-cols-lg-6">
       @forelse ($data as $item)
-        <div class="col mb-2 text-center">
+        <div class="col mb-2 text-center ml-3">
             <div class="d-inline-block position-relative">
-                <img src="{{asset('uploads/'.$item->cover)}}" alt="err" width="50px" height="50px" /><a href="{{route('proyek.redo', $item->id)}}" title="Kembalikan proyek" onclick="return confirm('Apa anda yakin menyimpan proyek ini?')"  class=" bg-primary text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
+                <img src="{{asset('uploads/'.$item->cover)}}" alt="err" width="150px" height="150px" /><a href="{{route('proyek.redo', $item->id)}}" title="Kembalikan proyek" onclick="return confirm('Apa anda yakin menyimpan proyek ini?')"  class=" bg-primary text-white rounded-circle position-absolute" style="bottom: 0; right: 0;">
                     <i class="align-middle p-1" data-feather="rotate-ccw"></i> 
                 </a>
             </div>            

@@ -3,7 +3,7 @@
 	@if (isset($ujian))
 	<div class="d-flex justify-content-center w-100 mt-1">
 		<div class="text-center">
-			<h3 class="text-center mb-1 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h3>
+			<h4 class="text-center mb-1 fw-bold" id="waktuMundur">{{$soal->waktu_ujian}} menit 0 detik</h3>
 			<p class="text-center">Topik <strong>{{$soal->nama}}</strong></p>
 		</div>
 	</div>

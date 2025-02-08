@@ -285,8 +285,8 @@
                                                                             <textarea class="form-control mb-2" name="{{$key+1}}_opsi_jawaban[]" required>{{$opsi}}</textarea>
                                                                         </div>
                                                                         <div class="col-md opsi-benar-salah_{{$key+1}} baris-{{$baris+1}}">
-                                                                            <input type="checkbox" onchange="benarSalahOpsiChecked('benar', {{$baris+1}})" {{$item->kunci_jawaban[$baris] == 'benar' ? 'checked':''}} value="benar" class="opsi opsi-benar" name="{{$key+1}}_kunci_jawaban[]" /> Benar
-                                                                            <input type="checkbox" onchange="benarSalahOpsiChecked('salah', {{$baris+1}})" {{$item->kunci_jawaban[$baris] == 'salah' ? 'checked':''}} value="salah" class="opsi opsi-salah" name="{{$key+1}}_kunci_jawaban[]" /> Salah
+                                                                            <input type="checkbox" onchange="benarSalahOpsiChecked('benar', {{$baris+1}})" {{isset($item->kunci_jawaban[$baris]) && $item->kunci_jawaban[$baris] == 'benar' ? 'checked':''}} value="benar" class="opsi opsi-benar" name="{{$key+1}}_kunci_jawaban[]" /> Benar
+                                                                            <input type="checkbox" onchange="benarSalahOpsiChecked('salah', {{$baris+1}})" {{isset($item->kunci_jawaban[$baris]) && $item->kunci_jawaban[$baris] == 'salah' ? 'checked':''}} value="salah" class="opsi opsi-salah" name="{{$key+1}}_kunci_jawaban[]" /> Salah
                                                                         </div>
                                                                     </div>
                                                                 @endforeach
